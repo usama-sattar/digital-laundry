@@ -1,23 +1,38 @@
-import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  Pressable,
+} from "react-native";
 import { Rating, AirbnbRating, Avatar } from "react-native-elements";
+import { images } from "../../global/images.js";
+import { colors } from "../../global/colors";
 
 function Searched({ route, navigation }, props) {
-  const { shops } = route.params.Shops;
+  const { Shops } = route.params;
   const [shopIndexCheck, setShopIndexCheck] = useState("0");
+  const [pics, setPics] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  return (
+  return loading === false ? (
     <View style={styles.container}>
-      {shops.length > 0 ? (
+      {Shops.length > 0 ? (
         <View>
-          <Text style={{ color: "purple", textAlign: "center", fontSize: 25 }}>
+          <Text style={{ color: "white", textAlign: "center", fontSize: 25 }}>
             Searched: {route.params.word}
           </Text>
           <View style={{ marginTop: 5 }}>
             <FlatList
               horizontal={false}
-              data={shops}
-              keyExtractor={(item) => item._id}
+              data={Shops}
+              keyExtractor={(_, index) => {
+                index.toString();
+              }}
+              extraData={shopIndexCheck}
+              showsHorizontalScrollIndicator={false}
               renderItem={({ item, index }) => {
                 return (
                   <View
@@ -33,36 +48,45 @@ function Searched({ route, navigation }, props) {
                       }}
                     >
                       <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
+                        style={{
+                          marginTop: 25,
+                          justifyContent: "space-around",
+                          flexDirection: "column",
+                        }}
                       >
-                        <View
-                          style={{ marginHorizontal: 10, marginVertical: 5 }}
-                        >
-                          <Avatar
-                            size="large"
-                            overlayContainerStyle={{
-                              backgroundColor: "#fff",
-                              borderRadius: 50,
+                        <View>
+                          <View
+                            style={{ marginHorizontal: 10, marginVertical: 5 }}
+                          >
+                            <Image
+                              source={
+                                images[
+                                  Math.floor(Math.random() * images.length)
+                                ]
+                              }
+                              style={{
+                                width: "100%",
+                                height: undefined,
+                                aspectRatio: 1,
+                                borderRadius: 10,
+                              }}
+                            />
+                          </View>
+                          <View
+                            style={{
+                              width: "90%",
+                              alignSelf: "center",
+                              borderRadius: 0,
+                              padding: 10,
+                              backgroundColor: colors.pinkColor,
+                              justifyContent: "center",
                             }}
-                            title={item.title[0]}
-                            titleStyle={{ color: "black" }}
-                            onPress={() => console.log("Works!")}
-                            activeOpacity={0.7}
-                          />
+                          >
+                            <Text style={{ color: "white" }}>
+                              Name: {item.name}
+                            </Text>
+                          </View>
                         </View>
-                        <View
-                          style={{ marginHorizontal: 10, marginVertical: 5 }}
-                        >
-                          <Text>{item.title}</Text>
-                        </View>
-                      </View>
-                      <View>
-                        <AirbnbRating
-                          count={5}
-                          reviews={["Terrible", "Bad", "OK", "Good", "Amazing"]}
-                          defaultRating={4}
-                          size={10}
-                        />
                       </View>
                     </Pressable>
                   </View>
@@ -75,12 +99,13 @@ function Searched({ route, navigation }, props) {
         <Text>Nothing to Show</Text>
       )}
     </View>
-  );
+  ) : null;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.darkBlue,
   },
   innercontainer: {
     flex: 1,
@@ -116,10 +141,12 @@ const styles = StyleSheet.create({
   verticallargeCard: {
     width: "90%",
     height: 200,
-    backgroundColor: "#3397e8",
+    backgroundColor: colors.darkBlue,
     borderRadius: 10,
     marginHorizontal: 10,
     justifyContent: "flex-start",
+    alignSelf: "center",
+    flex: 1,
   },
   headingText: {
     marginHorizontal: 10,

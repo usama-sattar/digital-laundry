@@ -6,7 +6,12 @@ const ShopSchema = new Schema({
     vendor: {type: mongoose.Schema.Types.ObjectId , ref: 'Vendor'},
     address: {type: String},
     account: {type:String},
-    services: [{}]
+    services: [{}],
+    rating:{
+        type: Array,
+        min: 1,
+        max: 5
+    }
 })
 
 const Shop=mongoose.model('Shop', ShopSchema)

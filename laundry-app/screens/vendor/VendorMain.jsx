@@ -26,6 +26,7 @@ function VendorMain({ navigation }) {
                   alignItems: "center",
                   margin: 5,
                 }}
+                onPress={() => navigation.navigate("PendingScreen")}
               >
                 <Text style={[styles.textStyle, { color: "white" }]}>
                   Pending Orders

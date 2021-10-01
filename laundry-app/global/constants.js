@@ -1,4 +1,4 @@
-export const API = "http://192.168.0.107:5000"
+export const API = "http://192.168.0.109:5000"
 
 export const categoryData = [
   {
@@ -149,4 +149,25 @@ export const botData = [
     question: "help",
     answer: "Ok i will"
   }
+  ,
+  {
+    question: "how can i place order",
+    answer: "visit vendor and place order"
+  }
+  ,
+  {
+    question: "how can i make payment",
+    answer: "you can pay through card"
+  }
+  ,
+  {
+    question: "how can i contact customer support",
+    answer: "email us at ......@gmail.com"
+  }
+  ,
+  {
+    question: "how can i rate app",
+    answer: "Go to the about section and rate us"
+  }
+
 ]

@@ -17,6 +17,7 @@ import { SearchBar } from "react-native-elements";
 import { Rating, AirbnbRating, Avatar } from "react-native-elements";
 import { colors } from "../../global/colors";
 import { images } from "../../global/images.js";
+import AnimatedLoader from "react-native-animated-loader";
 
 const windowWidth = Dimensions.get("window").width;
 // const windowHeight = Dimensions.get("window").height;
@@ -25,27 +26,47 @@ function MainScreen({ navigation }) {
   const [shops, setShops] = useState([]);
   const [search, setSearch] = useState("");
   const [searchShops, setSearchShops] = useState([{}]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [indexCheck, setIndexCheck] = useState("0");
   const [shopIndexCheck, setShopIndexCheck] = useState("0");
+  const [pics, setPics] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
+    setImages();
+    getShops();
+  }, []);
+  const setImages = async () => {
+    for (let i = 0; i < images.length; i++) {
+      const pic = await images[Math.floor(Math.random() * images.length)];
+      pics.push(pic);
+    }
+    setLoading(false);
+  };
+  const getShops = () => {
     axios
       .get(`${API}/shop/`)
-      .then((res) => setShops(res.data), setLoading(false))
+      .then((res) => setShops(res.data))
       .catch((err) => console.log(err));
-  }, []);
-
-  const goSearch = () => {
-    setSearchShops([]);
-    axios
-      .get(`${API}/shop/find/${search}`)
-      .then((res) => setSearchShops(res.data))
-      .catch((err) => console.log(err));
-    navigation.navigate("SearchScreen", { Shops: searchShops, word: search });
   };
-
+  // const goSearch = () => {
+  //   axios
+  //     .get(`${API}/shop/find/${search}`)
+  //     .then((res) => setSearchShops(res.data))
+  //     .catch((err) => console.log(err));
+  //   navigation.navigate("SearchScreen", { Shops: searchShops, word: search });
+  //   setSearchShops([]);
+  //   setSearch("");
+  // };
+  const goSearch = async () => {
+    shops.map((shop) => {
+      if (shop.name === search) {
+        searchShops.push(shop);
+      }
+    });
+    navigation.navigate("SearchScreen", { Shops: searchShops, word: search });
+    setSearchShops([]);
+    setSearch("");
+  };
   return loading === false ? (
     <View style={styles.conatiner}>
       <ScrollView showsVerticalScrollIndicator={true} stickyHeaderIndices={[0]}>
@@ -93,16 +114,20 @@ function MainScreen({ navigation }) {
                     setIndexCheck(item._id);
                   }}
                 >
-                  {console.log(item.name)}
                   <View style={styles.smallCard}>
-                    <View>
+                    <View
+                      style={{ justifyContent: "center", alignItems: "center" }}
+                    >
                       <Image
                         source={item.image}
-                        style={{ width: 60, height: 60 }}
+                        style={{
+                          width: 60,
+                          height: 60,
+                        }}
                       />
                     </View>
                     <View>
-                      <Text style={{ color: "white" }}>{item.title}</Text>
+                      <Text style={{ color: "white" }}>{item.name}</Text>
                     </View>
                   </View>
                 </Pressable>
@@ -117,7 +142,7 @@ function MainScreen({ navigation }) {
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={shops}
+            data={shops.filter((value) => value.average > 2)}
             keyExtractor={(_, index) => {
               index.toString();
             }}
@@ -137,13 +162,14 @@ function MainScreen({ navigation }) {
                     }}
                   >
                     <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
+                      style={{
+                        flexDirection: "column",
+                        justifyContent: "space-around",
+                      }}
                     >
                       <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
                         <Image
-                          source={images[
-                            Math.floor(Math.random() * images.length)
-                          ].toString()}
+                          source={pics !== undefined ? pics[index] : null}
                           style={{
                             width: "100%",
                             height: undefined,
@@ -151,17 +177,22 @@ function MainScreen({ navigation }) {
                           }}
                         />
                       </View>
-                      <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
-                        <Text>{item.title}</Text>
+                      <View
+                        style={{
+                          width: "90%",
+                          alignSelf: "center",
+                          borderRadius: 0,
+                          padding: 5,
+                          backgroundColor: colors.pinkColor,
+                        }}
+                      >
+                        <Text style={{ color: "white" }}>
+                          Name: {item.name}
+                        </Text>
+                        <Text style={{ color: "white" }}>
+                          Rating: {item.average}
+                        </Text>
                       </View>
-                    </View>
-                    <View>
-                      <AirbnbRating
-                        count={5}
-                        reviews={["Terrible", "Bad", "OK", "Good", "Amazing"]}
-                        defaultRating={5}
-                        size={20}
-                      />
                     </View>
                   </Pressable>
                 </View>
@@ -196,13 +227,16 @@ function MainScreen({ navigation }) {
                     }}
                   >
                     <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        justifyContent: "space-around",
+                      }}
                     >
                       <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
                         <Image
-                          source={images[
-                            Math.floor(Math.random() * images.length)
-                          ].toString()}
+                          source={pics !== undefined ? pics[index] : null}
                           style={{
                             width: "100%",
                             height: undefined,
@@ -210,17 +244,22 @@ function MainScreen({ navigation }) {
                           }}
                         />
                       </View>
-                      <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
-                        <Text>{item.title}</Text>
+                      <View
+                        style={{
+                          width: "90%",
+                          alignSelf: "center",
+                          borderRadius: 0,
+                          padding: 5,
+                          backgroundColor: colors.pinkColor,
+                        }}
+                      >
+                        <Text style={{ color: "white" }}>
+                          Name: {item.name}
+                        </Text>
+                        <Text style={{ color: "white" }}>
+                          Rating: {item.average}
+                        </Text>
                       </View>
-                    </View>
-                    <View>
-                      <AirbnbRating
-                        count={5}
-                        reviews={["Terrible", "Bad", "OK", "Good", "Amazing"]}
-                        defaultRating={4}
-                        size={20}
-                      />
                     </View>
                   </Pressable>
                 </View>
@@ -251,21 +290,25 @@ function MainScreen({ navigation }) {
                     }}
                   >
                     <View style={{ marginTop: 25 }}>
-                      <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
-                        <Image
-                          source={images[
-                            Math.floor(Math.random() * images.length)
-                          ].toString()}
-                          style={{
-                            width: "100%",
-                            height: undefined,
-                            aspectRatio: 1,
-                            borderRadius: 10,
-                          }}
-                        />
-                      </View>
-                      <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
-                        <Text>{item.title}</Text>
+                      <View
+                        style={{
+                          justifyContent: "space-around",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <View
+                          style={{ marginHorizontal: 10, marginVertical: 5 }}
+                        >
+                          <Image
+                            source={pics !== undefined ? pics[index] : null}
+                            style={{
+                              width: "100%",
+                              height: undefined,
+                              aspectRatio: 1,
+                              borderRadius: 10,
+                            }}
+                          />
+                        </View>
                       </View>
                     </View>
                   </Pressable>
@@ -277,7 +320,15 @@ function MainScreen({ navigation }) {
       </ScrollView>
     </View>
   ) : (
-    <Text>Loading</Text>
+    <AnimatedLoader
+      visible={loading}
+      overlayColor="rgba(255,255,255,0.75)"
+      source={require("../../loader.json")}
+      animationStyle={styles.lottie}
+      speed={1}
+    >
+      <Text>Doing something...</Text>
+    </AnimatedLoader>
   );
 }
 const styles = StyleSheet.create({
@@ -323,6 +374,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontSize: 20,
     color: "white",
+  },
+  lottie: {
+    width: 100,
+    height: 100,
   },
 });
 export default MainScreen;

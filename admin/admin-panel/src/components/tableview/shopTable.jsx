@@ -4,12 +4,13 @@ import "../navbar.css";
 
 function ShopTable({ shop, key }) {
   const deleteShop = (id) => {
+    console.log(id);
     axios.delete(`/shop/delete/${id}`).then((res) => console.log(res));
   };
 
   return (
     <div>
-      <div className="row">
+      <div className="row" style={{ marginTop: 15 }}>
         <div className="col-3">{shop._id}</div>
         <div className="col-3">{shop.name}</div>
         <div className="col-3">

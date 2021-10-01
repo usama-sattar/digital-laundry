@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import React, { useEffect } from "react";
-import {Text, View} from 'react-native'
+import {Text, View,LogBox} from 'react-native'
 import { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -28,10 +28,11 @@ import AboutScreen from "./screens/customer/AboutScreen";
 import CreateShop from './screens/vendor/CreateShop'
 import {colors} from './global/colors'
 import NotificationApp from "./components/Notification";
+import PendingOrders from "./screens/vendor/PendingOrders";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
+LogBox.ignoreAllLogs()
 export default function App() {
   const VendorTabNavigator = () => {
     return (
@@ -115,7 +116,7 @@ export default function App() {
     <ProductProvider>
       <NotificationApp />
       <CartContextProvider>
-        <Stack.Navigator initialRouteName="VendorScreen">
+        <Stack.Navigator initialRouteName="MainScreenContainer">
           <Stack.Screen
             name="Splash"
             component={Splash}
@@ -255,6 +256,17 @@ export default function App() {
               fontWeight: 'bold',
             } }}
           />
+           <Stack.Screen
+            name="PendingScreen"
+            component={PendingOrders}
+            options={{title:'Pending Orders',headerStyle: {
+              backgroundColor: colors.darkBlue,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            } }}
+            />
         </Stack.Navigator>
       </CartContextProvider>
     </ProductProvider>

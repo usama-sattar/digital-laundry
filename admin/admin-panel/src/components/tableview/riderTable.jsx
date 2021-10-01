@@ -8,7 +8,7 @@ function RiderTabelView({ rider, key }) {
   };
   return (
     <div>
-      <div className="row">
+      <div className="row" style={{ marginTop: 15 }}>
         <div className="col-2">{rider._id}</div>
         <div className="col-2">{rider.name}</div>
         <div className="col-2">{rider.phone}</div>

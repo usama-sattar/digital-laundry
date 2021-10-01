@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+import { View, Text, Image, StyleSheet, FlatList, Alert } from "react-native";
 import { Avatar, Button, Overlay, AirbnbRating } from "react-native-elements";
 import { colors } from "../../global/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { API } from "../../global/constants";
+
 export default function AboutScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
   const [user, setUser] = useState("");
@@ -12,15 +16,17 @@ export default function AboutScreen({ navigation }) {
   }, []);
   const getData = async () => {
     const customer = await AsyncStorage.getItem("customerId");
-    if (customer) {
-      const customerId = await JSON.parse(customer);
-      setUser(customerId);
+    const c = JSON.parse(customer);
+    if (c) {
+      setUser(c);
     }
   };
   const sendRating = async () => {
     if (rating > 0) {
-      const result = await axios.get(`${API}/customers/rating/${user}`);
-      const data = await result.data;
+      const result = await axios.post(`${API}/customers/rating/${user}`, {
+        rating,
+      });
+      Alert.alert("Rating Done");
     }
   };
   const toggleOverlay = () => {

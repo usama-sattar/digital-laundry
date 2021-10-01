@@ -8,7 +8,7 @@ function TabelView({ customer, key }) {
   };
   return (
     <div>
-      <div className="row">
+      <div className="row" style={{ marginTop: 15 }}>
         <div className="col-md-3">{customer._id}</div>
         <div className="col-md-3">{customer.name}</div>
         <div className="col-md-3">{customer.phone}</div>

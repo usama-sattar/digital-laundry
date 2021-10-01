@@ -65,6 +65,12 @@ function Navbar(props) {
                 </li>
 
                 <li className="nav-text">
+                  <Link to="/ratings">
+                    <i className="fas fa-star"></i> <span>Ratings</span>
+                  </Link>
+                </li>
+
+                <li className="nav-text">
                   <Link to="/complaints">
                     <i className="fas fa-comments"></i> <span> Complaints</span>
                   </Link>

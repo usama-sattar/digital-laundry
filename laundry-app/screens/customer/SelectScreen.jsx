@@ -8,14 +8,32 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
 } from "react-native";
 import { Badge } from "react-native-elements";
 import { cartContext } from "../../context/cart";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../global/colors";
-
+import { Avatar, Button, Overlay, AirbnbRating } from "react-native-elements";
+import axios from "axios";
+import { API } from "../../global/constants";
 export default function SelectScreen({ route, navigation }) {
   const { cart, addToCart } = useContext(cartContext);
+  const [rating, setRating] = useState(0);
+  console.log(route.params._id);
+
+  const sendRating = async () => {
+    if (rating > 0) {
+      const result = await axios.post(
+        `${API}/shop/rating/${route.params.data._id}`,
+        { rating }
+      );
+      const data = await result.data;
+      if (data) {
+        Alert.alert("Rating done successfully");
+      }
+    }
+  };
   const { data } = route.params;
   return (
     <View style={styles.container}>
@@ -55,11 +73,27 @@ export default function SelectScreen({ route, navigation }) {
           })}
         </View>
       </View>
+      <View>
+        <AirbnbRating size={20} onFinishRating={(rate) => setRating(rate)} />
+        <Button
+          title="Submit"
+          onPress={sendRating}
+          buttonStyle={{
+            backgroundColor: colors.pinkColor,
+            width: 100,
+            alignSelf: "center",
+            marginVertical: 10,
+          }}
+        />
+      </View>
       <View style={{ marginHorizontal: 20 }}>
         <Pressable
           style={styles.cartButton}
           onPress={() =>
-            navigation.navigate("CartScreen", { vendor: data.title })
+            navigation.navigate("CartScreen", {
+              name: data.name,
+              id: data.vendor,
+            })
           }
         >
           <Text style={{ marginHorizontal: 10, fontSize: 20, color: "white" }}>

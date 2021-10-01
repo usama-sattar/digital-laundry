@@ -3,9 +3,9 @@ const router = express.Router();
 const Shop = require("../models/shopModel");
 
 router.get("/", (req, res) => {
-  Shop.find()
-    .then((shops) => res.send(shops))
-    .catch((err) => console.log(err));
+      Shop.aggregate(([ {$addFields : {average : {$avg : "$rating"}}} ]))
+      .then(result=>res.send(result))
+      .catch(err=>console.log(err))
 });
 router.post("/create", (req, res) => {
   Shop.find({ name: req.body.name }).then((result) => {
@@ -30,6 +30,7 @@ router.post("/create", (req, res) => {
   });
 });
 router.delete("/delete/:id", (req, res) => {
+  console.log("del called ")
   Shop.findByIdAndDelete(req.params.id)
     .then(() => {
       res.send("shop deleted");
@@ -42,23 +43,40 @@ router.delete("/delete/:id", (req, res) => {
 //     name: { $regex: req.params.name, $options: "i" },
 //   });
 //   try {
-//     res.send(data);
+//     if(data.length > 0) {res.send(true);}
+//     else {res.send(false)}
 //   } catch (err) {
 //     res.status(400).send(err);
 //   }
 // });
-router.get("/find/:name", async(req, res) => {
-  const data = await Shop.find({
-    name: req.params.name ,
-  });
-  console.log(data)
-  try {
-    if(data.length > 0) {res.send(true);}
-    else {res.send(false)}
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
-
+// router.get("/find/:name", async(req, res) => {
+//   const data = await Shop.find({
+//     name: req.params.name ,
+//   });
+//   console.log(data)
+//   try {
+//     if(data.length > 0) {res.send(true);}
+//     else {res.send(false)}
+//   } catch (err) {
+//     res.status(400).send(err);
+//   }
+// });
+router.post("/rating/:id", async (req,res)=>{
+  Shop.findByIdAndUpdate({_id: req.params.id}, 
+  {$push: {'rating': req.body.rating}}, 
+  {new: true}, (err, result) => {
+      if(err){
+          res.status(400).send(err)
+      }
+      else{
+          res.send(result)
+      }
+ })
+})
+router.get("/avg/rating", (req,res)=>{
+  Shop.aggregate(([ {$addFields : {average : {$avg : "$rating"}}} ]))
+  .then(result=>res.send(result))
+  .catch(err=>console.log(err))
+})
 
 module.exports = router;

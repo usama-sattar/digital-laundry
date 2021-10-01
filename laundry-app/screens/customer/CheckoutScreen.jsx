@@ -17,7 +17,7 @@ import { colors } from "../../global/colors";
 export default function Checkout({ navigation, route }) {
   const { total } = useContext(cartContext);
   const [visibleSwiper, setVisibleSwiper] = useState(true);
-  const { vendor } = route.params;
+  const { name, id } = route.params;
 
   let swiper = null;
   if (visibleSwiper) {
@@ -82,7 +82,7 @@ export default function Checkout({ navigation, route }) {
             <Pressable
               style={styles.paymentCard}
               onPress={() =>
-                navigation.navigate("CardScreen", { vendor: vendor })
+                navigation.navigate("CardScreen", { name: name, id: id })
               }
             >
               <Text style={styles.textStyle}>Credit Card</Text>

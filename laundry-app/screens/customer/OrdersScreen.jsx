@@ -11,22 +11,24 @@ import {
 } from "react-native";
 import axios from "axios";
 import { API } from "../../global/constants";
+import { cartContext } from "../../context/cart";
 import { ListItem } from "react-native-elements";
 
 export default function OrdersScreen() {
   const [orders, setOrders] = useState([]);
+  const { order } = useContext(cartContext);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [order]);
   const getData = async () => {
     const customer = await AsyncStorage.getItem("customerId");
     if (customer) {
-      const customerId = await JSON.parse(customer);
-      getOrders(customerId);
+      const c = JSON.parse(customer);
+      getOrders(c);
     }
   };
-  getOrders = async (customerId) => {
+  const getOrders = async (customerId) => {
     const result = await axios.get(`${API}/customers/orders/${customerId}`);
     const data = await result.data;
     setOrders(data);

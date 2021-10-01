@@ -10,13 +10,23 @@ router.get('/total', (req,res)=>{
 })
 router.delete('/delete/:id', (req,res)=>{
     Vendor.findByIdAndDelete(req.params.id)
-    .then(()=>{res.send("user deleted")})
+    .then(()=>{
+        Shop.find({vendor:req.params.id})
+        .then(() => {res.send("successfully deleted")})
+        .catch((err) => console.log(err));
+    })
     .catch((err)=> console.log(err))
     
 })
 router.get('/pending/:id', (req,res)=>{
+    Order.find({vendorId: req.params.id, status: 'pending'})
+    .then((data)=>{res.send(data)})
+    .catch((err)=> console.log(err))
+    
+})
+router.post('/pending/:id', (req,res)=>{
     Order.findByIdAndUpdate(req.params.id,{
-        status: "ready to ship"
+        status: req.body.status
     })
     .then(()=>{res.send("status changed")})
     .catch((err)=> console.log(err))

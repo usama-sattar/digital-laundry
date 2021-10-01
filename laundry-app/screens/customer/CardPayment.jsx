@@ -20,26 +20,26 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colors } from "../../global/colors";
 import { Button } from "react-native-elements";
 
-function CardPayment({ vendor }) {
+function CardPayment({ name, id }) {
   return (
     <StripeProvider publishableKey="pk_test_51J56lVJIiMKnmPN2rwY9qFt8R5FTtdITJoIRU3wEASsmx31gCGK7yBuGThKyPJuZH3e2ASFwFgxWewU28AUDqpZa00BjkrySxV">
-      <StripeHandler vendor={vendor} />
+      <StripeHandler vendorName={name} vendorId={id} />
     </StripeProvider>
   );
 }
-function StripeHandler({ vendor }) {
+function StripeHandler({ vendorName, vendorId }) {
   const [user, setUser] = useState("");
   const [cardDetails, setCardDetails] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [contact, setContact] = useState("");
-  const { cart, total } = useContext(cartContext);
+  const { cart, total, setCart, setOrderState } = useContext(cartContext);
   const { confirmPayment, loading } = useConfirmPayment();
 
   useEffect(() => {
     getData();
-  });
+  }, []);
 
   const getData = async () => {
     const customer = await AsyncStorage.getItem("customerId");
@@ -61,7 +61,8 @@ function StripeHandler({ vendor }) {
       contact: contact,
       price: total,
       user: user,
-      vendor: vendor,
+      vendor: vendorName,
+      vendorId: vendorId,
     };
     const response = await axios.post(
       `${API}/customers/create-payment`,
@@ -74,18 +75,22 @@ function StripeHandler({ vendor }) {
         billingDetails: { billing },
       });
       const response = await axios.post(`${API}/customers/order`, {
-        //customerId: user,
+        customerId: user,
         name,
         email,
         address,
         contact,
         cart,
         total,
-        vendor,
+        status: "pending",
+        vendor: vendorName,
+        vendorId: vendorId,
       });
       const result = await response.data;
       try {
         if (result) {
+          setCart([]);
+          setOrderState();
           Alert.alert("Successfully placed order");
         }
       } catch (err) {

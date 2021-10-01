@@ -15,7 +15,7 @@ import { cartContext } from "../../context/cart";
 import { colors } from "../../global/colors";
 function Cart({ navigation, route }) {
   const { cart, increment, decrement, total, remove } = useContext(cartContext);
-  const { vendor } = route.params;
+  const { name, id } = route.params;
 
   return (
     <View style={styles.container}>
@@ -92,7 +92,7 @@ function Cart({ navigation, route }) {
         <Pressable
           style={styles.checkoutButton}
           onPress={() =>
-            navigation.navigate("CheckoutScreen", { vendor: vendor })
+            navigation.navigate("CheckoutScreen", { name: name, id: id })
           }
         >
           <Text style={{ marginHorizontal: 10, fontSize: 20, color: "white" }}>

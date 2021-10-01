@@ -7,6 +7,8 @@ class ProductProvider extends Component{
         customers:[{}],
         vendors:[{}],
         riders:[{}],
+        orders: [{}],
+        ratings: [{}],
         sideBar: true,
         shops:[{}]
 
@@ -16,6 +18,8 @@ class ProductProvider extends Component{
         this.getVendors()
         this.getRiders()
         this.getShops()
+        this.getOrders()
+        this.getRatings()
     }
     getVendors=()=>{
         axios.get("/vendors/total")
@@ -32,6 +36,14 @@ class ProductProvider extends Component{
     getShops=()=>{
         axios.get("/shop/")
         .then((res) => this.setState({shops:res.data}))
+    }
+    getOrders=()=>{
+        axios.get("/customers/allOrders")
+        .then((res) => this.setState({orders:res.data}))
+    }
+    getRatings=()=>{
+        axios.get("/app/allRatings")
+        .then((res) => this.setState({ratings:res.data}))
     }
     delCustomer=(e)=>{
        console.log(e)
@@ -53,8 +65,9 @@ class ProductProvider extends Component{
             customers: this.state.customers,
             vendors: this.state.vendors,
             riders: this.state.riders,
-            shops: this.state.shops
-
+            shops: this.state.shops,
+            orders:this.state.orders,
+            ratings: this.state.ratings 
             
         }}>
             

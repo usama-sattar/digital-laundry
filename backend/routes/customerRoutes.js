@@ -78,9 +78,9 @@ router.get("/rating/:id",async (req, res) => {
 });
 
 router.post("/order",async (req, res) => {
-  const { customerId,name,email,address,contact,cart,total } = req.body;
+  const { customerId,name,email,address,contact,cart,total, status,vendor,vendorId} = req.body;
   const orderRecord = await new Order({
-    customerId,name,email,address,contact,cart,total
+    customerId,name,email,address,contact,cart,total,status,vendor,vendorId
   })
   const result = orderRecord.save()
   try{
@@ -90,7 +90,11 @@ router.post("/order",async (req, res) => {
      res.send(`error: ${err}`)
   }
 });
-
+router.get("/allOrders", (req, res) => {
+  Order.find()
+    .then((order) => res.json(order))
+    .catch((err) => console.log(err));
+});
 router.get("/orders/:id",async (req, res) => {
   const ordersRecord = await Order.find({customerId: req.params.id})
   try{

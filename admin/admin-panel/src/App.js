@@ -5,12 +5,11 @@ import Customer from './components/customer'
 import Vendor from './components/vendors'
 import Rider from './components/rider'
 import Shop from './components/shop'
-import Order from './components/order'
 import Complaint from './components/complaints'
-
+import Order from './components/order'
+import Rating from './components/rating'
 
 import { Switch, Route } from "react-router-dom";
-
   
 function App() {
   return (
@@ -23,6 +22,7 @@ function App() {
         <Route  path='/riders' component={Rider}/>
         <Route  path='/shops' component={Shop}/>
         <Route  path='/orders' component={Order}/>
+        <Route  path='/ratings' component={Rating}/>
         <Route  path='/complaints' component={Complaint}/>
       </Switch>
     </div>

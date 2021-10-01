@@ -5,7 +5,11 @@ export const cartContext = createContext()
 function CartContextProvider({children}){
     const [cart, setCart] = useState([])
     const [total, setTotal] = useState(0)
-    
+    const [order, setOrder] = useState(true)
+
+    const setOrderState=()=>{
+        setOrder(!order)
+    }
     const addToCart = async(name , price) => {
         const cartData = await{
             name,
@@ -44,7 +48,7 @@ function CartContextProvider({children}){
         await getTotal()
     }
     return(
-        <cartContext.Provider value={{cart,setCart,addToCart,increment,decrement,total,remove}}>
+        <cartContext.Provider value={{cart,setCart,addToCart,increment,decrement,total,remove, setOrderState, order}}>
             {children}
         </cartContext.Provider>
     )

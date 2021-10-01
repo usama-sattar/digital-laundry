@@ -7,9 +7,11 @@ const OrderSchema = new Schema({
     email: {type: String},
     address: {type: String},
     contact: {type: String},
-    vendor: {type: mongoose.Schema.Types.ObjectId , ref: 'Vendor'},
+    vendorId: {type: mongoose.Schema.Types.ObjectId , ref: 'Vendor'},
+    vendor: {type:String},
     cart: [{}],
-    total: {type:String}
+    total: {type:String},
+    status: {type:String}
 })
 
 const Order=mongoose.model('Order', OrderSchema)

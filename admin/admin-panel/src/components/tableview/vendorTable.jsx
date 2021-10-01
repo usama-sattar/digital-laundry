@@ -8,7 +8,7 @@ function VendorTabelView({ vendor, key }) {
   };
   return (
     <div>
-      <div className="row">
+      <div className="row" style={{ marginTop: 15 }}>
         <div className="col-3">{vendor._id}</div>
         <div className="col-2">{vendor.name}</div>
         <div className="col-3">{vendor.phone}</div>

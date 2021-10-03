@@ -1,12 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { ProductConsumer } from "../context";
 import { colors } from "../global/colors";
 import { Picker } from "@react-native-picker/picker";
-
+import { cartContext } from "../context/cart";
 export default function ShopView({ detail }, props) {
+  const { cart } = useContext(cartContext);
   return (
     <ProductConsumer>
       {(value) => {

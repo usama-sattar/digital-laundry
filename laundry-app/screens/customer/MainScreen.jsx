@@ -63,7 +63,10 @@ function MainScreen({ navigation }) {
         searchShops.push(shop);
       }
     });
-    navigation.navigate("SearchScreen", { Shops: searchShops, word: search });
+    await navigation.navigate("SearchScreen", {
+      Shops: searchShops,
+      word: search,
+    });
     setSearchShops([]);
     setSearch("");
   };

@@ -8,8 +8,6 @@ router.get("/", (req, res) => {
       .catch(err=>console.log(err))
 });
 router.post("/create", (req, res) => {
-  Shop.find({ name: req.body.name }).then((result) => {
-    if (!result) {
       const shop = new Shop({
         name: req.body.name,
         address: req.body.address,
@@ -24,11 +22,8 @@ router.post("/create", (req, res) => {
           res.send(data);
         })
         .catch((err) => console.log(err));
-    } else {
-      res.send({ error: "some error occurred" });
-    }
-  });
-});
+    } 
+);
 router.delete("/delete/:id", (req, res) => {
   console.log("del called ")
   Shop.findByIdAndDelete(req.params.id)

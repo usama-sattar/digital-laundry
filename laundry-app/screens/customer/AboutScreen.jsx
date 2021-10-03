@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, FlatList, Alert } from "react-native";
 import { Avatar, Button, Overlay, AirbnbRating } from "react-native-elements";
 import { colors } from "../../global/colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { API } from "../../global/constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AboutScreen({ navigation }) {
   const [visible, setVisible] = useState(false);

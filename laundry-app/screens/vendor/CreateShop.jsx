@@ -38,7 +38,9 @@ function CreateShop({ route }) {
                   ? value.services.map((item, index) => {
                       return (
                         <View style={{ fontSize: 18, color: "white" }}>
-                          <Text key={index}>{item.title}</Text>
+                          <Text key={index} style={{ color: "white" }}>
+                            {item.title}
+                          </Text>
                         </View>
                       );
                     })

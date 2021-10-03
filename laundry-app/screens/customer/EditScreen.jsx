@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 import { ProductConsumer } from "../../context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -43,6 +44,7 @@ function EditCustomer({ navigation }) {
         })
         .then((res) => {
           console.log("success update");
+          Alert.alert("successfully updated");
         })
         .catch((err) => console.log(err));
     }

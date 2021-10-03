@@ -9,7 +9,7 @@ import { API } from "../../global/constants";
 import { ListItem, Overlay } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function PendingOrders({ navigation }) {
+export default function FullfillOrders({ navigation }) {
   const [user, setUser] = useState("");
   const [orders, setOrders] = useState([]);
 
@@ -26,7 +26,7 @@ export default function PendingOrders({ navigation }) {
     }
   };
   const getOrders = async (vendorId) => {
-    const result = await axios.get(`${API}/vendors/pending/${vendorId}`);
+    const result = await axios.get(`${API}/vendors/fullfilled/${vendorId}`);
     const data = await result.data;
     setOrders(data);
   };
@@ -50,19 +50,6 @@ export default function PendingOrders({ navigation }) {
                 Price: {item.total}
               </ListItem.Subtitle>
             </ListItem.Content>
-            <Button
-              title="View"
-              buttonStyle={{ width: 60, height: 30 }}
-              titleStyle={{
-                color: "white",
-                fontSize: 12,
-              }}
-              onPress={() => {
-                navigation.navigate("PendingScreenContainer", {
-                  data: item,
-                });
-              }}
-            />
           </ListItem>
         );
       })}

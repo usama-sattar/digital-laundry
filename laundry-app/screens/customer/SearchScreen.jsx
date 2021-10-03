@@ -6,6 +6,7 @@ import {
   StyleSheet,
   FlatList,
   Pressable,
+  ScrollView,
 } from "react-native";
 import { Rating, AirbnbRating, Avatar } from "react-native-elements";
 import { images } from "../../global/images.js";
@@ -24,79 +25,78 @@ function Searched({ route, navigation }, props) {
           <Text style={{ color: "white", textAlign: "center", fontSize: 25 }}>
             Searched: {route.params.word}
           </Text>
-          <View style={{ marginTop: 5 }}>
-            <FlatList
-              horizontal={false}
-              data={Shops}
-              keyExtractor={(_, index) => {
-                index.toString();
-              }}
-              extraData={shopIndexCheck}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item, index }) => {
-                return (
-                  <View
-                    key={index}
+          <FlatList
+            horizontal={false}
+            data={Shops}
+            keyExtractor={(_, index) => {
+              index.toString();
+            }}
+            extraData={shopIndexCheck}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item, index }) => {
+              return (
+                <ScrollView
+                  contentContainerStyle={{ marginTop: 20 }}
+                  key={index}
+                  onPress={() => setShopIndexCheck(item._id)}
+                >
+                  <Pressable
                     style={styles.verticallargeCard}
-                    onPress={() => setShopIndexCheck(item._id)}
+                    onPress={() => {
+                      navigation.navigate("SelectedVendorScreen", {
+                        data: item,
+                      });
+                    }}
                   >
-                    <Pressable
-                      onPress={() => {
-                        navigation.navigate("SelectedVendorScreen", {
-                          data: item,
-                        });
+                    <View
+                      style={{
+                        marginTop: 25,
+                        justifyContent: "space-around",
+                        flexDirection: "column",
                       }}
                     >
-                      <View
-                        style={{
-                          marginTop: 25,
-                          justifyContent: "space-around",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <View>
-                          <View
-                            style={{ marginHorizontal: 10, marginVertical: 5 }}
-                          >
-                            <Image
-                              source={
-                                images[
-                                  Math.floor(Math.random() * images.length)
-                                ]
-                              }
-                              style={{
-                                width: "100%",
-                                height: undefined,
-                                aspectRatio: 1,
-                                borderRadius: 10,
-                              }}
-                            />
-                          </View>
-                          <View
+                      <View>
+                        <View
+                          style={{ marginHorizontal: 10, marginVertical: 5 }}
+                        >
+                          <Image
+                            source={
+                              images[Math.floor(Math.random() * images.length)]
+                            }
                             style={{
-                              width: "90%",
-                              alignSelf: "center",
-                              borderRadius: 0,
-                              padding: 10,
-                              backgroundColor: colors.pinkColor,
-                              justifyContent: "center",
+                              width: "100%",
+                              height: undefined,
+                              aspectRatio: 1,
+                              borderRadius: 10,
                             }}
-                          >
-                            <Text style={{ color: "white" }}>
-                              Name: {item.name}
-                            </Text>
-                          </View>
+                          />
+                        </View>
+                        <View
+                          style={{
+                            width: "90%",
+                            alignSelf: "center",
+                            borderRadius: 0,
+                            padding: 10,
+                            backgroundColor: colors.pinkColor,
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Text style={{ color: "white" }}>
+                            Name: {item.name}
+                          </Text>
                         </View>
                       </View>
-                    </Pressable>
-                  </View>
-                );
-              }}
-            />
-          </View>
+                    </View>
+                  </Pressable>
+                </ScrollView>
+              );
+            }}
+          />
         </View>
       ) : (
-        <Text>Nothing to Show</Text>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Text style={{ fontSize: 20, color: "white" }}>Nothing to Show</Text>
+        </View>
       )}
     </View>
   ) : null;

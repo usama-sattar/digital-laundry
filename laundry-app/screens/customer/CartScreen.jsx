@@ -88,18 +88,21 @@ function Cart({ navigation, route }) {
       </View>
 
       <View style={{ marginHorizontal: 20 }}>
-        {/* {cart.length > 0 ? ( */}
         <Pressable
-          style={styles.checkoutButton}
+          style={
+            total > 0
+              ? styles.cartButton
+              : [styles.cartButton, { backgroundColor: "gray" }]
+          }
           onPress={() =>
             navigation.navigate("CheckoutScreen", { name: name, id: id })
           }
+          disabled={total > 0 ? false : true}
         >
           <Text style={{ marginHorizontal: 10, fontSize: 20, color: "white" }}>
             Proceed to Checkout
           </Text>
         </Pressable>
-        {/* ) : null} */}
       </View>
     </View>
   );
@@ -120,6 +123,15 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 40,
   },
   checkoutButton: {
+    backgroundColor: colors.pinkColor,
+    width: "100%",
+    height: 50,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  cartButton: {
     backgroundColor: colors.pinkColor,
     width: "100%",
     height: 50,

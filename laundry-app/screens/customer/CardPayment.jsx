@@ -53,6 +53,22 @@ function StripeHandler({ vendorName, vendorId }) {
       Alert.alert("Error", "Enter Detail Please");
       return;
     }
+    if (!name.trim()) {
+      Alert.alert("Please Enter Name");
+      return;
+    }
+    if (!contact.trim()) {
+      Alert.alert("Please Enter Address");
+      return;
+    }
+    if (!address.trim()) {
+      Alert.alert("Please Enter Valid Address");
+      return;
+    }
+    if (contact.length < 11) {
+      Alert.alert("contact number must contain 11 digits");
+      return;
+    }
     const billing = {
       name: name,
       email: email,

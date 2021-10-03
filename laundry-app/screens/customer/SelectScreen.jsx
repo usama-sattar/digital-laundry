@@ -35,42 +35,47 @@ export default function SelectScreen({ route, navigation }) {
     }
   };
   const { data } = route.params;
+  console.log(data);
   return (
     <View style={styles.container}>
       <View style={{ flex: 0.95 }}>
         <View style={styles.header}>
-          <Text style={{ color: "white", fontSize: 25 }}>{data.title}</Text>
+          <Text style={{ color: "white", fontSize: 25 }}>{data.name}</Text>
         </View>
         {console.log(data)}
         <View>
-          {data.services.map((item, index) => {
-            return (
-              <View style={{ marginHorizontal: 20, marginTop: 10 }} key={index}>
-                <View style={styles.itemContainer}>
-                  <View style={{ width: "40%" }}>
-                    <Text style={{ color: "white", fontSize: 15 }}>
-                      {item.name}
-                    </Text>
-                  </View>
-                  <View style={{ width: "20%" }}>
-                    <Text style={{ color: "white", fontSize: 15 }}>
-                      Rs. {item.price}{" "}
-                    </Text>
-                  </View>
-                  <View style={{ width: "40%" }}>
-                    <TouchableOpacity
-                      style={styles.cart}
-                      onPress={() => addToCart(item.name, item.price)}
-                    >
+          {data.services &&
+            data.services.map((item, index) => {
+              return (
+                <View
+                  style={{ marginHorizontal: 20, marginTop: 10 }}
+                  key={index}
+                >
+                  <View style={styles.itemContainer}>
+                    <View style={{ width: "40%" }}>
                       <Text style={{ color: "white", fontSize: 15 }}>
-                        Push to Cart
+                        {item.title}
                       </Text>
-                    </TouchableOpacity>
+                    </View>
+                    <View style={{ width: "20%" }}>
+                      <Text style={{ color: "white", fontSize: 15 }}>
+                        Rs. {item.price}{" "}
+                      </Text>
+                    </View>
+                    <View style={{ width: "40%" }}>
+                      <TouchableOpacity
+                        style={styles.cart}
+                        onPress={() => addToCart(item.name, item.price)}
+                      >
+                        <Text style={{ color: "white", fontSize: 15 }}>
+                          Push to Cart
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
-              </View>
-            );
-          })}
+              );
+            })}
         </View>
       </View>
       <View>
@@ -88,13 +93,18 @@ export default function SelectScreen({ route, navigation }) {
       </View>
       <View style={{ marginHorizontal: 20 }}>
         <Pressable
-          style={styles.cartButton}
+          style={
+            cart.length > 0
+              ? styles.cartButton
+              : [styles.cartButton, { backgroundColor: "gray" }]
+          }
           onPress={() =>
             navigation.navigate("CartScreen", {
               name: data.name,
               id: data.vendor,
             })
           }
+          disabled={cart.length > 0 ? false : true}
         >
           <Text style={{ marginHorizontal: 10, fontSize: 20, color: "white" }}>
             Cart

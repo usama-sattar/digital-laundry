@@ -19,18 +19,26 @@ router.delete('/delete/:id', (req,res)=>{
     
 })
 router.get('/pending/:id', (req,res)=>{
+    console.log("pend")
     Order.find({vendorId: req.params.id, status: 'pending'})
     .then((data)=>{res.send(data)})
     .catch((err)=> console.log(err))
-    
 })
+
 router.post('/pending/:id', (req,res)=>{
-    Order.findByIdAndUpdate(req.params.id,{
+    Order.findOneAndUpdate({vendorId: req.params.id},{
         status: req.body.status
     })
     .then(()=>{res.send("status changed")})
-    .catch((err)=> console.log(err))
-    
+    .catch((err)=> console.log(err))    
 })
+
+router.get('/fullfilled/:id', (req,res)=>{
+    console.log("fullfill")
+    Order.find({vendorId: req.params.id, status: 'completed'})
+    .then((data)=>{res.send(data)})
+    .catch((err)=> console.log(err))
+})
+
 
 module.exports=router

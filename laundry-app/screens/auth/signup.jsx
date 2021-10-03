@@ -14,6 +14,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API } from "../../global/constants";
 import { colors } from "../../global/colors";
+import { Alert } from "react-native";
 
 function SignUp(props) {
   const [userType, setUserType] = useState("customer");
@@ -26,6 +27,16 @@ function SignUp(props) {
   const [message, setMessage] = useState("");
 
   const sendCode = () => {
+    if (!name.trim()) {
+      Alert.alert("Username cannot be empty");
+      setModalVisible(false);
+      return;
+    }
+    if (cnic.length < 14) {
+      setModalVisible(false);
+      Alert.alert("CNIC must contain 13 digits ");
+      return;
+    }
     setMessage("");
     axios
       .post(`${API}/verify/phone`, {
@@ -102,6 +113,7 @@ function SignUp(props) {
             <TextInput
               style={styles.input}
               placeholder="CNIC"
+              keyboardType="numeric"
               onChangeText={(text) => {
                 setCnic(text);
               }}
@@ -194,7 +206,7 @@ const styles = StyleSheet.create({
     width: "80%",
     borderBottomWidth: 1,
     padding: 5,
-    color: "white",
+    color: "black",
     backgroundColor: "white",
     height: 40,
     borderRadius: 20,
@@ -219,7 +231,7 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     width: "80%",
-    backgroundColor: "white",
+    backgroundColor: colors.darkBlue,
     borderRadius: 20,
     padding: 35,
     alignItems: "center",

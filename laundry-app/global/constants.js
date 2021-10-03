@@ -1,4 +1,4 @@
-export const API = "http://192.168.0.109:5000"
+export const API = "http://192.168.18.58:5000"
 
 export const categoryData = [
   {
@@ -40,17 +40,17 @@ export const shopDetails = [
   },
   {
     title: "Shirt",
-    path: require("../assets/jumper.png"),
+    path: require("../assets/shirt.png"),
     price: 60,
   },
   {
     title: "jacket",
-    path: require("../assets/Jacket.svg"),
+    path: require("../assets/jacket.png"),
     price: 50,
   },
   {
     title: "coat",
-    path: require("../assets/jumper.svg"),
+    path: require("../assets/trench-coat.png"),
     price: 100,
   },
   {
@@ -70,27 +70,27 @@ export const shopDetails = [
   },
   {
     title: "towel",
-    path: require("../assets/jumper.png"),
+    path: require("../assets/towel.png"),
     price: 60,
   },
   {
     title: "Dry cleaning",
-    path: require("../assets/jumper.png"),
+    path: require("../assets/dry-cleaning.png"),
     price: 60,
   },
   {
     title: "Bed sheet",
-    path: require("../assets/jumper.png"),
+    path: require("../assets/bed-sheet.png"),
     price: 60,
   },
   {
     title: "Blanket",
-    path: require("../assets/jumper.png"),
+    path: require("../assets/blanket.png"),
     price: 60,
   },
   {
     title: "Suit 2pc",
-    path: require("../assets/jumper.png"),
+    path: require("../assets/wet-suit.png"),
     price: 60,
   },
   {
@@ -98,13 +98,9 @@ export const shopDetails = [
     path: require("../assets/jumper.png"),
     price: 60,
   },
+
   {
-    title: "jumper",
-    path: require("../assets/jumper.png"),
-    price: 60,
-  },
-  {
-    title: "jumper",
+    title: "Socks",
     path: require("../assets/jumper.png"),
     price: 60,
   },

@@ -29,10 +29,14 @@ import CreateShop from './screens/vendor/CreateShop'
 import {colors} from './global/colors'
 import NotificationApp from "./components/Notification";
 import PendingOrders from "./screens/vendor/PendingOrders";
+import PendingScreenContainer from "./screens/vendor/PendingContainer";
+import FullfillOrders from "./screens/vendor/FulfilledScreen";
+import { StatusBar } from "expo-status-bar";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreAllLogs()
+
 export default function App() {
   const VendorTabNavigator = () => {
     return (
@@ -50,11 +54,22 @@ export default function App() {
                   } 
                   return <Ionicons name={iconName} size={size} color={color} />;
                 },
-                 
-              }),
-              {headerShown: false }
+                headerShown: false
+              })
+              
               }
+              tabBarOptions={{
+                activeTintColor: '#fff',
+                inactiveTintColor: 'lightgray',
+                activeBackgroundColor: 'gray',
+                inactiveBackgroundColor: colors.darkBlue,
+                    style: {
+                          backgroundColor: '#CE4418',
+                          paddingBottom: 3
+                    }
+             }}
             >
+              
             
               <Tab.Screen name="VendorMain" component={VendorMain} />
               <Tab.Screen
@@ -76,7 +91,6 @@ export default function App() {
           return (
            
             <Tab.Navigator
-
               screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
                   let iconName;
@@ -94,14 +108,24 @@ export default function App() {
                   } 
                   return <Ionicons name={iconName} size={size} color={color} />;
                 },
-              }),
-              {headerShown: false }
+                headerShown: false
+              })
             }
+            tabBarOptions={{
+              activeTintColor: '#fff',
+              inactiveTintColor: 'lightgray',
+              activeBackgroundColor: 'gray',
+              inactiveBackgroundColor: colors.darkBlue,
+                  style: {
+                        backgroundColor: '#CE4418',
+                        paddingBottom: 3
+                  }
+           }}
             >
-              <Tab.Screen name="MainScreen" component={MainScreen} options={{title:'Home'}} screenOptions={{ headerShown: false }}/>
-              <Tab.Screen name="EditCustomer" component={EditCustomer} options={{title:'Edit'}} screenOptions={{ headerShown: false }}/>
-              <Tab.Screen name="OrdersScreen" component={OrdersScreen} options={{title:'My Orders'}} screenOptions={{ headerShown: false }}/>
-              <Tab.Screen name="RatingScreen" component={AboutScreen} options={{title:'About'}} screenOptions={{ headerShown: false }}/>
+              <Tab.Screen name="MainScreen" component={MainScreen} options={{title:"home"}} />
+              <Tab.Screen name="EditCustomer" component={EditCustomer} options={{title:'Edit'}} />
+              <Tab.Screen name="OrdersScreen" component={OrdersScreen} options={{title:'My Orders'}} />
+              <Tab.Screen name="RatingScreen" component={AboutScreen} options={{title:'About'}} />
               
             </Tab.Navigator>
           );
@@ -116,7 +140,8 @@ export default function App() {
     <ProductProvider>
       <NotificationApp />
       <CartContextProvider>
-        <Stack.Navigator initialRouteName="MainScreenContainer">
+        <StatusBar backgroundColor={colors.pinkColor}/>
+        <Stack.Navigator initialRouteName="Splash">
           <Stack.Screen
             name="Splash"
             component={Splash}
@@ -260,7 +285,29 @@ export default function App() {
             name="PendingScreen"
             component={PendingOrders}
             options={{title:'Pending Orders',headerStyle: {
-              backgroundColor: colors.darkBlue,
+              backgroundColor: colors.pinkColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            } }}
+            />
+            <Stack.Screen
+            name="PendingScreenContainer"
+            component={PendingScreenContainer}
+            options={{title:'Pending Orders',headerStyle: {
+              backgroundColor: colors.pinkColor,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            } }}
+            />
+            <Stack.Screen
+            name="FullfilledScreen"
+            component={FullfillOrders}
+            options={{title:'Fullfill Orders',headerStyle: {
+              backgroundColor: colors.pinkColor,
             },
             headerTintColor: '#fff',
             headerTitleStyle: {

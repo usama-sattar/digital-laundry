@@ -9,7 +9,7 @@ function Splash({ navigation }) {
     const rider = await AsyncStorage.getItem("riderId");
     setTimeout(() => {
       if (customer) {
-        navigation.navigate("MainScreen");
+        navigation.navigate("MainScreenContainer");
       } else if (vendor) {
         navigation.navigate("VendorScreen");
       } else if (rider) {

@@ -2,6 +2,8 @@ import React from "react";
 import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { ProductConsumer } from "../../context";
 import { colors } from "../../global/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 function VendorMain({ navigation }) {
   return (
     <ProductConsumer>
@@ -42,6 +44,9 @@ function VendorMain({ navigation }) {
                   justifyContent: "center",
                   alignItems: "center",
                   margin: 5,
+                }}
+                onPress={() => {
+                  navigation.navigate("FullfilledScreen");
                 }}
               >
                 <Text style={[styles.textStyle, { color: "white" }]}>

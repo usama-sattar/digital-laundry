@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     width: "80%",
     borderBottomWidth: 1,
     padding: 5,
-    color: "white",
+    color: "black",
     backgroundColor: "white",
     height: 40,
     borderRadius: 20,

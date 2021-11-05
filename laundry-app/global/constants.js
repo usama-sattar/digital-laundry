@@ -1,4 +1,4 @@
-export const API = "http://192.168.18.58:5000"
+export const API = "http://192.168.0.107:5000"
 
 export const categoryData = [
   {

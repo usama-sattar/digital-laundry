@@ -25,7 +25,12 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.fyp.digitallaundry",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "config":{
+        "googleMaps":{
+          "apiKey": "AIzaSyCSCRz0dn9b8tujCwtYNcgS--DSZ-cDBN0"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

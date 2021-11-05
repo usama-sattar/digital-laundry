@@ -9,7 +9,7 @@ import { API } from "../../global/constants";
 import { ListItem, Overlay } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function PendingScreenContainer({ route }) {
+export default function PendingScreenContainer({ route, navigation }) {
   const [user, setUser] = useState("");
 
   const { data } = route.params;
@@ -76,6 +76,15 @@ export default function PendingScreenContainer({ route }) {
           fontSize: 15,
         }}
         onPress={changeStatus}
+      />
+      <Button
+        title="Book Ride"
+        buttonStyle={{ width: 120, height: 40 }}
+        titleStyle={{
+          color: "white",
+          fontSize: 15,
+        }}
+        onPress={() => navigation.navigate("RideBookingScreen")}
       />
     </View>
   );

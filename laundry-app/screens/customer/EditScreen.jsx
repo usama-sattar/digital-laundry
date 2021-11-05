@@ -49,7 +49,6 @@ function EditCustomer({ navigation }) {
         .catch((err) => console.log(err));
     }
   };
-
   return (
     <View style={styles.container}>
       <ProductConsumer>

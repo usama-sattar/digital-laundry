@@ -67,7 +67,7 @@ function SignUp(props) {
           props.navigation.navigate("VendorScreen");
         } else if (userType === "customer") {
           AsyncStorage.setItem("customerId", JSON.stringify(res.data._id));
-          props.navigation.navigate("MainScreen");
+          props.navigation.navigate("MainScreenContainer");
         } else {
           AsyncStorage.setItem("riderId", JSON.stringify(res.data._id));
         }

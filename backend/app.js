@@ -6,7 +6,11 @@ const vendorRoutes = require('./routes/vendorRoutes')
 const riderRoutes = require('./routes/riderRoutes')
 const shopRoutes = require('./routes/shopRoutes')
 const ratingRoutes = require('./routes/ratingRoutes')
+const bookingRoutes = require('./routes/bookingRoutes')
 const app = express()
+const server = require("http").createServer(app)
+const io = require("socket.io")(server)
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -15,22 +19,23 @@ mongoose.connect(uri, {
     useNewUrlParser:true,
     useCreateIndex: true,
     useUnifiedTopology: true,
+    useFindAndModify: false
 })
 const connection = mongoose.connection
 connection.once("open", async ()=>{
     await console.log("database established");
 })
 
+app.use('/booking', require('./routes/bookingRoutes')(io))
 app.use('/app', ratingRoutes)
 app.use('/verify', otpRoutes);
 app.use('/customers',customerRoutes)
 app.use('/vendors',vendorRoutes)
 app.use('/riders',riderRoutes)
 app.use('/shop',shopRoutes)
-app.use('/', (req,res)=>res.send("hello"))
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, console.log(`server starting at ${PORT}`));
+server.listen(PORT, console.log(`server starting at ${PORT}`));
 
 module.exports = app;
 

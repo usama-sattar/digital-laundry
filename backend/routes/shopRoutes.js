@@ -7,6 +7,12 @@ router.get("/", (req, res) => {
       .then(result=>res.send(result))
       .catch(err=>console.log(err))
 });
+
+router.get("/:id" , (req,res)=>{
+  Shop.findOne({vendor: req.params.id})
+    .then((shop) => res.json(shop))
+    .catch((err) => console.log(err));
+})
 router.post("/create", (req, res) => {
       const shop = new Shop({
         name: req.body.name,
@@ -24,6 +30,21 @@ router.post("/create", (req, res) => {
         .catch((err) => console.log(err));
     } 
 );
+router.post("/update/:id", (req,res)=>{
+  Shop.findByIdAndUpdate(req.params.id,
+    { 
+      services: req.body.services
+    },
+    function (err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+})
+
 router.delete("/delete/:id", (req, res) => {
   console.log("del called ")
   Shop.findByIdAndDelete(req.params.id)

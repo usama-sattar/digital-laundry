@@ -12,8 +12,9 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API } from "../../global/constants";
 import { colors } from "../../global/colors";
+import { StackActions, NavigationActions } from "@react-navigation/native";
 
-function Login(props) {
+function Login(props, { navigation }) {
   const [userType, setuserType] = useState(null);
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
@@ -46,7 +47,7 @@ function Login(props) {
         } else if (userType === "customer") {
           AsyncStorage.setItem("customerId", JSON.stringify(res.data._id));
           props.navigation.navigate("MainScreenContainer");
-        } else {
+        } else if (userType === "rider") {
           AsyncStorage.setItem("riderId", JSON.stringify(res.data._id));
         }
       })

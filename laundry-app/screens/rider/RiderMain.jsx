@@ -1,44 +1,107 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, StyleSheet, Text } from "react-native";
-// import MapView from "react-native-maps";
-// import { Dimensions } from "react-native";
-// import SearchBars from "./searchBars";
+import { View, Image, StyleSheet, Text, Dimensions } from "react-native";
+import "./socket";
+import { Button } from "react-native-elements";
+import io from "socket.io-client/dist/socket.io";
+import { API } from "../../global/constants";
+import MapView from "react-native-maps";
+import * as Location from "expo-location";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
-// const { width, height } = Dimensions.get("window");
-// const aspectRation = width / height;
+const height = Dimensions.get("window").height;
+const width = Dimensions.get("window").width;
 
 function RiderMain({ navigation }) {
-  //   const [currentRegion, setCurrentRegion] = useState(null);
-  //   useEffect(() => {
-  //     console.log("useEffect called");
-  //     currentLocation();
-  //   }, []);
+  const [rider, setRider] = useState("");
+  const [socket, setSocket] = useState(null);
+  const [fullSocket, setFullSocket] = useState(null);
+  const [region, setRegion] = useState();
+  const [rideData, setRideData] = useState(null);
+  const LatitudeDelta = 0.0922;
+  const AspectRatio = width / height;
+  const LongitudeDelta = AspectRatio * LatitudeDelta;
 
-  //   const currentLocation = () => {
-  //     return navigator.geolocation.getCurrentPosition((position) => {
-  //       console.log(position);
-  //       setCurrentRegion({
-  //         latitude: position.coords.latitude,
-  //         longitude: position.coords.longitude,
-  //         latitudeDelta: 0.0922,
-  //         longitudeDelta: 0.0421,
-  //       });
-  //     });
-  //   };
+  useEffect(() => {
+    getLocation();
+    getData();
+    getSocket();
+  }, []);
 
+  const getSocket = async () => {
+    const s = await io(`${API}`, { jsonp: false });
+    s.on("connect", async () => {
+      await setSocket(s.id);
+      await setFullSocket(s);
+    });
+    return () => {
+      s.disconnect();
+    };
+  };
+  const getLocation = async () => {
+    await Location.installWebGeolocationPolyfill();
+    await navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setRegion({
+          longitude: position.coords.longitude,
+          latitude: position.coords.latitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: LongitudeDelta,
+        });
+      },
+      (error) => {
+        console.log(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000,
+      }
+    );
+  };
+  const getData = async () => {
+    const rider = await AsyncStorage.getItem("riderId");
+    if (rider) {
+      const riderId = await JSON.parse(rider);
+      setRider(riderId);
+    }
+    console.log(rider);
+  };
+  const setLocation = async () => {
+    if (socket === null || rider === null || region === null) {
+      return;
+    }
+    const response = await axios.post(`${API}/booking/update/location`, {
+      riderId: rider,
+      socketId: socket,
+      coordinate: {
+        type: "Point",
+        coordinates: [region.longitude, region.latitude],
+      },
+    });
+    const result = await response.data;
+    console.log(result);
+    navigation.navigate("RideDetailScreen", {
+      fullSocket: fullSocket,
+      socket: socket,
+      rider: rider,
+    });
+  };
   return (
     <View style={styles.container}>
-      {/* {currentRegion !== null ? (
+      <Text>Rider</Text>
+      <Button title="Go" onPress={setLocation} />
+
+      {region && (
         <MapView
+          loadingEnabled={true}
           provider={MapView.PROVIDER_GOOGLE}
           style={styles.map}
-          region={currentRegion}
+          region={region}
         >
-          <MapView.Marker pinColor="red" coordinate={currentRegion} />
+          <MapView.Marker pinkColor="red" coordinate={region} />
         </MapView>
-      ) : null}
-      <SearchBars /> */}
-      <Tex>Rider</Tex>
+      )}
     </View>
   );
 }
@@ -49,7 +112,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    height,
   },
 });
 export default RiderMain;

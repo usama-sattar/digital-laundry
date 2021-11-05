@@ -27,7 +27,11 @@ class ProductProvider extends Component {
     });
     console.log(item);
   };
-
+  setServices = (param)=>{
+    this.setState({
+      services: param.services
+    })
+  }
   saveService = (data) => {
     const service = {
       title: data.title,
@@ -38,7 +42,6 @@ class ProductProvider extends Component {
     });
   };
   removeService = (data) => {
-    console.log(data.title)
     let temp = [...this.state.services]
     let index = temp.findIndex(x => x.title === data.title)
     console.log(index)
@@ -89,7 +92,8 @@ class ProductProvider extends Component {
           services: this.state.services,
           shopResponse: this.state.shopResponse,
           price: this.state.price,
-          setPrice: this.setPrice
+          setPrice: this.setPrice,
+          setServices: this.setServices
         }}
       >
         {this.props.children}

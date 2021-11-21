@@ -51,18 +51,45 @@ class ProductProvider extends Component {
     }
   
   };
-  createShop = async (shopname, shopaddress, shopaccount) => {
+  createShop = async (shopname, shopaddress, shopaccount, shoplocation, shopcoordinates, formData) => {
     await this.getStorage();
+    let coordinateObject = {
+      type: "Point",
+      coordinates: [shopcoordinates.longitude, shopcoordinates.latitude]
+    }
+      // axios
+      //   .post(`${API}/shop/create`, {
+      //     vendorId: this.state.vendorToken,
+      //     services: this.state.services,
+      //     name: shopname,
+      //     address: shopaddress,
+      //     account: shopaccount,
+      //     location: shoplocation,
+      //     coordinates: shopcoordinates,
+      //     formData: formData
+      //   }, 
+      //   {
+      //     headers: {
+      //     Accept: 'application/json',
+      //     'Content-Type': 'multipart/form-data',
+      //   }
+      // }).then((res) => {
+      //     this.setState({shopResponse: res.data});
+      //   })
+      //   .catch((err) => console.log(err));
     axios
       .post(`${API}/shop/create`, {
-        vendorId: this.state.vendorToken,
+        //60b62df47cf46e1d64e649fd
+        vendorId:this.state.vendorToken,
         services: this.state.services,
         name: shopname,
         address: shopaddress,
-        account: shopaccount
+        account: shopaccount,
+        location: shoplocation,
+        coordinates: coordinateObject
       })
       .then((res) => {
-        this.setState({shopResponse: res.data});
+        console.log(res.data)
       })
       .catch((err) => console.log(err));
   };

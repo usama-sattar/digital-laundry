@@ -17,11 +17,10 @@ import { colors } from "../../global/colors";
 import { Avatar, Button, Overlay, AirbnbRating } from "react-native-elements";
 import axios from "axios";
 import { API } from "../../global/constants";
+
 export default function SelectScreen({ route, navigation }) {
   const { cart, addToCart } = useContext(cartContext);
   const [rating, setRating] = useState(0);
-  console.log(route.params._id);
-
   const sendRating = async () => {
     if (rating > 0) {
       const result = await axios.post(
@@ -35,7 +34,6 @@ export default function SelectScreen({ route, navigation }) {
     }
   };
   const { data } = route.params;
-  console.log(data);
   return (
     <View style={styles.container}>
       <View style={{ flex: 0.95 }}>
@@ -89,6 +87,12 @@ export default function SelectScreen({ route, navigation }) {
             alignSelf: "center",
             marginVertical: 10,
           }}
+        />
+      </View>
+      <View>
+        <Button
+          title="chat"
+          onPress={() => navigation.navigate("ChatScreen", { data: data })}
         />
       </View>
       <View style={{ marginHorizontal: 20 }}>

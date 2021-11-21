@@ -159,10 +159,6 @@ export default function RideBooking({ navigation }) {
         renderDescription={(row) => row.description}
         returnKeyType={"search"}
         onPress={(data, details = null) => {
-          console.log(data);
-          console.log("---");
-          console.log(details.geometry.location.lat);
-          console.log(details.geometry.location.lng);
           setDropOff({
             lat: details.geometry.location.lat,
             lng: details.geometry.location.lng,

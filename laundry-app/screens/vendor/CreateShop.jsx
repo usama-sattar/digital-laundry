@@ -7,7 +7,8 @@ import { colors } from "../../global/colors";
 import ShopView from "../../components/shopView";
 
 function CreateShop({ route }) {
-  const { name, address, account } = route.params;
+  const { name, address, account, location, coordinates } = route.params;
+  console.log(coordinates);
   return (
     <ProductConsumer>
       {(value) => {
@@ -26,6 +27,7 @@ function CreateShop({ route }) {
                   name={name}
                   address={address}
                   account={account}
+                  location={location}
                 />
               ))}
               <View style={{ width: "80%", alignSelf: "center", marginTop: 5 }}>
@@ -48,7 +50,15 @@ function CreateShop({ route }) {
               </View>
               <TouchableOpacity
                 style={styles.submit}
-                onPress={() => value.createShop(name, address, account)}
+                onPress={() =>
+                  value.createShop(
+                    name,
+                    address,
+                    account,
+                    location,
+                    coordinates
+                  )
+                }
               >
                 <Text style={{ color: "white", fontSize: 20 }}>
                   Submit Details

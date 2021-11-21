@@ -18,6 +18,7 @@ import { Rating, AirbnbRating, Avatar } from "react-native-elements";
 import { colors } from "../../global/colors";
 import { images } from "../../global/images.js";
 import AnimatedLoader from "react-native-animated-loader";
+import * as Location from "expo-location";
 
 const windowWidth = Dimensions.get("window").width;
 // const windowHeight = Dimensions.get("window").height;
@@ -30,11 +31,48 @@ function MainScreen({ navigation }) {
   const [indexCheck, setIndexCheck] = useState("0");
   const [shopIndexCheck, setShopIndexCheck] = useState("0");
   const [pics, setPics] = useState([]);
+  const [region, setRegion] = useState();
+  const [nearbyShops, setNearbyShops] = useState([]);
 
   useEffect(() => {
     setImages();
     getShops();
   }, []);
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  const getNearby = async () => {
+    if (region) {
+      const result = await axios.get(
+        `${API}/shop/nearby/${region.longitude}/${region.latitude}`
+      );
+      const data = await result.data;
+      setNearbyShops(data);
+    }
+  };
+  const getLocation = async () => {
+    Location.installWebGeolocationPolyfill();
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setRegion({
+          longitude: position.coords.longitude,
+          latitude: position.coords.latitude,
+        });
+      },
+      (error) => {
+        alert(JSON.stringify(error));
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000,
+      }
+    );
+    getNearby();
+  };
+
   const setImages = async () => {
     for (let i = 0; i < images.length; i++) {
       const pic = await images[Math.floor(Math.random() * images.length)];
@@ -203,6 +241,75 @@ function MainScreen({ navigation }) {
             }}
           />
         </View>
+        {/*nearby container*/}
+        <View style={{ marginTop: 5 }}>
+          <Text style={styles.headingText}>Nearby </Text>
+        </View>
+        <View style={{ marginTop: 5 }}>
+          <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={nearbyShops}
+            keyExtractor={(_, index) => {
+              index.toString();
+            }}
+            extraData={shopIndexCheck}
+            renderItem={({ item, index }) => {
+              return (
+                <View
+                  key={index}
+                  style={styles.largeCard}
+                  onPress={() => setShopIndexCheck(item._id)}
+                >
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("SelectedVendorScreen", {
+                        data: item,
+                      });
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        justifyContent: "space-around",
+                      }}
+                    >
+                      <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
+                        <Image
+                          source={pics !== undefined ? pics[index] : null}
+                          style={{
+                            width: "100%",
+                            height: undefined,
+                            aspectRatio: 1,
+                          }}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          width: "90%",
+                          alignSelf: "center",
+                          borderRadius: 0,
+                          padding: 5,
+                          backgroundColor: colors.pinkColor,
+                        }}
+                      >
+                        <Text style={{ color: "white" }}>
+                          Name: {item.name}
+                        </Text>
+                        <Text style={{ color: "white" }}>
+                          Rating: {item.average}
+                        </Text>
+                      </View>
+                    </View>
+                  </Pressable>
+                </View>
+              );
+            }}
+          />
+        </View>
+
         <View style={{ marginTop: 5 }}>
           <Text style={styles.headingText}>All vendors</Text>
         </View>
@@ -270,6 +377,7 @@ function MainScreen({ navigation }) {
             }}
           />
         </View>
+        {/*all large container*/}
         <View>
           <FlatList
             data={shops}

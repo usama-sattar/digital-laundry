@@ -31,8 +31,9 @@ function RideDetails({ route }) {
     <View style={styles.container}>
       <View>
         <Text>Ride Detail</Text>
-        <Text>{JSON.stringify(rideData)}</Text>
-        {rideData !== null ? null : (
+        {rideData === null ? (
+          <Text>{JSON.stringify(rideData)}</Text>
+        ) : (
           <Button title="confirm" onPress={() => updateBooking()} />
         )}
       </View>

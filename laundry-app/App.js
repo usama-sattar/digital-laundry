@@ -5,6 +5,8 @@ import { Text, View, LogBox } from "react-native";
 import CartContextProvider from "./context/cart";
 import ShopContextProvider from "./context/update";
 import { ProductProvider, ProductConsumer } from "./context";
+import ChatContextProvider from "./context/chat";
+import SocketContextProvider from "./context/socket";
 //screens
 import Splash from "./screens/auth/splash";
 import Login from "./screens/auth/login";
@@ -31,8 +33,10 @@ import PendingScreenContainer from "./screens/vendor/PendingContainer";
 import FullfillOrders from "./screens/vendor/FulfilledScreen";
 import RideBooking from "./screens/vendor/RideBooking";
 import RideDetails from "./screens/rider/RideDetails";
-import FindRider from "./screens/vendor/findRider";
-
+import FindRider from "./screens/vendor/FindRider";
+import ChatScreen from './screens/customer/ChatScreen'
+import ChatMessage from './screens/customer/ChatMessage'
+import ShopLocation from './screens/vendor/ShopLocation'
 //dependencies
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -47,6 +51,25 @@ const Tab = createBottomTabNavigator();
 LogBox.ignoreAllLogs();
 
 export default function App() {
+  const header = {
+    headerStyle: {
+      backgroundColor: colors.pinkColor,
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+      fontWeight: "bold",
+    },
+  }
+  const tabBar = {
+    activeTintColor: "#fff",
+    inactiveTintColor: "lightgray",
+    activeBackgroundColor: "gray",
+    inactiveBackgroundColor: colors.darkBlue,
+    style: {
+      backgroundColor: "#CE4418",
+      paddingBottom: 3,
+    }
+  } 
   const VendorTabNavigator = () => {
     return (
       <ProductConsumer>
@@ -58,7 +81,7 @@ export default function App() {
                   let iconName;
                   if (route.name === "VendorMain") {
                     iconName = focused ? "home" : "home-outline";
-                  } else if (route.name === "Shop") {
+                  } else if (route.name === "ShopLocation") {
                     iconName = focused ? "shirt" : "shirt-outline";
                   } else if (route.name === "EditShop") {
                     iconName = focused ? "create" : "create-outline";
@@ -71,20 +94,13 @@ export default function App() {
                 headerShown: false,
               })}
               tabBarOptions={{
-                activeTintColor: "#fff",
-                inactiveTintColor: "lightgray",
-                activeBackgroundColor: "gray",
-                inactiveBackgroundColor: colors.darkBlue,
-                style: {
-                  backgroundColor: "#CE4418",
-                  paddingBottom: 3,
-                },
+                ...tabBar
               }}
             >
               <Tab.Screen name="VendorMain" component={VendorMain} />
               <Tab.Screen
-                name="Shop"
-                component={ShopName}
+                name="ShopLocation"
+                component={ShopLocation}
                 options={{ tabBarBadge: 1 }}
               />
               <Tab.Screen
@@ -130,14 +146,7 @@ export default function App() {
                 headerShown: false,
               })}
               tabBarOptions={{
-                activeTintColor: "#fff",
-                inactiveTintColor: "lightgray",
-                activeBackgroundColor: "gray",
-                inactiveBackgroundColor: colors.darkBlue,
-                style: {
-                  backgroundColor: "#CE4418",
-                  paddingBottom: 3,
-                },
+                ...tabBar
               }}
             >
               <Tab.Screen
@@ -172,10 +181,12 @@ export default function App() {
       <NavigationContainer>
         <ProductProvider>
           <ShopContextProvider>
+          <SocketContextProvider>
+            <ChatContextProvider>
               {/* <NotificationApp /> */}
               <CartContextProvider>
                 <StatusBar backgroundColor={colors.pinkColor} />
-                <Stack.Navigator initialRouteName="RiderScreen">
+                <Stack.Navigator initialRouteName="MainScreenContainer">
                   <Stack.Screen
                     name="Splash"
                     component={Splash}
@@ -186,13 +197,7 @@ export default function App() {
                     component={SignUp}
                     options={{
                       headerLeft: () => null,
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
                     }}
                   />
                   <Stack.Screen
@@ -200,13 +205,7 @@ export default function App() {
                     component={Login}
                     options={{
                       headerLeft: () => null,
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
                     }}
                   />
                   <Stack.Screen
@@ -215,13 +214,8 @@ export default function App() {
                     options={{
                       title: "Welcome",
                       headerLeft: () => null,
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
                   <Stack.Screen
@@ -230,13 +224,7 @@ export default function App() {
                     options={{
                       title: "Vendor",
                       headerLeft: () => null,
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
                     }}
                   />
                   <Stack.Screen
@@ -244,13 +232,8 @@ export default function App() {
                     component={CreateShop}
                     options={{
                       title: "Create Shop",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
                   <Stack.Screen
@@ -259,13 +242,8 @@ export default function App() {
                     options={{
                       title: "Rider",
                       headerLeft: () => null,
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
                   <Stack.Screen
@@ -274,13 +252,8 @@ export default function App() {
                   options={{
                     title: "Rider",
                     headerLeft: () => null,
-                    headerStyle: {
-                      backgroundColor: colors.pinkColor,
-                    },
-                    headerTintColor: "#fff",
-                    headerTitleStyle: {
-                      fontWeight: "bold",
-                    },
+                    ...header
+                  
                   }}
                 />
                   <Stack.Screen
@@ -288,13 +261,8 @@ export default function App() {
                     component={Searched}
                     options={{
                       title: "Searched Items",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
 
@@ -303,13 +271,8 @@ export default function App() {
                     component={SelectScreen}
                     options={{
                       title: "Place Order",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
                   <Stack.Screen
@@ -317,13 +280,8 @@ export default function App() {
                     component={Cart}
                     options={{
                       title: "Cart",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
                   <Stack.Screen
@@ -331,13 +289,8 @@ export default function App() {
                     component={Checkout}
                     options={{
                       title: "Checkout",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
                   <Stack.Screen
@@ -345,13 +298,8 @@ export default function App() {
                     component={CardPayment}
                     options={{
                       title: "Payment",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
 
@@ -360,13 +308,8 @@ export default function App() {
                     component={ChatBot}
                     options={{
                       title: "Intelligent Assistor",
-                      headerStyle: {
-                        backgroundColor: colors.darkBlue,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
                   <Stack.Screen
@@ -374,13 +317,8 @@ export default function App() {
                     component={PendingOrders}
                     options={{
                       title: "Pending Orders",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
                   <Stack.Screen
@@ -388,13 +326,8 @@ export default function App() {
                     component={PendingScreenContainer}
                     options={{
                       title: "Pending Orders",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
                   <Stack.Screen
@@ -402,13 +335,8 @@ export default function App() {
                     component={FullfillOrders}
                     options={{
                       title: "Fullfill Orders",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
                   <Stack.Screen
@@ -416,13 +344,8 @@ export default function App() {
                     component={RideBooking}
                     options={{
                       title: "Book A Ride",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header
+                  
                     }}
                   />
                   <Stack.Screen
@@ -430,13 +353,7 @@ export default function App() {
                     component={FindRider}
                     options={{
                       title: "Finding Rider",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header   
                     }}
                   />
                   <Stack.Screen
@@ -444,17 +361,38 @@ export default function App() {
                     component={RideDetails}
                     options={{
                       title: "Ride Detail",
-                      headerStyle: {
-                        backgroundColor: colors.pinkColor,
-                      },
-                      headerTintColor: "#fff",
-                      headerTitleStyle: {
-                        fontWeight: "bold",
-                      },
+                      ...header                 
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ChatScreen"
+                    component={ChatScreen}
+                    options={{
+                      title: "Chat",
+                      ...header                
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ShopName"
+                    component={ShopName}
+                    options={{
+                      title: "Details",
+                      ...header
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ChatMessageScreen"
+                    component={ChatMessage}
+                    options={{
+                      title: "Chat",
+                      ...header                  
                     }}
                   />
                 </Stack.Navigator>
               </CartContextProvider>
+              </ChatContextProvider>
+
+              </SocketContextProvider>
           </ShopContextProvider>
         </ProductProvider>
       </NavigationContainer>

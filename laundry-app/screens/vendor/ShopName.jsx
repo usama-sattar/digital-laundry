@@ -13,13 +13,32 @@ import { Button } from "react-native-elements";
 import { colors } from "../../global/colors";
 import axios from "axios";
 import { API } from "../../global/constants";
+import * as ImagePicker from "expo-image-picker";
 
-export default function ShopName({ navigation }) {
+export default function ShopName({ navigation, route }) {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [account, setAccount] = useState("");
+  const [shopImage, setShopImage] = useState("");
+  const { coordinates, location } = route.params;
 
-  const checkName = async () => {
+  console.log(coordinates);
+  const openImageLibrary = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+    }
+    if (status === "granted") {
+      const response = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+      });
+      if (!response.cancelled) {
+        setShopImage(response.uri);
+      }
+    }
+  };
+  const submitDetails = async () => {
     if (name.length < 4) {
       Alert.alert("Name should contain more than 3 letters");
       return;
@@ -32,6 +51,12 @@ export default function ShopName({ navigation }) {
       Alert.alert("Account Info cannot be empty");
       return;
     }
+    // const formData = new FormData();
+    // formData.append("image", {
+    //   name: new Date() + "_image",
+    //   uri: shopImage,
+    //   type: "image/jpg",
+    // });
 
     const response = await axios.get(`${API}/shop/find/${name}`);
     const result = await response.data;
@@ -42,6 +67,9 @@ export default function ShopName({ navigation }) {
         name: name,
         address: address,
         account: account,
+        location: location,
+        coordinates: coordinates,
+        //formData: formData,
       });
     }
   };
@@ -53,6 +81,20 @@ export default function ShopName({ navigation }) {
         justifyContent: "center",
       }}
     >
+      {/* <TouchableOpacity
+        onPress={openImageLibrary}
+        style={styles.uploadBtnContainer}
+      >
+        {shopImage ? (
+          <Image
+            source={{ uri: shopImage }}
+            style={{ width: "100%", height: "100%" }}
+          />
+        ) : (
+          <Text style={styles.uploadBtn}>Upload Shop Image</Text>
+        )}
+      </TouchableOpacity> */}
+
       <Image
         style={{
           width: 300,
@@ -106,6 +148,7 @@ export default function ShopName({ navigation }) {
           alignSelf: "center",
         }}
       />
+
       <View>
         <Button
           title="Next >"
@@ -116,9 +159,28 @@ export default function ShopName({ navigation }) {
             borderRadius: 10,
             marginVertical: 20,
           }}
-          onPress={() => checkName()}
+          onPress={() => submitDetails()}
         />
       </View>
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  uploadBtnContainer: {
+    height: 125,
+    width: 125,
+    borderRadius: 125 / 2,
+    justifyContent: "center",
+    alignItems: "center",
+    borderStyle: "dashed",
+    borderWidth: 1,
+    overflow: "hidden",
+  },
+  uploadBtn: {
+    textAlign: "center",
+    fontSize: 16,
+    opacity: 0.3,
+    fontWeight: "bold",
+  },
+});

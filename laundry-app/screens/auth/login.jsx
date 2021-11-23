@@ -112,7 +112,7 @@ function Login(props, { navigation }) {
             />
             <TouchableOpacity
               style={{
-                backgroundColor: colors.pinkColor,
+                backgroundColor: colors.secondaryColor,
                 padding: 5,
                 borderRadius: 5,
               }}
@@ -153,7 +153,7 @@ function Login(props, { navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 10,
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     justifyContent: "center",
     padding: 10,
     width: "25%",

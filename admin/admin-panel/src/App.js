@@ -8,7 +8,7 @@ import Shop from './components/shop'
 import Complaint from './components/complaints'
 import Order from './components/order'
 import Rating from './components/rating'
-
+import Charts from './components/charts/charts';
 import { Switch, Route } from "react-router-dom";
   
 function App() {
@@ -24,6 +24,7 @@ function App() {
         <Route  path='/orders' component={Order}/>
         <Route  path='/ratings' component={Rating}/>
         <Route  path='/complaints' component={Complaint}/>
+        <Route  path='/charts' component={Charts}/>
       </Switch>
     </div>
   );

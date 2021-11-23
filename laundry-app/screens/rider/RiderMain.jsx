@@ -99,7 +99,7 @@ function RiderMain({ navigation }) {
           style={styles.map}
           region={region}
         >
-          <MapView.Marker pinkColor="red" coordinate={region} />
+          <MapView.Marker secondaryColor="red" coordinate={region} />
         </MapView>
       )}
     </View>

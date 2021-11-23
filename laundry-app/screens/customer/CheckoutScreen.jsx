@@ -98,13 +98,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
   },
   paymentCard: {
     width: "90%",
     borderRadius: 50,
     marginTop: 5,
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     height: 80,
     display: "flex",
     alignSelf: "center",

@@ -31,7 +31,7 @@ function Cart({ navigation, route }) {
               <ListItem
                 key={key}
                 bottomDivider
-                containerStyle={{ backgroundColor: colors.darkBlue }}
+                containerStyle={{ backgroundColor: colors.tertiaryColor }}
               >
                 <ListItem.Content>
                   <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
@@ -47,7 +47,7 @@ function Cart({ navigation, route }) {
                       <Ionicons
                         name="add-circle"
                         size={25}
-                        color={colors.yellowColor}
+                        color={colors.primaryColor}
                       ></Ionicons>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => decrement(item, key)}>
@@ -111,11 +111,11 @@ function Cart({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
   },
   header: {
     width: "100%",
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     height: 100,
     justifyContent: "center",
     alignItems: "center",
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 40,
   },
   checkoutButton: {
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     width: "100%",
     height: 50,
     borderRadius: 10,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   cartButton: {
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     width: "100%",
     height: 50,
     borderRadius: 10,

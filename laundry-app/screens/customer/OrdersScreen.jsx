@@ -48,7 +48,7 @@ export default function OrdersScreen() {
               <ListItem
                 key={key}
                 bottomDivider
-                containerStyle={{ backgroundColor: colors.darkBlue }}
+                containerStyle={{ backgroundColor: colors.tertiaryColor }}
               >
                 <ListItem.Content>
                   <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
@@ -69,6 +69,6 @@ export default function OrdersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
   },
 });

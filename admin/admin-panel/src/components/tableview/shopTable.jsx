@@ -5,11 +5,11 @@ import "../navbar.css";
 function ShopTable({ shop, key }) {
   const deleteShop = (id) => {
     console.log(id);
-    axios.delete(`/shop/delete/${id}`).then((res) => console.log(res));
+    axios.delete(`/admin/delete/shop/${id}`).then((res) => console.log(res));
   };
 
   return (
-    <div>
+    <div style={{ padding: "5px", margin: "20px" }}>
       <div className="row" style={{ marginTop: 15 }}>
         <div className="col-3">{shop._id}</div>
         <div className="col-3">{shop.name}</div>
@@ -31,7 +31,10 @@ function ShopTable({ shop, key }) {
           <i
             className="fas fa-trash"
             style={{ color: "red", cursor: "pointer" }}
-            onClick={() => deleteShop(shop._id)}
+            onClick={() => {
+              if (window.confirm("Are you sure you wish to delete this item?"))
+                deleteShop(shop._id);
+            }}
           ></i>
         </div>
       </div>

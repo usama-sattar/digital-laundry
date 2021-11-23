@@ -24,7 +24,8 @@ const ShopSchema = new Schema({
         type: Array,
         min: 1,
         max: 5
-    }
+    },
+    image: {type: String}
 })
 ShopSchema.index({"coordinate": "2dsphere"})
 const Shop=mongoose.model('Shop', ShopSchema)

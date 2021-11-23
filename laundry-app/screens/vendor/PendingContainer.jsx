@@ -35,14 +35,14 @@ export default function PendingScreenContainer({ route, navigation }) {
   return (
     <View
       style={{
-        backgroundColor: colors.darkBlue,
+        backgroundColor: colors.tertiaryColor,
         flex: 1,
       }}
     >
       <ListItem
         bottomDivider
         containerStyle={{
-          backgroundColor: colors.darkBlue,
+          backgroundColor: colors.tertiaryColor,
         }}
       >
         <ListItem.Content>

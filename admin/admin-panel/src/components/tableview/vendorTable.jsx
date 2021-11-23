@@ -4,10 +4,10 @@ import "../navbar.css";
 
 function VendorTabelView({ vendor, key }) {
   const deleteVendor = (id) => {
-    axios.delete(`/vendors/delete/${id}`).then((res) => console.log(res));
+    axios.delete(`/admin/delete/vendor/${id}`).then((res) => console.log(res));
   };
   return (
-    <div>
+    <div style={{ padding: "5px", margin: "20px" }}>
       <div className="row" style={{ marginTop: 15 }}>
         <div className="col-3">{vendor._id}</div>
         <div className="col-2">{vendor.name}</div>
@@ -18,7 +18,10 @@ function VendorTabelView({ vendor, key }) {
           <i
             className="fas fa-trash"
             style={{ color: "red", cursor: "pointer" }}
-            onClick={() => deleteVendor(vendor._id)}
+            onClick={() => {
+              if (window.confirm("Are you sure you wish to delete this item?"))
+                deleteVendor(vendor._id);
+            }}
           ></i>
         </div>
       </div>

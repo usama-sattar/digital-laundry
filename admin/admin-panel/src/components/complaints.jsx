@@ -13,6 +13,7 @@ function Complaint() {
             }
           >
             <h1>Complaints</h1>
+            <div style={{ padding: "10px", margin: "20px" }}></div>
           </div>
         );
       }}

@@ -4,7 +4,7 @@ import "../navbar.css";
 
 function RatingTabelView({ rating, key }) {
   return (
-    <div>
+    <div style={{ padding: "5px", margin: "20px" }}>
       <div className="row" style={{ marginTop: 15 }}>
         <div className="col-md-4">{rating._id}</div>
         <div className="col-md-4">{rating.user}</div>

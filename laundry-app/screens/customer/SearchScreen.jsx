@@ -77,7 +77,7 @@ function Searched({ route, navigation }, props) {
                             alignSelf: "center",
                             borderRadius: 0,
                             padding: 10,
-                            backgroundColor: colors.pinkColor,
+                            backgroundColor: colors.secondaryColor,
                             justifyContent: "center",
                           }}
                         >
@@ -105,7 +105,7 @@ function Searched({ route, navigation }, props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
   },
   innercontainer: {
     flex: 1,
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   verticallargeCard: {
     width: "90%",
     height: 200,
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
     borderRadius: 10,
     marginHorizontal: 10,
     justifyContent: "flex-start",

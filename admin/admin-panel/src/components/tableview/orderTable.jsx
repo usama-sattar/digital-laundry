@@ -4,10 +4,10 @@ import "../navbar.css";
 
 function OrderTableView({ order, key }) {
   const deleteOrder = (id) => {
-    axios.delete(`/customers/delete/${id}`).then((res) => console.log(res));
+    axios.delete(`/admin/delete/order/${id}`).then((res) => console.log(res));
   };
   return (
-    <div>
+    <div style={{ padding: "5px", margin: "20px" }}>
       <div className="row" style={{ marginTop: 15 }}>
         <div className="col-md-3">{order._id}</div>
         <div className="col-md-2">{order.vendor}</div>
@@ -31,7 +31,10 @@ function OrderTableView({ order, key }) {
           <i
             className="fas fa-trash"
             style={{ color: "red", cursor: "pointer" }}
-            onClick={() => deleteOrder(order._id)}
+            onClick={() => {
+              if (window.confirm("Are you sure you wish to delete this item?"))
+                deleteOrder(order._id);
+            }}
           ></i>
         </div>
       </div>

@@ -57,26 +57,7 @@ class ProductProvider extends Component {
       type: "Point",
       coordinates: [shopcoordinates.longitude, shopcoordinates.latitude]
     }
-      // axios
-      //   .post(`${API}/shop/create`, {
-      //     vendorId: this.state.vendorToken,
-      //     services: this.state.services,
-      //     name: shopname,
-      //     address: shopaddress,
-      //     account: shopaccount,
-      //     location: shoplocation,
-      //     coordinates: shopcoordinates,
-      //     formData: formData
-      //   }, 
-      //   {
-      //     headers: {
-      //     Accept: 'application/json',
-      //     'Content-Type': 'multipart/form-data',
-      //   }
-      // }).then((res) => {
-      //     this.setState({shopResponse: res.data});
-      //   })
-      //   .catch((err) => console.log(err));
+     
     axios
       .post(`${API}/shop/create`, {
         //60b62df47cf46e1d64e649fd
@@ -86,10 +67,20 @@ class ProductProvider extends Component {
         address: shopaddress,
         account: shopaccount,
         location: shoplocation,
-        coordinates: coordinateObject
-      })
+        coordinates: coordinateObject, 
+      },
+     )
       .then((res) => {
         console.log(res.data)
+        axios.post(`${API}/shop/createImage`, {
+          formData: formData
+        },
+        {
+            headers: {
+            Accept: 'application/json',
+           'Content-Type': 'multipart/form-data; ',
+          }
+         })
       })
       .catch((err) => console.log(err));
   };

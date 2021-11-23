@@ -13,21 +13,7 @@ var Storage= multer.diskStorage({
 
 var upload=multer({
   storage: Storage,
-  fileFilter:function(req,file,cb){
-    checkType(file,cb);
-  }
-}).single('file')
-
-function checkType(file,cb){
-  const filetypes=/jpeg|png|gif|jpg/;
-  const extname= filetypes.test(path.extname(file.originalname).toLowerCase())
-  if(extname){
-    return cb(null, true)
-  }
-  else{
-     cb("Error! Images only (png,jpg,jped,gif)")
-  }
-}
+})
 
 router.get("/", (req, res) => {
       Shop.aggregate(([ {$addFields : {average : {$avg : "$rating"}}} ]))
@@ -48,7 +34,7 @@ router.post("/create",  (req, res) => {
         vendor: req.body.vendorId,
         services: req.body.services,
         coordinate: req.body.coordinates,
-        location: req.body.location
+        location: req.body.location,
       });
       shop
         .save()
@@ -57,8 +43,11 @@ router.post("/create",  (req, res) => {
           res.send(data);
         })
         .catch((err) => console.log(err));
-    } 
+} 
 );
+router.post("/create/shopImage",upload.single('file'), (req,res)=>{
+  console.log(req.file)
+})
 router.post("/update/:id", (req,res)=>{
   Shop.findByIdAndUpdate(req.params.id,
     { 
@@ -93,16 +82,6 @@ router.get("/nearby/:longitude/:latitude", async (req, res) => {
     .then((result) => res.send(result))
     .catch((err) => console.log(err));
 });
-
-router.delete("/delete/:id", (req, res) => {
-  console.log("del called ")
-  Shop.findByIdAndDelete(req.params.id)
-    .then(() => {
-      res.send("shop deleted");
-    })
-    .catch((err) => console.log(err));
-});
-
 // router.get("/find/:name", async(req, res) => {
 //   const data = await Shop.find({
 //     name: { $regex: req.params.name, $options: "i" },

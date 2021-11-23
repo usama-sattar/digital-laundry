@@ -174,7 +174,7 @@ export default function RideBooking({ navigation }) {
       <View style={styles.btn}>
         <TouchableOpacity
           style={{
-            backgroundColor: colors.pinkColor,
+            backgroundColor: colors.secondaryColor,
             borderRadius: 50,
             padding: 15,
           }}

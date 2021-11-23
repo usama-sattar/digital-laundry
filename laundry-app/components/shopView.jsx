@@ -56,7 +56,7 @@ export default function ShopView({ detail }, props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
     justifyContent: "center",
   },
   images: {

@@ -82,7 +82,7 @@ export default function SelectScreen({ route, navigation }) {
           title="Submit"
           onPress={sendRating}
           buttonStyle={{
-            backgroundColor: colors.pinkColor,
+            backgroundColor: colors.secondaryColor,
             width: 100,
             alignSelf: "center",
             marginVertical: 10,
@@ -122,11 +122,11 @@ export default function SelectScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
   },
   header: {
     width: "100%",
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     height: 100,
     justifyContent: "center",
     alignItems: "center",
@@ -139,14 +139,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cart: {
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     padding: 5,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
   },
   cartButton: {
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     width: "100%",
     height: 50,
     borderRadius: 10,

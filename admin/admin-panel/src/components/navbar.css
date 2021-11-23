@@ -6,6 +6,10 @@
   font-family: "Roboto Condensed", sans-serif;
   overflow-x: hidden;
 }
+h2,
+h1 {
+  margin-left: 10px;
+}
 .bar {
   color: white;
   font-size: 35px;
@@ -69,14 +73,12 @@
 .customerContainer.active {
   margin-left: 20px;
 }
-
 .nav-text:hover {
   background-color: #21618c;
 }
 span {
   padding-left: 20px;
 }
-
 .row {
   border-bottom: 1px solid;
 }

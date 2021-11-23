@@ -20,7 +20,7 @@ function VendorMain({ navigation }) {
             <View style={styles.cardHolder}>
               <TouchableOpacity
                 style={{
-                  backgroundColor: colors.pinkColor,
+                  backgroundColor: colors.secondaryColor,
                   width: "50%",
                   flexBasis: "45%",
                   padding: 10,
@@ -37,7 +37,7 @@ function VendorMain({ navigation }) {
 
               <TouchableOpacity
                 style={{
-                  backgroundColor: colors.pinkColor,
+                  backgroundColor: colors.secondaryColor,
                   width: "50%",
                   flexBasis: "45%",
                   padding: 10,
@@ -56,7 +56,7 @@ function VendorMain({ navigation }) {
 
               <TouchableOpacity
                 style={{
-                  backgroundColor: colors.pinkColor,
+                  backgroundColor: colors.secondaryColor,
                   width: "50%",
                   flexBasis: "45%",
                   padding: 10,
@@ -82,7 +82,7 @@ function VendorMain({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
     alignItems: "center",
   },
 

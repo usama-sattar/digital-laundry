@@ -29,15 +29,14 @@ export function ChatMessage({ route }) {
     socket.once("load-room", (doc) => {
       setChatList(doc);
     });
-    socket.emit("get-room", recipient);
+    socket.emit("get-room", JSON.stringify(recipient.vendor));
   }, [socket]);
 
   useEffect(() => {
     if (socket === null) return;
     socket.on("recieve-message", addMessage);
-  }, [socket, addMessage]);
+  }, [socket]);
 
-  useEffect(() => {});
   return (
     <View>
       <FlatList
@@ -45,7 +44,7 @@ export function ChatMessage({ route }) {
         data={chatList}
         inverted={true}
         keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => <Msg msg={item.messages} />}
+        renderItem={({ item }) => <Msg msg={item.text} />}
       />
       <View
         style={{
@@ -68,7 +67,7 @@ export function ChatMessage({ route }) {
         />
         <TouchableOpacity
           style={{
-            backgroundColor: colors.pinkColor,
+            backgroundColor: colors.secondaryColor,
             width: " 20%",
             justifyContent: "center",
             alignItems: "center",
@@ -84,6 +83,7 @@ export function ChatMessage({ route }) {
   );
 }
 function Msg({ msg }) {
+  console.log(msg);
   return (
     <Fragment>
       <View style={styles.incomingContainer}>
@@ -95,7 +95,7 @@ function Msg({ msg }) {
 
 const styles = StyleSheet.create({
   incomingContainer: {
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     maxWidth: "70%",
     alignSelf: "flex-start",
     marginHorizontal: 15,

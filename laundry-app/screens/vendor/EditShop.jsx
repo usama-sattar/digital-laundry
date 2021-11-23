@@ -57,7 +57,7 @@ export default function EditShop({ navigation }) {
               style={{
                 flex: 1,
                 paddingTop: 5,
-                backgroundColor: colors.darkBlue,
+                backgroundColor: colors.tertiaryColor,
               }}
             >
               <ScrollView
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     width: "60%",
     padding: 8,
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     alignSelf: "center",
     borderRadius: 10,
     borderWidth: 1,

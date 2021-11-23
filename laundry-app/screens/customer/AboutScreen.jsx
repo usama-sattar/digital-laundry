@@ -39,7 +39,7 @@ export default function AboutScreen({ navigation }) {
           title="Rate Us"
           onPress={toggleOverlay}
           buttonStyle={{
-            backgroundColor: colors.pinkColor,
+            backgroundColor: colors.secondaryColor,
             width: 100,
             alignSelf: "center",
             marginVertical: 10,
@@ -63,7 +63,7 @@ export default function AboutScreen({ navigation }) {
             title="Submit"
             onPress={sendRating}
             buttonStyle={{
-              backgroundColor: colors.pinkColor,
+              backgroundColor: colors.secondaryColor,
               width: 100,
               alignSelf: "center",
               marginVertical: 10,

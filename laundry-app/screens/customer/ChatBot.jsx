@@ -71,7 +71,7 @@ export default function ChatBot() {
         />
         <TouchableOpacity
           style={{
-            backgroundColor: colors.pinkColor,
+            backgroundColor: colors.secondaryColor,
             width: " 20%",
             justifyContent: "center",
             alignItems: "center",
@@ -106,7 +106,7 @@ function Msg({ incoming, sent, msg }) {
 
 const styles = StyleSheet.create({
   incomingContainer: {
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     maxWidth: "70%",
     alignSelf: "flex-start",
     marginHorizontal: 15,

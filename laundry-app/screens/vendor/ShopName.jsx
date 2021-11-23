@@ -8,6 +8,7 @@ import {
   TextInput,
   Alert,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { Button } from "react-native-elements";
 import { colors } from "../../global/colors";
@@ -33,6 +34,7 @@ export default function ShopName({ navigation, route }) {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
       });
+      console.log(response);
       if (!response.cancelled) {
         setShopImage(response.uri);
       }
@@ -51,12 +53,12 @@ export default function ShopName({ navigation, route }) {
       Alert.alert("Account Info cannot be empty");
       return;
     }
-    // const formData = new FormData();
-    // formData.append("image", {
-    //   name: new Date() + "_image",
-    //   uri: shopImage,
-    //   type: "image/jpg",
-    // });
+    const formData = new FormData();
+    formData.append("file", {
+      name: new Date() + "_image",
+      uri: shopImage.uri,
+      type: "image/jpg",
+    });
 
     const response = await axios.get(`${API}/shop/find/${name}`);
     const result = await response.data;
@@ -69,7 +71,7 @@ export default function ShopName({ navigation, route }) {
         account: account,
         location: location,
         coordinates: coordinates,
-        //formData: formData,
+        formData: formData,
       });
     }
   };
@@ -77,11 +79,11 @@ export default function ShopName({ navigation, route }) {
     <ScrollView
       contentContainerStyle={{
         flex: 1,
-        backgroundColor: colors.darkBlue,
+        backgroundColor: colors.tertiaryColor,
         justifyContent: "center",
       }}
     >
-      {/* <TouchableOpacity
+      <TouchableOpacity
         onPress={openImageLibrary}
         style={styles.uploadBtnContainer}
       >
@@ -93,7 +95,7 @@ export default function ShopName({ navigation, route }) {
         ) : (
           <Text style={styles.uploadBtn}>Upload Shop Image</Text>
         )}
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
       <Image
         style={{
@@ -153,7 +155,7 @@ export default function ShopName({ navigation, route }) {
         <Button
           title="Next >"
           buttonStyle={{
-            backgroundColor: colors.pinkColor,
+            backgroundColor: colors.secondaryColor,
             width: "30%",
             alignSelf: "center",
             borderRadius: 10,

@@ -40,6 +40,7 @@ function ChatContextProvider({children}){
     const sendMessageSocket = (receiver, text)=>{
         if(socket === null) return
         socket.emit("send-message", {receiver, text})
+        socket.emit("save-chat", chatList)
     }
 
     const sendMessage=(recipient, text)=>{
@@ -47,8 +48,18 @@ function ChatContextProvider({children}){
         setMessage('')
         addMessage(recipient, text, user )
     }
-    const addMessage = ({recipient, text, sender}) =>{
-        setChatList([...chatList, { recipient,sender, messages: text}].reverse())
+    const addMessage = (recipient, text, sender)=>{
+      let obj = {
+          recipient,
+          text,
+          sender
+      }
+      if(chatList){
+        setChatList([...chatList, obj].reverse())
+      }
+      else{
+          setChatList(obj)
+      }
     }
     return(
         <chatContext.Provider value={{contacts, createContact, sendMessage, chatList, setChatList, message, setMessage}}>

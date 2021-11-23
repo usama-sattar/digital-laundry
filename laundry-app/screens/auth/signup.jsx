@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
   },
   picker: {
     width: 150,
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     width: "80%",
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
@@ -254,13 +254,13 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     width: "50%",
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
   },
 });
 export default SignUp;

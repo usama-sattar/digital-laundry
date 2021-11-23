@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
   },
   input: {
     height: 40,
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     width: 150,
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

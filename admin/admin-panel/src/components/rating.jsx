@@ -14,13 +14,13 @@ function Rating() {
             }
           >
             <h1>App Rating</h1>
-
-            <div className="row">
-              <div className="col-4">#</div>
-              <div className="col-4">user#</div>
-              <div className="col-4">Rating</div>
+            <div style={{ padding: "10px", margin: "20px" }}>
+              <div className="row">
+                <div className="col-4">#</div>
+                <div className="col-4">user#</div>
+                <div className="col-4">Rating</div>
+              </div>
             </div>
-
             {value.ratings !== undefined
               ? value.ratings.map((item, index) => (
                   <RatingTableView key={index} rating={item} />

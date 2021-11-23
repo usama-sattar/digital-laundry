@@ -7,14 +7,19 @@ import { colors } from "../../global/colors";
 import ShopView from "../../components/shopView";
 
 function CreateShop({ route }) {
-  const { name, address, account, location, coordinates } = route.params;
+  const { name, address, account, location, coordinates, formData } =
+    route.params;
   console.log(coordinates);
   return (
     <ProductConsumer>
       {(value) => {
         return (
           <View
-            style={{ flex: 1, paddingTop: 5, backgroundColor: colors.darkBlue }}
+            style={{
+              flex: 1,
+              paddingTop: 5,
+              backgroundColor: colors.tertiaryColor,
+            }}
           >
             <ScrollView
               contentContainerStyle={{ flexGrow: 1 }}
@@ -56,7 +61,8 @@ function CreateShop({ route }) {
                     address,
                     account,
                     location,
-                    coordinates
+                    coordinates,
+                    formData
                   )
                 }
               >
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     width: "60%",
     padding: 8,
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.secondaryColor,
     alignSelf: "center",
     borderRadius: 10,
     borderWidth: 1,

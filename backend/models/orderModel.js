@@ -11,8 +11,9 @@ const OrderSchema = new Schema({
     vendor: {type:String},
     cart: [{}],
     total: {type:String},
-    status: {type:String}
-})
+    status: {type:String},
+    date: {type: Date, default: Date.now()}
+},)
 
 const Order=mongoose.model('Order', OrderSchema)
 module.exports = Order

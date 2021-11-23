@@ -114,7 +114,7 @@ function MainScreen({ navigation }) {
         <View style={{ marginTop: 10 }}>
           <SearchBar
             inputContainerStyle={{
-              backgroundColor: colors.darkBlue,
+              backgroundColor: colors.tertiaryColor,
             }}
             containerStyle={{
               borderRadius: 5,
@@ -224,7 +224,7 @@ function MainScreen({ navigation }) {
                           alignSelf: "center",
                           borderRadius: 0,
                           padding: 5,
-                          backgroundColor: colors.pinkColor,
+                          backgroundColor: colors.secondaryColor,
                         }}
                       >
                         <Text style={{ color: "white" }}>
@@ -292,7 +292,7 @@ function MainScreen({ navigation }) {
                           alignSelf: "center",
                           borderRadius: 0,
                           padding: 5,
-                          backgroundColor: colors.pinkColor,
+                          backgroundColor: colors.secondaryColor,
                         }}
                       >
                         <Text style={{ color: "white" }}>
@@ -360,7 +360,7 @@ function MainScreen({ navigation }) {
                           alignSelf: "center",
                           borderRadius: 0,
                           padding: 5,
-                          backgroundColor: colors.pinkColor,
+                          backgroundColor: colors.secondaryColor,
                         }}
                       >
                         <Text style={{ color: "white" }}>
@@ -445,7 +445,7 @@ function MainScreen({ navigation }) {
 const styles = StyleSheet.create({
   conatiner: {
     flex: 1,
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.secondaryColor,
   },
   wrapper: {
     flexDirection: "row",
@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
   smallCard: {
     width: 100,
     height: 100,
-    backgroundColor: colors.pinkColor,
+    backgroundColor: colors.tertiaryColor,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
   largeCard: {
     width: windowWidth * 0.7,
     height: 200,
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
     borderRadius: 10,
     marginHorizontal: 10,
     justifyContent: "flex-start",
@@ -477,14 +477,14 @@ const styles = StyleSheet.create({
     marginLeft: "5%",
     marginRight: "5%",
     alignSelf: "flex-start",
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
     borderRadius: 10,
     marginTop: 25,
   },
   headingText: {
     marginHorizontal: 10,
     fontSize: 20,
-    color: "white",
+    color: colors.textColor,
   },
   lottie: {
     width: 100,

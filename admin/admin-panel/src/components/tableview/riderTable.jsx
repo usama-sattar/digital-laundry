@@ -4,10 +4,10 @@ import "../navbar.css";
 
 function RiderTabelView({ rider, key }) {
   const deleteRider = (id) => {
-    axios.delete(`/riders/delete/${id}`).then((res) => console.log(res));
+    axios.delete(`/admin/delete/rider/${id}`).then((res) => console.log(res));
   };
   return (
-    <div>
+    <div style={{ padding: "5px", margin: "20px" }}>
       <div className="row" style={{ marginTop: 15 }}>
         <div className="col-2">{rider._id}</div>
         <div className="col-2">{rider.name}</div>
@@ -18,7 +18,10 @@ function RiderTabelView({ rider, key }) {
           <i
             className="fas fa-trash"
             style={{ color: "red", cursor: "pointer" }}
-            onClick={() => deleteRider(rider._id)}
+            onClick={() => {
+              if (window.confirm("Are you sure you wish to delete this item?"))
+                deleteRider(rider._id);
+            }}
           ></i>
         </div>
       </div>

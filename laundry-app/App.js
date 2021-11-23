@@ -53,7 +53,7 @@ LogBox.ignoreAllLogs();
 export default function App() {
   const header = {
     headerStyle: {
-      backgroundColor: colors.pinkColor,
+      backgroundColor: colors.secondaryColor,
     },
     headerTintColor: "#fff",
     headerTitleStyle: {
@@ -64,7 +64,7 @@ export default function App() {
     activeTintColor: "#fff",
     inactiveTintColor: "lightgray",
     activeBackgroundColor: "gray",
-    inactiveBackgroundColor: colors.darkBlue,
+    inactiveBackgroundColor: colors.tertiaryColor,
     style: {
       backgroundColor: "#CE4418",
       paddingBottom: 3,
@@ -185,8 +185,8 @@ export default function App() {
             <ChatContextProvider>
               {/* <NotificationApp /> */}
               <CartContextProvider>
-                <StatusBar backgroundColor={colors.pinkColor} />
-                <Stack.Navigator initialRouteName="MainScreenContainer">
+                <StatusBar backgroundColor={colors.secondaryColor} />
+                <Stack.Navigator initialRouteName="MainScreen">
                   <Stack.Screen
                     name="Splash"
                     component={Splash}

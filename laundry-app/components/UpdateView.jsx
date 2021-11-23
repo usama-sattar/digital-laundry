@@ -97,7 +97,7 @@ function ItemView({ detail }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkBlue,
+    backgroundColor: colors.tertiaryColor,
   },
   images: {
     width: 50,

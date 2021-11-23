@@ -8,16 +8,7 @@ router.get('/total', (req,res)=>{
     .then((user)=> res.json(user))
     .catch((err)=> console.log(err))
 })
-router.delete('/delete/:id', (req,res)=>{
-    Vendor.findByIdAndDelete(req.params.id)
-    .then(()=>{
-        Shop.find({vendor:req.params.id})
-        .then(() => {res.send("successfully deleted")})
-        .catch((err) => console.log(err));
-    })
-    .catch((err)=> console.log(err))
-    
-})
+
 router.get('/pending/:id', (req,res)=>{
     console.log("pend")
     Order.find({vendorId: req.params.id, status: 'pending'})

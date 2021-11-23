@@ -10,8 +10,11 @@ class ProductProvider extends Component{
         orders: [{}],
         ratings: [{}],
         sideBar: true,
-        shops:[{}]
-
+        shops:[{}],
+        searchCustomer:[],
+        searchVendor:[],
+        searchRider:[],
+        searchShop:[],
     }
     componentDidMount(){
         this.getCustomers()
@@ -54,6 +57,29 @@ class ProductProvider extends Component{
             sideBar: !(this.state.sideBar)
         })
       };
+    searchItem = async (array, string, key) => {
+        if(key === "customer") await this.setState({searchCustomer: []});
+        if(key === "vendor") await this.setState({searchVendor: []});
+        if(key === "rider") await this.setState({searchRider: []});
+        if(key === "shop") await this.setState({searchShop: []});
+
+        let temp = [];
+        if (array.length >= 1 && string !== "") {
+          array.filter((o) =>
+            Object.keys(o).some((k) =>
+              k === "name"
+                ? o[k].includes(string)
+                  ? temp = [...temp, o]
+                  : null
+                : null
+            )
+          );
+        }
+        if(key === "customer")await this.setState({searchCustomer: temp})
+        if(key === "vendor") await this.setState({searchVendor: temp});
+        if(key === "rider") await this.setState({searchRider: temp});
+        if(key === "shop") await this.setState({searchShop: temp});
+      };
     render(){
         return <ProductContext.Provider value={{
             getCustomers: this.getCustomers,
@@ -67,7 +93,12 @@ class ProductProvider extends Component{
             riders: this.state.riders,
             shops: this.state.shops,
             orders:this.state.orders,
-            ratings: this.state.ratings 
+            ratings: this.state.ratings,
+            searchItem: this.searchItem,
+            searchCustomer: this.state.searchCustomer,
+            searchRider: this.state.searchRider,
+            searchVendor: this.state.searchVendor,
+            searchShop: this.state.searchShop
             
         }}>
             

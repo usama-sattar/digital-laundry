@@ -65,17 +65,15 @@ export default function ChatBot() {
           style={{
             width: "80%",
             borderWidth: 0.5,
-            padding: 10,
-            borderRadius: 10,
+            padding: 8,
           }}
         />
         <TouchableOpacity
           style={{
-            backgroundColor: colors.secondaryColor,
+            backgroundColor: colors.primaryColor,
             width: " 20%",
             justifyContent: "center",
             alignItems: "center",
-            borderRadius: 10,
           }}
           disabled={message ? false : true}
           onPress={() => sendMsg()}
@@ -106,13 +104,15 @@ function Msg({ incoming, sent, msg }) {
 
 const styles = StyleSheet.create({
   incomingContainer: {
-    backgroundColor: colors.secondaryColor,
+    backgroundColor: colors.primaryColor,
     maxWidth: "70%",
     alignSelf: "flex-start",
     marginHorizontal: 15,
     marginVertical: 5,
     borderTopRightRadius: 8,
-    padding: 5,
+    padding: 8,
+    borderWidth: 1,
+    borderColor: "white",
   },
   sentContainer: {
     backgroundColor: "white",
@@ -121,7 +121,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginVertical: 5,
     borderTopLeftRadius: 8,
-    padding: 5,
+    padding: 8,
+    borderWidth: 1,
+    borderColor: colors.lightBlue,
   },
   incomingText: {
     color: "white",

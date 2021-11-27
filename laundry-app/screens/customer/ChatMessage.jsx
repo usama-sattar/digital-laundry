@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useContext, Fragment } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  Fragment,
+  useRef,
+} from "react";
+window.navigator.userAgent = "react-native";
 import {
   View,
   Text,
@@ -10,41 +17,81 @@ import {
 } from "react-native";
 import { colors } from "../../global/colors";
 import { chatContext } from "../../context/chat";
-import { socketContext } from "../../context/socket";
+import axios from "axios";
+import { API } from "../../global/constants";
+import io from "socket.io-client/dist/socket.io";
 
 export function ChatMessage({ route }) {
-  const {
-    chatList,
-    setChatList,
-    message,
-    setMessage,
-    sendMessage,
-    addMessage,
-  } = useContext(chatContext);
-  const { recipient } = route.params;
-  const { socket } = useContext(socketContext);
+  const { user } = useContext(chatContext);
+  const [messages, setMessages] = useState([]);
+  const { currentChat } = route.params;
+  const [newMessage, setNewMessage] = useState("");
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const socket = useRef();
 
   useEffect(() => {
-    if (socket === null) return;
-    socket.once("load-room", (doc) => {
-      setChatList(doc);
+    socket.current = io("http://192.168.0.107:8900");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
+      });
     });
-    socket.emit("get-room", JSON.stringify(recipient.vendor));
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
-    if (socket === null) return;
-    socket.on("recieve-message", addMessage);
-  }, [socket]);
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
 
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const res = await axios.get(
+          `${API}/conversation/message/${currentChat?._id}`
+        );
+        setMessages(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMessages();
+  }, [currentChat]);
+
+  const handleSubmit = async () => {
+    const message = await {
+      sender: user,
+      text: newMessage,
+      conversationId: currentChat._id,
+    };
+    const receiverId = currentChat.members.find((member) => member !== user);
+
+    socket.current.emit("sendMessage", {
+      senderId: user,
+      receiverId,
+      text: newMessage,
+    });
+
+    try {
+      const res = await axios.post(`${API}/conversation/message`, { message });
+      setMessages([...messages, res.data]);
+      setNewMessage("");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <View>
       <FlatList
         style={{ height: "87%", bottom: "3%" }}
-        data={chatList}
+        data={messages && messages.reverse()}
         inverted={true}
         keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => <Msg msg={item.text} />}
+        renderItem={({ item }) => (
+          <Msg msg={item.text} own={item.sender === user} />
+        )}
       />
       <View
         style={{
@@ -56,25 +103,23 @@ export function ChatMessage({ route }) {
       >
         <TextInput
           placeholder="Type here.."
-          value={message}
-          onChangeText={(text) => setMessage(text)}
+          value={newMessage}
+          onChangeText={(text) => setNewMessage(text)}
           style={{
             width: "80%",
             borderWidth: 0.5,
-            padding: 10,
-            borderRadius: 10,
+            padding: 8,
           }}
         />
         <TouchableOpacity
           style={{
-            backgroundColor: colors.secondaryColor,
+            backgroundColor: colors.primaryColor,
             width: " 20%",
             justifyContent: "center",
             alignItems: "center",
-            borderRadius: 10,
           }}
-          disabled={message ? false : true}
-          onPress={() => sendMessage(JSON.stringify(recipient.vendor), message)}
+          onPress={() => handleSubmit()}
+          disabled={newMessage ? false : true}
         >
           <Text style={{ color: "white" }}>Send</Text>
         </TouchableOpacity>
@@ -82,20 +127,25 @@ export function ChatMessage({ route }) {
     </View>
   );
 }
-function Msg({ msg }) {
-  console.log(msg);
+function Msg({ msg, own }) {
   return (
     <Fragment>
-      <View style={styles.incomingContainer}>
-        <Text style={styles.incomingText}>{msg}</Text>
-      </View>
+      {own ? (
+        <View style={styles.outgoingContainer}>
+          <Text style={styles.outgoingText}>{msg}</Text>
+        </View>
+      ) : (
+        <View style={styles.incomingContainer}>
+          <Text style={styles.incomingText}>{msg}</Text>
+        </View>
+      )}
     </Fragment>
   );
 }
 
 const styles = StyleSheet.create({
   incomingContainer: {
-    backgroundColor: colors.secondaryColor,
+    backgroundColor: colors.primaryColor,
     maxWidth: "70%",
     alignSelf: "flex-start",
     marginHorizontal: 15,
@@ -103,7 +153,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     padding: 5,
   },
-  sentContainer: {
+  outgoingContainer: {
     backgroundColor: "white",
     maxWidth: "70%",
     alignSelf: "flex-end",
@@ -114,6 +164,9 @@ const styles = StyleSheet.create({
   },
   incomingText: {
     color: "white",
+  },
+  outgoingText: {
+    color: "black",
   },
 });
 

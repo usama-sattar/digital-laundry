@@ -75,7 +75,7 @@ router.get("/nearby/:longitude/:latitude", async (req, res) => {
             parseFloat(req.params.latitude)
           ],
         },
-        "$maxDistance": 10000
+        "$maxDistance": 100000
       }
     }
   })

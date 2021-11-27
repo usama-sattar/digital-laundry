@@ -9,12 +9,10 @@ import {
   FlatList,
   Pressable,
   Dimensions,
-  Image,
 } from "react-native";
 import { categoryData, API } from "../../global/constants";
-import { Ionicons } from "@expo/vector-icons";
 import { SearchBar } from "react-native-elements";
-import { Rating, AirbnbRating, Avatar } from "react-native-elements";
+import { Image } from "react-native-elements";
 import { colors } from "../../global/colors";
 import { images } from "../../global/images.js";
 import AnimatedLoader from "react-native-animated-loader";
@@ -111,10 +109,10 @@ function MainScreen({ navigation }) {
   return loading === false ? (
     <View style={styles.conatiner}>
       <ScrollView showsVerticalScrollIndicator={true} stickyHeaderIndices={[0]}>
-        <View style={{ marginTop: 10 }}>
+        <View>
           <SearchBar
             inputContainerStyle={{
-              backgroundColor: colors.tertiaryColor,
+              backgroundColor: colors.secondaryColor,
             }}
             containerStyle={{
               borderRadius: 5,
@@ -123,7 +121,7 @@ function MainScreen({ navigation }) {
               borderTopColor: "transparent",
             }}
             inputStyle={{
-              backgroundColor: "#bbc2cb",
+              backgroundColor: colors.tertiaryColor,
               borderRadius: 5,
               padding: 2,
             }}
@@ -135,7 +133,7 @@ function MainScreen({ navigation }) {
             returnKeyType="search"
           />
         </View>
-        <View style={{ marginTop: 5 }}>
+        <View style={{ marginTop: 10 }}>
           <Text style={styles.headingText}>Our Categories</Text>
         </View>
         <View style={{ marginTop: 5 }}>
@@ -168,7 +166,9 @@ function MainScreen({ navigation }) {
                       />
                     </View>
                     <View>
-                      <Text style={{ color: "white" }}>{item.name}</Text>
+                      <Text style={{ color: colors.textColor }}>
+                        {item.name}
+                      </Text>
                     </View>
                   </View>
                 </Pressable>
@@ -176,7 +176,7 @@ function MainScreen({ navigation }) {
             }}
           />
         </View>
-        <View style={{ marginTop: 5 }}>
+        <View style={{ marginTop: 10 }}>
           <Text style={styles.headingText}>Top Rated</Text>
         </View>
         <View style={{ marginTop: 5 }}>
@@ -204,35 +204,43 @@ function MainScreen({ navigation }) {
                   >
                     <View
                       style={{
+                        display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-around",
                       }}
                     >
-                      <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
+                      <View>
                         <Image
                           source={pics !== undefined ? pics[index] : null}
                           style={{
                             width: "100%",
-                            height: undefined,
-                            aspectRatio: 1,
+                            height: 175,
                           }}
                         />
                       </View>
                       <View
                         style={{
-                          width: "90%",
-                          alignSelf: "center",
+                          width: "100%",
                           borderRadius: 0,
                           padding: 5,
-                          backgroundColor: colors.secondaryColor,
+                          backgroundColor: colors.tertiaryColor,
                         }}
                       >
-                        <Text style={{ color: "white" }}>
-                          Name: {item.name}
-                        </Text>
-                        <Text style={{ color: "white" }}>
-                          Rating: {item.average}
-                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Text style={{ color: "black", fontSize: 20 }}>
+                            {item.name}
+                          </Text>
+                          <Text
+                            style={{ color: colors.primaryColor, fontSize: 15 }}
+                          >
+                            {item.average}
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </Pressable>
@@ -242,7 +250,7 @@ function MainScreen({ navigation }) {
           />
         </View>
         {/*nearby container*/}
-        <View style={{ marginTop: 5 }}>
+        <View style={{ marginTop: 10 }}>
           <Text style={styles.headingText}>Nearby </Text>
         </View>
         <View style={{ marginTop: 5 }}>
@@ -270,37 +278,43 @@ function MainScreen({ navigation }) {
                   >
                     <View
                       style={{
-                        flexDirection: "row",
-                        alignItems: "center",
+                        display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-around",
                       }}
                     >
-                      <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
+                      <View>
                         <Image
                           source={pics !== undefined ? pics[index] : null}
                           style={{
                             width: "100%",
-                            height: undefined,
-                            aspectRatio: 1,
+                            height: 175,
                           }}
                         />
                       </View>
                       <View
                         style={{
-                          width: "90%",
-                          alignSelf: "center",
+                          width: "100%",
                           borderRadius: 0,
                           padding: 5,
-                          backgroundColor: colors.secondaryColor,
+                          backgroundColor: colors.tertiaryColor,
                         }}
                       >
-                        <Text style={{ color: "white" }}>
-                          Name: {item.name}
-                        </Text>
-                        <Text style={{ color: "white" }}>
-                          Rating: {item.average}
-                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Text style={{ color: "black", fontSize: 20 }}>
+                            {item.name}
+                          </Text>
+                          <Text
+                            style={{ color: colors.primaryColor, fontSize: 15 }}
+                          >
+                            {item.average}
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </Pressable>
@@ -310,7 +324,7 @@ function MainScreen({ navigation }) {
           />
         </View>
 
-        <View style={{ marginTop: 5 }}>
+        <View style={{ marginTop: 10 }}>
           <Text style={styles.headingText}>All vendors</Text>
         </View>
         <View style={{ marginTop: 5 }}>
@@ -338,37 +352,43 @@ function MainScreen({ navigation }) {
                   >
                     <View
                       style={{
-                        flexDirection: "row",
-                        alignItems: "center",
+                        display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-around",
                       }}
                     >
-                      <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
+                      <View>
                         <Image
                           source={pics !== undefined ? pics[index] : null}
                           style={{
                             width: "100%",
-                            height: undefined,
-                            aspectRatio: 1,
+                            height: 175,
                           }}
                         />
                       </View>
                       <View
                         style={{
-                          width: "90%",
-                          alignSelf: "center",
+                          width: "100%",
                           borderRadius: 0,
                           padding: 5,
-                          backgroundColor: colors.secondaryColor,
+                          backgroundColor: colors.tertiaryColor,
                         }}
                       >
-                        <Text style={{ color: "white" }}>
-                          Name: {item.name}
-                        </Text>
-                        <Text style={{ color: "white" }}>
-                          Rating: {item.average}
-                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Text style={{ color: "black", fontSize: 20 }}>
+                            {item.name}
+                          </Text>
+                          <Text
+                            style={{ color: colors.primaryColor, fontSize: 15 }}
+                          >
+                            {item.average}
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </Pressable>
@@ -378,7 +398,7 @@ function MainScreen({ navigation }) {
           />
         </View>
         {/*all large container*/}
-        <View>
+        {/* <View>
           <FlatList
             data={shops}
             keyExtractor={(_, index) => {
@@ -407,16 +427,12 @@ function MainScreen({ navigation }) {
                           flexDirection: "column",
                         }}
                       >
-                        <View
-                          style={{ marginHorizontal: 10, marginVertical: 5 }}
-                        >
+                        <View>
                           <Image
                             source={pics !== undefined ? pics[index] : null}
                             style={{
                               width: "100%",
-                              height: undefined,
-                              aspectRatio: 1,
-                              borderRadius: 10,
+                              height: 200,
                             }}
                           />
                         </View>
@@ -427,7 +443,7 @@ function MainScreen({ navigation }) {
               );
             }}
           />
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   ) : (
@@ -461,6 +477,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     marginHorizontal: 5,
+    borderWidth: 1,
+    borderColor: colors.lightBlue,
   },
   largeCard: {
     width: windowWidth * 0.7,

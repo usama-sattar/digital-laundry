@@ -195,7 +195,7 @@ function StripeHandler({ vendorName, vendorId }) {
         <Button
           title="Pay"
           buttonStyle={{
-            backgroundColor: colors.secondaryColor,
+            backgroundColor: colors.primaryColor,
             width: "90%",
             alignSelf: "center",
           }}
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: colors.tertiaryColor,
+    backgroundColor: colors.secondaryColor,
   },
   cardField: {
     width: "90%",

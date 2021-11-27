@@ -12,11 +12,11 @@ import {
 } from "react-native";
 import { Badge } from "react-native-elements";
 import { cartContext } from "../../context/cart";
-import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../global/colors";
 import { Avatar, Button, Overlay, AirbnbRating } from "react-native-elements";
 import axios from "axios";
 import { API } from "../../global/constants";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function SelectScreen({ route, navigation }) {
   const { cart, addToCart } = useContext(cartContext);
@@ -51,21 +51,21 @@ export default function SelectScreen({ route, navigation }) {
                 >
                   <View style={styles.itemContainer}>
                     <View style={{ width: "40%" }}>
-                      <Text style={{ color: "white", fontSize: 15 }}>
+                      <Text style={{ color: colors.textColor, fontSize: 15 }}>
                         {item.title}
                       </Text>
                     </View>
                     <View style={{ width: "20%" }}>
-                      <Text style={{ color: "white", fontSize: 15 }}>
+                      <Text style={{ color: colors.textColor, fontSize: 15 }}>
                         Rs. {item.price}{" "}
                       </Text>
                     </View>
                     <View style={{ width: "40%" }}>
                       <TouchableOpacity
                         style={styles.cart}
-                        onPress={() => addToCart(item.name, item.price)}
+                        onPress={() => addToCart(item.title, item.price)}
                       >
-                        <Text style={{ color: "white", fontSize: 15 }}>
+                        <Text style={{ color: colors.lightBlue, fontSize: 15 }}>
                           Push to Cart
                         </Text>
                       </TouchableOpacity>
@@ -90,10 +90,17 @@ export default function SelectScreen({ route, navigation }) {
         />
       </View>
       <View>
-        <Button
-          title="chat"
+        <TouchableOpacity
           onPress={() => navigation.navigate("ChatScreen", { data: data })}
-        />
+          style={{
+            width: 50,
+            height: 50,
+            backgroundColor: colors.primaryColor,
+            borderRadius: 25,
+          }}
+        >
+          <Ionicons name="chatbubble-ellipses" size={24} color="white" />
+        </TouchableOpacity>
       </View>
       <View style={{ marginHorizontal: 20 }}>
         <Pressable
@@ -122,16 +129,16 @@ export default function SelectScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.tertiaryColor,
+    backgroundColor: colors.secondaryColor,
   },
   header: {
     width: "100%",
-    backgroundColor: colors.secondaryColor,
+    backgroundColor: colors.primaryColor,
     height: 100,
     justifyContent: "center",
     alignItems: "center",
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
   },
   itemContainer: {
     flexDirection: "row",
@@ -146,7 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   cartButton: {
-    backgroundColor: colors.secondaryColor,
+    backgroundColor: colors.primaryColor,
     width: "100%",
     height: 50,
     borderRadius: 10,

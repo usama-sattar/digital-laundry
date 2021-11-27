@@ -26,11 +26,9 @@ export default function OrdersScreen() {
 
   const getData = async () => {
     const customer = await AsyncStorage.getItem("customerId");
-    console.log("before");
     if (customer) {
       const c = JSON.parse(customer);
       getOrders(c);
-      console.log("before");
     }
   };
   const getOrders = async (customerId) => {
@@ -51,10 +49,14 @@ export default function OrdersScreen() {
                 containerStyle={{ backgroundColor: colors.tertiaryColor }}
               >
                 <ListItem.Content>
-                  <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
+                  <ListItem.Subtitle
+                    style={{ color: colors.textColor, fontSize: 15 }}
+                  >
                     Vendor: {item.vendor}
                   </ListItem.Subtitle>
-                  <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
+                  <ListItem.Subtitle
+                    style={{ color: colors.textColor, fontSize: 15 }}
+                  >
                     Price: {item.total}
                   </ListItem.Subtitle>
                 </ListItem.Content>
@@ -69,6 +71,6 @@ export default function OrdersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.tertiaryColor,
+    backgroundColor: colors.secondaryColor,
   },
 });

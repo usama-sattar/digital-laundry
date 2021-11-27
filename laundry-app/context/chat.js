@@ -5,15 +5,9 @@ import { socketContext } from "./socket";
 export const chatContext = createContext()
 
 function ChatContextProvider({children}){
-
-    const [contacts, setContacts] = useState([])
-    const [chatList, setChatList] = useState([]);
-    const [user,setUser] = useState('')
-    const [message, setMessage] = useState("");
-  
-    const { socket } = useContext(socketContext);
+    const [user, setUser] = useState("")
+    const [vendor, setVendor] = useState("")
     useEffect(()=>{
-        getLocalData();
         getData();
     },[])
 
@@ -23,46 +17,15 @@ function ChatContextProvider({children}){
           const customerId = await JSON.parse(customer);
           setUser(customerId);
         }
+        const vendor = await AsyncStorage.getItem("vendorId");
+        if (vendor) {
+          const vendorId = await JSON.parse(vendor);
+          setVendor(vendorId);
+        }
       };
     
-    const getLocalData =async()=>{
-        const jsonValue = await AsyncStorage.getItem('contacts')
-        if(jsonValue !== null){
-            const data = await JSON.parse(jsonValue)
-            setContacts(data)
-        }
-    }
-    const createContact = async (name, vendor)=>{
-        setContacts([...contacts, {name,vendor}])
-        AsyncStorage.setItem("contacts", JSON.stringify(contacts));
-    }
-    
-    const sendMessageSocket = (receiver, text)=>{
-        if(socket === null) return
-        socket.emit("send-message", {receiver, text})
-        socket.emit("save-chat", chatList)
-    }
-
-    const sendMessage=(recipient, text)=>{
-        sendMessageSocket(recipient, text)
-        setMessage('')
-        addMessage(recipient, text, user )
-    }
-    const addMessage = (recipient, text, sender)=>{
-      let obj = {
-          recipient,
-          text,
-          sender
-      }
-      if(chatList){
-        setChatList([...chatList, obj].reverse())
-      }
-      else{
-          setChatList(obj)
-      }
-    }
     return(
-        <chatContext.Provider value={{contacts, createContact, sendMessage, chatList, setChatList, message, setMessage}}>
+        <chatContext.Provider value={{user, vendor}}>
             {children}
         </chatContext.Provider>
     )

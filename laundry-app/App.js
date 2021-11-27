@@ -37,6 +37,8 @@ import FindRider from "./screens/vendor/FindRider";
 import ChatScreen from './screens/customer/ChatScreen'
 import ChatMessage from './screens/customer/ChatMessage'
 import ShopLocation from './screens/vendor/ShopLocation'
+import VendorChat from "./screens/vendor/VendorChat";
+import VendorChatMessage from './screens/vendor/VendorChatMessage'
 //dependencies
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -53,17 +55,17 @@ LogBox.ignoreAllLogs();
 export default function App() {
   const header = {
     headerStyle: {
-      backgroundColor: colors.secondaryColor,
+      backgroundColor: colors.primaryColor,
     },
-    headerTintColor: "#fff",
+    headerTintColor: colors.tertiaryColor,
     headerTitleStyle: {
       fontWeight: "bold",
     },
   }
   const tabBar = {
     activeTintColor: "#fff",
-    inactiveTintColor: "lightgray",
-    activeBackgroundColor: "gray",
+    inactiveTintColor: "black",
+    activeBackgroundColor: colors.primaryColor,
     inactiveBackgroundColor: colors.tertiaryColor,
     style: {
       backgroundColor: "#CE4418",
@@ -86,9 +88,11 @@ export default function App() {
                   } else if (route.name === "EditShop") {
                     iconName = focused ? "create" : "create-outline";
                   } else if (route.name === "DeleteShop") {
-                    iconName = focused ? "remove" : "remove-outline";
+                    iconName = focused ? "delete" : "delete-outline";
                   }
-
+                  else if (route.name === "VendorChatScreen") {
+                    iconName = focused ? "chatbubble-ellipses": "chatbubble-ellipses-outline";
+                  }
                   return <Ionicons name={iconName} size={size} color={color} />;
                 },
                 headerShown: false,
@@ -101,7 +105,7 @@ export default function App() {
               <Tab.Screen
                 name="ShopLocation"
                 component={ShopLocation}
-                options={{ tabBarBadge: 1 }}
+                options={{ tabBarBadge: 1, title: "Create Shop" }}
               />
               <Tab.Screen
                 name="EditShop"
@@ -113,6 +117,12 @@ export default function App() {
                 component={DeleteShop}
                 options={{ title: "Delete Shop" }}
               />
+              <Tab.Screen
+                name="VendorChatScreen"
+                component={VendorChat}
+                options={{ title: "Chat" }}
+              />
+              
             </Tab.Navigator>
           );
         }}
@@ -140,6 +150,9 @@ export default function App() {
                   }
                   if (route.name === "RatingScreen") {
                     iconName = focused ? "star" : "star-outline";
+                  }
+                 if (route.name === "ChatScreen") {
+                    iconName = focused ? "chatbubble-ellipses": "chatbubble-ellipses-outline";
                   }
                   return <Ionicons name={iconName} size={size} color={color} />;
                 },
@@ -169,6 +182,11 @@ export default function App() {
                 component={AboutScreen}
                 options={{ title: "About" }}
               />
+              <Tab.Screen
+                name="ChatScreen"
+                component={ChatScreen}
+                options={{ title: "Chat" }}
+              />
             </Tab.Navigator>
           );
         }}
@@ -185,8 +203,8 @@ export default function App() {
             <ChatContextProvider>
               {/* <NotificationApp /> */}
               <CartContextProvider>
-                <StatusBar backgroundColor={colors.secondaryColor} />
-                <Stack.Navigator initialRouteName="MainScreen">
+                <StatusBar backgroundColor={colors.primaryColor} />
+                <Stack.Navigator initialRouteName="VendorScreen">
                   <Stack.Screen
                     name="Splash"
                     component={Splash}
@@ -383,6 +401,14 @@ export default function App() {
                   <Stack.Screen
                     name="ChatMessageScreen"
                     component={ChatMessage}
+                    options={{
+                      title: "Chat",
+                      ...header                  
+                    }}
+                  />
+                  <Stack.Screen
+                    name="VendorChatMessageScreen"
+                    component={VendorChatMessage}
                     options={{
                       title: "Chat",
                       ...header                  

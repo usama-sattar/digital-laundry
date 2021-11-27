@@ -8,6 +8,11 @@ router.get('/total', (req,res)=>{
     .then((user)=> res.json(user))
     .catch((err)=> console.log(err))
 })
+router.get('/:vendorId', (req,res)=>{
+    Vendor.find({_id: req.params.vendorId})
+    .then((user)=> res.json(user))
+    .catch((err)=> console.log(err))
+})
 
 router.get('/pending/:id', (req,res)=>{
     console.log("pend")

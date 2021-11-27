@@ -35,35 +35,39 @@ export default function PendingScreenContainer({ route, navigation }) {
   return (
     <View
       style={{
-        backgroundColor: colors.tertiaryColor,
+        backgroundColor: colors.secondaryColor,
         flex: 1,
       }}
     >
       <ListItem
         bottomDivider
         containerStyle={{
-          backgroundColor: colors.tertiaryColor,
+          backgroundColor: colors.secondaryColor,
         }}
       >
         <ListItem.Content>
-          <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
+          <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
             Name:{data.name}
           </ListItem.Subtitle>
-          <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
+          <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
             address: {data.address}
           </ListItem.Subtitle>
-          <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
+          <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
             contact: {data.contact}
           </ListItem.Subtitle>
-          <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
+          <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
             Price: {data.total}
           </ListItem.Subtitle>
-          <Text style={{ fontStyle: "italic", color: "white" }}>Cart</Text>
+          <Text style={{ fontStyle: "italic", color: colors.textColor }}>
+            Cart
+          </Text>
           {data.cart.map((p, i) => (
             <View key={i}>
-              <Text style={{ color: "white" }}>name: {p.name}</Text>
-              <Text style={{ color: "white" }}>quantity: {p.quantity}</Text>
-              <Text style={{ color: "white" }}>price: {p.price}</Text>
+              <Text style={{ color: colors.textColor }}>name: {p.name}</Text>
+              <Text style={{ color: colors.textColor }}>
+                quantity: {p.quantity}
+              </Text>
+              <Text style={{ color: colors.textColor }}>price: {p.price}</Text>
             </View>
           ))}
         </ListItem.Content>

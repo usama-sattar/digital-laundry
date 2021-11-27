@@ -14,13 +14,19 @@ function VendorMain({ navigation }) {
               style={styles.image}
               source={require("../../assets/vendor-screen.png")}
             />
-            <Text style={{ fontSize: 20, color: "white", marginVertical: 15 }}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: colors.textColor,
+                marginVertical: 15,
+              }}
+            >
               Vendor Dashboard
             </Text>
             <View style={styles.cardHolder}>
               <TouchableOpacity
                 style={{
-                  backgroundColor: colors.secondaryColor,
+                  backgroundColor: colors.primaryColor,
                   width: "50%",
                   flexBasis: "45%",
                   padding: 10,
@@ -37,7 +43,7 @@ function VendorMain({ navigation }) {
 
               <TouchableOpacity
                 style={{
-                  backgroundColor: colors.secondaryColor,
+                  backgroundColor: colors.primaryColor,
                   width: "50%",
                   flexBasis: "45%",
                   padding: 10,
@@ -56,7 +62,7 @@ function VendorMain({ navigation }) {
 
               <TouchableOpacity
                 style={{
-                  backgroundColor: colors.secondaryColor,
+                  backgroundColor: colors.primaryColor,
                   width: "50%",
                   flexBasis: "45%",
                   padding: 10,
@@ -82,7 +88,7 @@ function VendorMain({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.tertiaryColor,
+    backgroundColor: colors.secondaryColor,
     alignItems: "center",
   },
 
@@ -95,7 +101,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textStyle: {
-    color: "red",
+    color: "yellow",
     fontSize: 15,
   },
   image: {

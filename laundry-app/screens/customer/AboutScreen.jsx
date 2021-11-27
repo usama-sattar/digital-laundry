@@ -33,13 +33,13 @@ export default function AboutScreen({ navigation }) {
     setVisible(!visible);
   };
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: colors.secondaryColor }}>
       <View style={{ flex: 0.8 }}>
         <Button
           title="Rate Us"
           onPress={toggleOverlay}
           buttonStyle={{
-            backgroundColor: colors.secondaryColor,
+            backgroundColor: colors.primaryColor,
             width: 100,
             alignSelf: "center",
             marginVertical: 10,
@@ -63,7 +63,7 @@ export default function AboutScreen({ navigation }) {
             title="Submit"
             onPress={sendRating}
             buttonStyle={{
-              backgroundColor: colors.secondaryColor,
+              backgroundColor: colors.primaryColor,
               width: 100,
               alignSelf: "center",
               marginVertical: 10,

@@ -10,6 +10,11 @@ router.get("/total", (req, res) => {
     .then((user) => res.json(user))
     .catch((err) => console.log(err));
 });
+router.get("/:id", (req, res) => {
+  Customer.find({_id: req.params.id})
+    .then((user) => res.json(user))
+    .catch((err) => console.log(err));
+});
 
 router.get("/current/:id", (req, res) => {
   console.log(req.params.id);

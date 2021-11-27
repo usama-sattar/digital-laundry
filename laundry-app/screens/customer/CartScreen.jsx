@@ -34,10 +34,14 @@ function Cart({ navigation, route }) {
                 containerStyle={{ backgroundColor: colors.tertiaryColor }}
               >
                 <ListItem.Content>
-                  <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
-                    Service: {item.name}
+                  <ListItem.Subtitle
+                    style={{ color: colors.textColor, fontSize: 15 }}
+                  >
+                    Service: {item.title}
                   </ListItem.Subtitle>
-                  <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
+                  <ListItem.Subtitle
+                    style={{ color: colors.textColor, fontSize: 15 }}
+                  >
                     Price: {item.price}
                   </ListItem.Subtitle>
                 </ListItem.Content>
@@ -47,20 +51,22 @@ function Cart({ navigation, route }) {
                       <Ionicons
                         name="add-circle"
                         size={25}
-                        color={colors.primaryColor}
+                        color="green"
                       ></Ionicons>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => decrement(item, key)}>
                       <Ionicons
                         name="remove-circle"
                         size={25}
-                        color={colors.redColor}
+                        color="purple"
                       ></Ionicons>
                     </TouchableOpacity>
                   </View>
                 </ListItem.Content>
                 <ListItem.Content>
-                  <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
+                  <ListItem.Subtitle
+                    style={{ color: colors.textColor, fontSize: 15 }}
+                  >
                     Quantity: {item.quantity}
                   </ListItem.Subtitle>
                   <ListItem.Subtitle>
@@ -92,7 +98,7 @@ function Cart({ navigation, route }) {
           style={
             total > 0
               ? styles.cartButton
-              : [styles.cartButton, { backgroundColor: "gray" }]
+              : [styles.cartButton, { backgroundColor: colors.lightBlue }]
           }
           onPress={() =>
             navigation.navigate("CheckoutScreen", { name: name, id: id })
@@ -111,16 +117,16 @@ function Cart({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.tertiaryColor,
+    backgroundColor: colors.secondaryColor,
   },
   header: {
     width: "100%",
-    backgroundColor: colors.secondaryColor,
+    backgroundColor: colors.primaryColor,
     height: 100,
     justifyContent: "center",
     alignItems: "center",
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
   },
   checkoutButton: {
     backgroundColor: colors.secondaryColor,
@@ -132,7 +138,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   cartButton: {
-    backgroundColor: colors.secondaryColor,
+    backgroundColor: colors.primaryColor,
     width: "100%",
     height: 50,
     borderRadius: 10,

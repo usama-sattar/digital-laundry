@@ -26,7 +26,9 @@ export default function PendingOrders({ navigation }) {
     }
   };
   const getOrders = async (vendorId) => {
-    const result = await axios.get(`${API}/vendors/pending/${vendorId}`);
+    const result = await axios.get(
+      `${API}/vendors/pending/60b62df47cf46e1d64e649fd`
+    );
     const data = await result.data;
     setOrders(data);
   };
@@ -34,6 +36,7 @@ export default function PendingOrders({ navigation }) {
   return (
     <View style={styles.container}>
       {orders.map((item, key) => {
+        console.log(item);
         return (
           <ListItem
             key={key}
@@ -41,12 +44,16 @@ export default function PendingOrders({ navigation }) {
             containerStyle={{ backgroundColor: colors.tertiaryColor }}
           >
             <ListItem.Content>
-              <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
-                Name:{item.name}
+              <ListItem.Subtitle
+                style={{ color: colors.textColor, fontSize: 15 }}
+              >
+                {item.name}
               </ListItem.Subtitle>
             </ListItem.Content>
             <ListItem.Content>
-              <ListItem.Subtitle style={{ color: "white", fontSize: 15 }}>
+              <ListItem.Subtitle
+                style={{ color: colors.textColor, fontSize: 15 }}
+              >
                 Price: {item.total}
               </ListItem.Subtitle>
             </ListItem.Content>
@@ -54,7 +61,7 @@ export default function PendingOrders({ navigation }) {
               title="View"
               buttonStyle={{ width: 60, height: 30 }}
               titleStyle={{
-                color: "white",
+                color: colors.textColor,
                 fontSize: 12,
               }}
               onPress={() => {
@@ -73,6 +80,6 @@ export default function PendingOrders({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.tertiaryColor,
+    backgroundColor: colors.secondaryColor,
   },
 });

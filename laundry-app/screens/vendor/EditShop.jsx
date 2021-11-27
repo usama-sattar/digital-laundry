@@ -16,6 +16,7 @@ import { colors } from "../../global/colors";
 import UpdateView from "../../components/UpdateView";
 import { UpdateNew } from "../../components/UpdateView";
 import { updateContext } from "../../context/update";
+import { color } from "react-native-elements/dist/helpers";
 
 export default function EditShop({ navigation }) {
   const [vendor, setVendor] = useState("");
@@ -57,67 +58,88 @@ export default function EditShop({ navigation }) {
               style={{
                 flex: 1,
                 paddingTop: 5,
-                backgroundColor: colors.tertiaryColor,
+                backgroundColor: colors.secondaryColor,
               }}
             >
-              <ScrollView
-                contentContainerStyle={{ flexGrow: 1 }}
-                style={{ flexGrow: 1 }}
-              >
+              {shop !== {} ? (
+                <ScrollView
+                  contentContainerStyle={{ flexGrow: 1 }}
+                  style={{ flexGrow: 1 }}
+                >
+                  <View
+                    style={{ width: "80%", alignSelf: "center", marginTop: 5 }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: "500",
+                        color: colors.textColor,
+                      }}
+                    >
+                      Existing Services
+                    </Text>
+                    {services.length > 0
+                      ? services.map((item, index) => (
+                          <UpdateView key={index} detail={item} />
+                        ))
+                      : null}
+                  </View>
+
+                  <View
+                    style={{ width: "80%", alignSelf: "center", marginTop: 5 }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: "500",
+                        color: colors.textColor,
+                      }}
+                    >
+                      Add New Services
+                    </Text>
+                    <View>{services.length > 0 ? <UpdateNew /> : null}</View>
+                  </View>
+                  <View
+                    style={{ width: "80%", alignSelf: "center", marginTop: 5 }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: "500",
+                        color: colors.textColor,
+                      }}
+                    >
+                      New Services
+                    </Text>
+                    {value.services.length > 0
+                      ? value.services.map((item, index) => {
+                          return (
+                            <View
+                              key={index}
+                              style={{ fontSize: 18, color: "white" }}
+                            >
+                              <Text key={index} style={{ color: "white" }}>
+                                {item.title}
+                              </Text>
+                            </View>
+                          );
+                        })
+                      : null}
+                  </View>
+                  <TouchableOpacity
+                    style={styles.submit}
+                    onPress={() => updateShop()}
+                  >
+                    <Text style={{ color: "white", fontSize: 20 }}>
+                      Update Details
+                    </Text>
+                  </TouchableOpacity>
+                </ScrollView>
+              ) : (
                 <View>
-                  <Text
-                    style={{ fontSize: 20, fontWeight: "500", color: "white" }}
-                  >
-                    Existing Services
-                  </Text>
+                  <Text>Create Shop First</Text>
                 </View>
-                {services.length > 0
-                  ? services.map((item, index) => (
-                      <UpdateView key={index} detail={item} />
-                    ))
-                  : null}
-                <View
-                  style={{ width: "80%", alignSelf: "center", marginTop: 5 }}
-                >
-                  <Text
-                    style={{ fontSize: 20, fontWeight: "500", color: "white" }}
-                  >
-                    Add New Services
-                  </Text>
-                  <View>{services.length > 0 ? <UpdateNew /> : null}</View>
-                </View>
-                <View
-                  style={{ width: "80%", alignSelf: "center", marginTop: 5 }}
-                >
-                  <Text
-                    style={{ fontSize: 20, fontWeight: "500", color: "white" }}
-                  >
-                    New Services
-                  </Text>
-                  {value.services.length > 0
-                    ? value.services.map((item, index) => {
-                        return (
-                          <View
-                            key={index}
-                            style={{ fontSize: 18, color: "white" }}
-                          >
-                            <Text key={index} style={{ color: "white" }}>
-                              {item.title}
-                            </Text>
-                          </View>
-                        );
-                      })
-                    : null}
-                </View>
-                <TouchableOpacity
-                  style={styles.submit}
-                  onPress={() => updateShop()}
-                >
-                  <Text style={{ color: "white", fontSize: 20 }}>
-                    Update Details
-                  </Text>
-                </TouchableOpacity>
-              </ScrollView>
+              )}
             </View>
           );
         }}
@@ -141,11 +163,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
     width: "60%",
     padding: 8,
-    backgroundColor: colors.secondaryColor,
+    backgroundColor: colors.primaryColor,
     alignSelf: "center",
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "black",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

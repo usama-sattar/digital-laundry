@@ -26,9 +26,7 @@ export default function PendingOrders({ navigation }) {
     }
   };
   const getOrders = async (vendorId) => {
-    const result = await axios.get(
-      `${API}/vendors/pending/60b62df47cf46e1d64e649fd`
-    );
+    const result = await axios.get(`${API}/vendors/pending/${vendorId}`);
     const data = await result.data;
     setOrders(data);
   };
@@ -61,7 +59,7 @@ export default function PendingOrders({ navigation }) {
               title="View"
               buttonStyle={{ width: 60, height: 30 }}
               titleStyle={{
-                color: colors.textColor,
+                color: "white",
                 fontSize: 12,
               }}
               onPress={() => {

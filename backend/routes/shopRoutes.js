@@ -3,6 +3,7 @@ const router = express.Router();
 const Shop = require("../models/shopModel");
 var multer = require("multer")
 var path = require('path');
+const ShopRating = require('../models/shopRating')
 
 var Storage= multer.diskStorage({
   destination:"./public/uploads",
@@ -26,6 +27,12 @@ router.get("/:id" , (req,res)=>{
     .then((shop) => res.json(shop))
     .catch((err) => console.log(err));
 })
+router.get('/:vendorId', (req,res)=>{
+  Shop.find({vendor: req.params.vendorId})
+  .then((shop)=> res.json(shop))
+  .catch((err)=> console.log(err))
+})
+
 router.post("/create",  (req, res) => {
       const shop = new Shop({
         name: req.body.name,
@@ -35,6 +42,7 @@ router.post("/create",  (req, res) => {
         services: req.body.services,
         coordinate: req.body.coordinates,
         location: req.body.location,
+        email: req.body.email
       });
       shop
         .save()
@@ -105,15 +113,19 @@ router.get("/find/:name", async(req, res) => {
     res.status(400).send(err);
   }
  });
-router.post("/rating/:id", async (req,res)=>{
-  Shop.findByIdAndUpdate({_id: req.params.id}, 
+router.post("/rating/:id/:orderId", async (req,res)=>{
+  Shop.findOneAndUpdate({vendor: req.params.id}, 
   {$push: {'rating': req.body.rating}}, 
-  {new: true}, (err, result) => {
+  {new: true}, async (err, result) =>  {
       if(err){
           res.status(400).send(err)
       }
       else{
-          res.send(result)
+          const newObj = await new ShopRating({
+            orderId: req.params.orderId,
+            rating: req.body.rating
+          })
+          newObj.save().then(res.send(true)).catch(err=>console.log(err))
       }
  })
 })
@@ -121,6 +133,9 @@ router.get("/avg/rating", (req,res)=>{
   Shop.aggregate(([ {$addFields : {average : {$avg : "$rating"}}} ]))
   .then(result=>res.send(result))
   .catch(err=>console.log(err))
+})
+router.get("/order/rating/:id", (req,res)=>{
+  ShopRating.find({orderId: req.params.id}).then(result=>res.send(result)).catch(err=>console.log(err))
 })
 
 module.exports = router;

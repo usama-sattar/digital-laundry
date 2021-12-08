@@ -4,12 +4,16 @@ import "../navbar.css";
 
 function RatingTabelView({ rating, key }) {
   return (
-    <div style={{ padding: "5px", margin: "20px" }}>
-      <div className="row" style={{ marginTop: 15 }}>
-        <div className="col-md-4">{rating._id}</div>
-        <div className="col-md-4">{rating.user}</div>
-        <div className="col-md-4">{rating.rating}</div>
-      </div>
+    <div style={{ margin: "20px" }}>
+      <table className="table table-striped">
+        <tbody>
+          <tr>
+            <td className="col-4">{rating._id}</td>
+            <td className="col-4">{rating.user}</td>
+            <td className="col-4">{rating.rating}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }

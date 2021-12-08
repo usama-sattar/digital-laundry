@@ -15,7 +15,6 @@ router.get('/:vendorId', (req,res)=>{
 })
 
 router.get('/pending/:id', (req,res)=>{
-    console.log("pend")
     Order.find({vendorId: req.params.id, status: 'pending'})
     .then((data)=>{res.send(data)})
     .catch((err)=> console.log(err))
@@ -36,5 +35,15 @@ router.get('/fullfilled/:id', (req,res)=>{
     .catch((err)=> console.log(err))
 })
 
+router.get('/total/pending/:id', async(req,res)=>{
+    var total=0;
+    const record = await Order.find({vendorId: req.params.id, status: "pending"}).countDocuments(function(err,count) {total = count})
+    res.status(200).send((total).toString())
+})
+router.get('/total/fullfilled/:id', async(req,res)=>{
+    var total=0;
+    const record = await Order.find({vendorId: req.params.id, status: "fullfilled"}).countDocuments(function(err,count) {total = count})
+    res.status(200).send((total).toString())
+})
 
 module.exports=router

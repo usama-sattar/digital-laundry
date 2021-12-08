@@ -27,6 +27,9 @@ export default function RideBooking({ navigation }) {
   useEffect(() => {
     getLocation();
   }, []);
+  useEffect(() => {
+    getNearby();
+  }, [region]);
 
   const getNearby = async () => {
     if (region) {
@@ -42,7 +45,6 @@ export default function RideBooking({ navigation }) {
     const nearbyRider = await nearbyRiders[
       Math.floor(Math.random() * nearbyRiders.length)
     ];
-
     const payload = {
       data: {
         pickUpData: {
@@ -74,7 +76,7 @@ export default function RideBooking({ navigation }) {
   };
   const calculateFare = () => {
     const fareNumbers = {
-      baseFare: 4.0,
+      baseFare: 6.0,
       timeRate: 1.8,
       distanceRate: 2.0,
       surge: 1,
@@ -123,58 +125,65 @@ export default function RideBooking({ navigation }) {
         maximumAge: 1000,
       }
     );
-    getNearby();
   };
 
   return (
     <View style={{ flex: 1 }}>
-      <GooglePlacesAutocomplete
-        placeholder="Pick Up"
-        minLength={2}
-        autoFocus={false}
-        fetchDetails={true}
-        listViewDisplayed="auto"
-        renderDescription={(row) => row.description}
-        returnKeyType={"search"}
-        onPress={(data, details = null) => {
-          console.log(data, details);
-          setPickUp({
-            lat: details.geometry.location.lat,
-            lng: details.geometry.location.lng,
-            description: data.description,
-          });
-        }}
-        query={{
-          key: "AIzaSyCSCRz0dn9b8tujCwtYNcgS--DSZ-cDBN0",
-          language: "en",
-        }}
-        GooglePlacesDetailsQuery={{ fields: ["formatted_address", "geometry"] }}
-      />
-      <GooglePlacesAutocomplete
-        placeholder="Drop Off"
-        minLength={2}
-        autoFocus={false}
-        fetchDetails={true}
-        listViewDisplayed="auto"
-        renderDescription={(row) => row.description}
-        returnKeyType={"search"}
-        onPress={(data, details = null) => {
-          setDropOff({
-            lat: details.geometry.location.lat,
-            lng: details.geometry.location.lng,
-            description: data.description,
-          });
-        }}
-        query={{
-          key: "AIzaSyCSCRz0dn9b8tujCwtYNcgS--DSZ-cDBN0",
-          language: "en",
-        }}
-        GooglePlacesDetailsQuery={{ fields: ["formatted_address", "geometry"] }}
-      />
+      <View style={styles.pickUp}>
+        <GooglePlacesAutocomplete
+          placeholder="Pick Up"
+          minLength={2}
+          autoFocus={false}
+          fetchDetails={true}
+          listViewDisplayed="auto"
+          renderDescription={(row) => row.description}
+          returnKeyType={"search"}
+          onPress={(data, details = null) => {
+            console.log(data, details);
+            setPickUp({
+              lat: details.geometry.location.lat,
+              lng: details.geometry.location.lng,
+              description: data.description,
+            });
+          }}
+          query={{
+            key: "AIzaSyCSCRz0dn9b8tujCwtYNcgS--DSZ-cDBN0",
+            language: "en",
+          }}
+          GooglePlacesDetailsQuery={{
+            fields: ["formatted_address", "geometry"],
+          }}
+        />
+      </View>
+      <View style={styles.dropOff}>
+        <GooglePlacesAutocomplete
+          placeholder="Drop Off"
+          minLength={2}
+          autoFocus={false}
+          fetchDetails={true}
+          listViewDisplayed="auto"
+          renderDescription={(row) => row.description}
+          returnKeyType={"search"}
+          onPress={(data, details = null) => {
+            setDropOff({
+              lat: details.geometry.location.lat,
+              lng: details.geometry.location.lng,
+              description: data.description,
+            });
+          }}
+          query={{
+            key: "AIzaSyCSCRz0dn9b8tujCwtYNcgS--DSZ-cDBN0",
+            language: "en",
+          }}
+          GooglePlacesDetailsQuery={{
+            fields: ["formatted_address", "geometry"],
+          }}
+        />
+      </View>
       <View style={styles.btn}>
         <TouchableOpacity
           style={{
-            backgroundColor: colors.secondaryColor,
+            backgroundColor: colors.primaryColor,
             borderRadius: 50,
             padding: 15,
           }}
@@ -183,11 +192,11 @@ export default function RideBooking({ navigation }) {
           <Text style={{ color: "white", fontWeight: "bold" }}>Go !</Text>
         </TouchableOpacity>
       </View>
-      <View>
+      <View style={styles.fareBtn}>
         {fare && <Text style={{ textAlign: "center" }}>{fare}</Text>}
         <Button title="calculate fare" onPress={calculateFare} />
       </View>
-      {/* {region && (
+      {region && (
         <MapView
           loadingEnabled={true}
           provider={MapView.PROVIDER_GOOGLE}
@@ -210,7 +219,7 @@ export default function RideBooking({ navigation }) {
               ))
             : console.log("null")}
         </MapView>
-      )} */}
+      )}
     </View>
   );
 }
@@ -224,5 +233,28 @@ const styles = StyleSheet.create({
     right: 30,
     bottom: 30,
     zIndex: 999,
+  },
+  dropOff: {
+    position: "absolute",
+    top: 80,
+    left: 0,
+    zIndex: 999,
+    width: "90%",
+    marginHorizontal: 20,
+  },
+  pickUp: {
+    position: "absolute",
+    top: 20,
+    left: 0,
+    zIndex: 999,
+    width: "90%",
+    marginHorizontal: 20,
+  },
+  fareBtn: {
+    position: "absolute",
+    width: 200,
+    zIndex: 999,
+    alignSelf: "center",
+    bottom: 20,
   },
 });

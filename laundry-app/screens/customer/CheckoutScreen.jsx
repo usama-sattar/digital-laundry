@@ -13,12 +13,10 @@ import Swiper from "react-native-swiper";
 import { Image } from "react-native-elements";
 import { cartContext } from "../../context/cart";
 import { colors } from "../../global/colors";
-
 export default function Checkout({ navigation, route }) {
   const { total } = useContext(cartContext);
   const [visibleSwiper, setVisibleSwiper] = useState(true);
-  const { name, id } = route.params;
-
+  const { name, id, email } = route.params;
   let swiper = null;
   if (visibleSwiper) {
     swiper = (
@@ -72,7 +70,9 @@ export default function Checkout({ navigation, route }) {
           justifyContent: "center",
         }}
       >
-        <Text style={{ fontSize: 40, color: "white" }}>Rs. {total}</Text>
+        <Text style={{ fontSize: 40, color: colors.textColor }}>
+          Rs. {total}
+        </Text>
       </View>
 
       {swiper}
@@ -82,7 +82,11 @@ export default function Checkout({ navigation, route }) {
             <Pressable
               style={styles.paymentCard}
               onPress={() =>
-                navigation.navigate("CardScreen", { name: name, id: id })
+                navigation.navigate("CardScreen", {
+                  name: name,
+                  id: id,
+                  email: email,
+                })
               }
             >
               <Text style={styles.textStyle}>Credit Card</Text>

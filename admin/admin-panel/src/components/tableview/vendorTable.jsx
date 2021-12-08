@@ -8,23 +8,32 @@ function VendorTabelView({ vendor, key }) {
   };
   return (
     <div style={{ padding: "5px", margin: "20px" }}>
-      <div className="row" style={{ marginTop: 15 }}>
-        <div className="col-3">{vendor._id}</div>
-        <div className="col-2">{vendor.name}</div>
-        <div className="col-3">{vendor.phone}</div>
-        <div className="col-2">{vendor.cnic}</div>
-
-        <div className="col-2">
-          <i
-            className="fas fa-trash"
-            style={{ color: "red", cursor: "pointer" }}
-            onClick={() => {
-              if (window.confirm("Are you sure you wish to delete this item?"))
-                deleteVendor(vendor._id);
-            }}
-          ></i>
-        </div>
-      </div>
+      <table className="table table-striped">
+        <tbody>
+          <tr>
+            <td className="col-2">{vendor._id}</td>
+            <td className="col-2">{vendor.name}</td>
+            <td className="col-3">{vendor.phone}</td>
+            <td className="col-3">{vendor.cnic}</td>
+            <td className="col-2">
+              <button type="button" className="btn btn-danger">
+                <i
+                  className="fas fa-trash"
+                  style={{ color: "white", cursor: "pointer" }}
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        "Are you sure you wish to delete this item?"
+                      )
+                    )
+                      deleteVendor(vendor._id);
+                  }}
+                ></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }

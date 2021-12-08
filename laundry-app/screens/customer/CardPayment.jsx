@@ -19,22 +19,29 @@ import { API } from "../../global/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colors } from "../../global/colors";
 import { Button } from "react-native-elements";
+import LottieView from "lottie-react-native";
 
-function CardPayment({ name, id }) {
+function CardPayment({ route }) {
   return (
     <StripeProvider publishableKey="pk_test_51J56lVJIiMKnmPN2rwY9qFt8R5FTtdITJoIRU3wEASsmx31gCGK7yBuGThKyPJuZH3e2ASFwFgxWewU28AUDqpZa00BjkrySxV">
-      <StripeHandler vendorName={name} vendorId={id} />
+      <StripeHandler
+        vendorName={route.params.name}
+        vendorId={route.params.id}
+        vendorEmail={route.params.email}
+      />
     </StripeProvider>
   );
 }
-function StripeHandler({ vendorName, vendorId }) {
+function StripeHandler({ vendorName, vendorId, vendorEmail }) {
+  const [animation, setAnimation] = useState(false);
   const [user, setUser] = useState("");
   const [cardDetails, setCardDetails] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [contact, setContact] = useState("");
-  const { cart, total, setCart, setOrderState } = useContext(cartContext);
+  const { cart, total, setCart, setOrderState, setTotal } =
+    useContext(cartContext);
   const { confirmPayment, loading } = useConfirmPayment();
 
   useEffect(() => {
@@ -84,13 +91,12 @@ function StripeHandler({ vendorName, vendorId }) {
       `${API}/customers/create-payment`,
       billing
     );
-    const result = await response.data;
     try {
-      const { paymentIntent, error } = await confirmPayment(result, {
+      const { paymentIntent, error } = await confirmPayment(response.data, {
         type: "Card",
         billingDetails: { billing },
       });
-      const response = await axios.post(`${API}/customers/order`, {
+      const responsePost = await axios.post(`${API}/customers/order`, {
         customerId: user,
         name,
         email,
@@ -102,12 +108,16 @@ function StripeHandler({ vendorName, vendorId }) {
         vendor: vendorName,
         vendorId: vendorId,
       });
-      const result = await response.data;
+      const result = await responsePost.data;
+      const mail = axios.post(`${API}/notification/sendMail`, {
+        email: vendorEmail,
+      });
       try {
         if (result) {
           setCart([]);
           setOrderState();
-          Alert.alert("Successfully placed order");
+          setTotal(0);
+          setAnimation(true);
         }
       } catch (err) {
         console.log(err);
@@ -119,90 +129,102 @@ function StripeHandler({ vendorName, vendorId }) {
 
   return (
     <View style={styles.container}>
-      <View>
-        <TextInput
-          placeholder="name"
-          onChangeText={(text) => setName(text)}
-          style={{
-            borderWidth: 1,
-            padding: 5,
-            borderRadius: 15,
-            backgroundColor: "white",
-            paddingLeft: 10,
-            width: "90%",
-            alignSelf: "center",
-          }}
-        />
-        <TextInput
-          placeholder="email"
-          onChangeText={(text) => setEmail(text)}
-          style={{
-            borderWidth: 1,
-            padding: 5,
-            borderRadius: 5,
-            borderRadius: 15,
-            backgroundColor: "white",
-            paddingLeft: 10,
-            marginTop: 10,
-            width: "90%",
-            alignSelf: "center",
-          }}
-        />
-        <TextInput
-          placeholder="address"
-          onChangeText={(text) => setAddress(text)}
-          style={{
-            borderWidth: 1,
-            padding: 5,
-            borderRadius: 5,
-            borderRadius: 15,
-            backgroundColor: "white",
-            paddingLeft: 10,
-            marginTop: 10,
-            width: "90%",
-            alignSelf: "center",
-          }}
-        />
-        <TextInput
-          placeholder="contact number"
-          onChangeText={(text) => setContact(text)}
-          style={{
-            borderWidth: 1,
-            padding: 5,
-            borderRadius: 5,
-            borderRadius: 15,
-            backgroundColor: "white",
-            paddingLeft: 10,
-            marginTop: 10,
-            width: "90%",
-            alignSelf: "center",
-          }}
-          keyboardType="numeric"
-        />
+      {animation ? (
+        <LottieView
+          visible={true}
+          overlayColor="rgba(255,255,255,0.75)"
+          source={require("../../success.json")}
+          speed={1}
+          autoPlay
+        ></LottieView>
+      ) : (
         <View>
-          <CardField
-            placeholder={{ number: "4242 4242 4242 4242" }}
-            postalCodeEnabled={false}
-            style={styles.cardField}
-            cardStyle={{ backgroundColor: "white", borderRadius: 5 }}
-            onCardChange={(cardDetail) => {
-              setCardDetails(cardDetail);
-            }}
-          />
+          <View>
+            <TextInput
+              placeholder="name"
+              onChangeText={(text) => setName(text)}
+              style={{
+                borderWidth: 1,
+                padding: 5,
+                borderRadius: 15,
+                backgroundColor: "white",
+                paddingLeft: 10,
+                width: "90%",
+                alignSelf: "center",
+              }}
+            />
+            <TextInput
+              placeholder="email"
+              onChangeText={(text) => setEmail(text)}
+              style={{
+                borderWidth: 1,
+                padding: 5,
+                borderRadius: 5,
+                borderRadius: 15,
+                backgroundColor: "white",
+                paddingLeft: 10,
+                marginTop: 10,
+                width: "90%",
+                alignSelf: "center",
+              }}
+            />
+            <TextInput
+              placeholder="address"
+              onChangeText={(text) => setAddress(text)}
+              style={{
+                borderWidth: 1,
+                padding: 5,
+                borderRadius: 5,
+                borderRadius: 15,
+                backgroundColor: "white",
+                paddingLeft: 10,
+                marginTop: 10,
+                width: "90%",
+                alignSelf: "center",
+              }}
+            />
+            <TextInput
+              placeholder="contact number"
+              onChangeText={(text) => setContact(text)}
+              style={{
+                borderWidth: 1,
+                padding: 5,
+                borderRadius: 5,
+                borderRadius: 15,
+                backgroundColor: "white",
+                paddingLeft: 10,
+                marginTop: 10,
+                width: "90%",
+                alignSelf: "center",
+              }}
+              keyboardType="numeric"
+            />
+            <View>
+              <CardField
+                placeholder={{ number: "4242 4242 4242 4242" }}
+                postalCodeEnabled={false}
+                style={styles.cardField}
+                cardStyle={{ backgroundColor: "white", borderRadius: 5 }}
+                onCardChange={(cardDetail) => {
+                  setCardDetails(cardDetail);
+                }}
+              />
+            </View>
+          </View>
+          <View>
+            <Button
+              title="Pay"
+              buttonStyle={{
+                backgroundColor: colors.primaryColor,
+                width: "90%",
+                alignSelf: "center",
+              }}
+              onPress={paymentHandle}
+              disabled={loading}
+            />
+          </View>
         </View>
-      </View>
-      <View>
-        <Button
-          title="Pay"
-          buttonStyle={{
-            backgroundColor: colors.primaryColor,
-            width: "90%",
-            alignSelf: "center",
-          }}
-          onPress={paymentHandle}
-          disabled={loading}
-        />
-      </View>
+      )}
     </View>
   );
 }

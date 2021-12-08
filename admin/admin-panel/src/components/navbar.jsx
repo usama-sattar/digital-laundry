@@ -71,11 +71,6 @@ function Navbar(props) {
                 </li>
 
                 <li className="nav-text">
-                  <Link to="/complaints">
-                    <i className="fas fa-comments"></i> <span> Complaints</span>
-                  </Link>
-                </li>
-                <li className="nav-text">
                   <Link to="/charts">
                     <i className="fas fa-chart-bar"></i> <span> Stats</span>
                   </Link>

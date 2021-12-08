@@ -21,6 +21,7 @@ export default function ShopName({ navigation, route }) {
   const [address, setAddress] = useState("");
   const [account, setAccount] = useState("");
   const [shopImage, setShopImage] = useState("");
+  const [email, setEmail] = useState("");
   const { coordinates, location } = route.params;
 
   console.log(coordinates);
@@ -53,12 +54,18 @@ export default function ShopName({ navigation, route }) {
       Alert.alert("Account Info cannot be empty");
       return;
     }
-    const formData = new FormData();
-    formData.append("file", {
-      name: new Date() + "_image",
-      uri: shopImage.uri,
-      type: "image/jpg",
-    });
+    let regex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!regex.test(email)) {
+      Alert.alert("Invalid email");
+      return;
+    }
+    // const formData = new FormData();
+    // formData.append("file", {
+    //   name: new Date() + "_image",
+    //   uri: shopImage.uri,
+    //   type: "image/jpg",
+    // });
 
     const response = await axios.get(`${API}/shop/find/${name}`);
     const result = await response.data;
@@ -71,7 +78,8 @@ export default function ShopName({ navigation, route }) {
         account: account,
         location: location,
         coordinates: coordinates,
-        formData: formData,
+        email: email,
+        //formData: formData,
       });
     }
   };
@@ -135,6 +143,22 @@ export default function ShopName({ navigation, route }) {
           alignSelf: "center",
         }}
       />
+      <TextInput
+        placeholder="email"
+        onChangeText={(text) => setEmail(text)}
+        style={{
+          borderWidth: 1,
+          padding: 5,
+          borderRadius: 5,
+          borderRadius: 15,
+          backgroundColor: "white",
+          paddingLeft: 10,
+          marginTop: 10,
+          width: "90%",
+          alignSelf: "center",
+        }}
+      />
+      <Text>we will notify whenver you receive new order</Text>
       <TextInput
         placeholder="account"
         onChangeText={(text) => setAccount(text)}

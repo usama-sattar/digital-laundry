@@ -13,10 +13,13 @@ import axios from "axios";
 import { API } from "../../global/constants";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LottieView from "lottie-react-native";
+
 export default function ShopLocation({ navigation }) {
   const [location, setLocation] = useState("");
   const [coordinates, setCoordinates] = useState({});
   const [shop, setShop] = useState(null);
+
   useEffect(() => {
     getStorage();
   }, []);
@@ -47,30 +50,61 @@ export default function ShopLocation({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
       {shop !== null ? (
-        <View>
-          <Text>you already have shop</Text>
+        <View
+          style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
+        >
+          <Text style={{ fontSize: 20 }}>You already have a shop</Text>
         </View>
       ) : (
-        <GooglePlacesAutocomplete
-          placeholder="Shop Location"
-          minLength={3}
-          autoFocus={false}
-          fetchDetails={true}
-          listViewDisplayed="auto"
-          renderDescription={(row) => row.description}
-          returnKeyType={"search"}
-          onPress={(data, details = null) => {
-            setValues(data, details);
-          }}
-          query={{
-            key: "AIzaSyCSCRz0dn9b8tujCwtYNcgS--DSZ-cDBN0",
-            language: "en",
-          }}
-          GooglePlacesDetailsQuery={{
-            fields: ["formatted_address", "geometry"],
-          }}
-        />
+        <View>
+          <View style={styles.search}>
+            <GooglePlacesAutocomplete
+              placeholder="Shop Location"
+              minLength={3}
+              autoFocus={false}
+              fetchDetails={true}
+              listViewDisplayed="auto"
+              renderDescription={(row) => row.description}
+              returnKeyType={"search"}
+              onPress={(data, details = null) => {
+                setValues(data, details);
+              }}
+              query={{
+                key: "AIzaSyCSCRz0dn9b8tujCwtYNcgS--DSZ-cDBN0",
+                language: "en",
+              }}
+              GooglePlacesDetailsQuery={{
+                fields: ["formatted_address", "geometry"],
+              }}
+            />
+          </View>
+          <LottieView
+            style={styles.lottie}
+            visible={true}
+            overlayColor="rgba(255,255,255,0.75)"
+            source={require("../../location.json")}
+            speed={1}
+            autoPlay
+            loop
+          ></LottieView>
+        </View>
       )}
     </View>
   );
 }
+const styles = StyleSheet.create({
+  lottie: {
+    position: "absolute",
+    top: "50%",
+    width: 350,
+    height: 350,
+  },
+  search: {
+    position: "absolute",
+    top: 20,
+    left: 0,
+    zIndex: 999,
+    width: "90%",
+    marginHorizontal: 20,
+  },
+});

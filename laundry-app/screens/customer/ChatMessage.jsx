@@ -18,8 +18,9 @@ import {
 import { colors } from "../../global/colors";
 import { chatContext } from "../../context/chat";
 import axios from "axios";
-import { API } from "../../global/constants";
+import { API, SocketAPI } from "../../global/constants";
 import io from "socket.io-client/dist/socket.io";
+import { format } from "timeago.js";
 
 export function ChatMessage({ route }) {
   const { user } = useContext(chatContext);
@@ -30,7 +31,7 @@ export function ChatMessage({ route }) {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("http://192.168.0.107:8900");
+    socket.current = io(`${SocketAPI}`);
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
@@ -60,6 +61,10 @@ export function ChatMessage({ route }) {
     getMessages();
   }, [currentChat]);
 
+  useEffect(() => {
+    socket.current.emit("addUser", user);
+  }, [user]);
+
   const handleSubmit = async () => {
     const message = await {
       sender: user,
@@ -83,22 +88,28 @@ export function ChatMessage({ route }) {
     }
   };
   return (
-    <View>
-      <FlatList
-        style={{ height: "87%", bottom: "3%" }}
-        data={messages && messages.reverse()}
-        inverted={true}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => (
-          <Msg msg={item.text} own={item.sender === user} />
-        )}
-      />
+    <View style={{ flex: 1 }}>
+      <View style={{ height: "90%", marginBottom: 5 }}>
+        <FlatList
+          data={messages && messages.reverse()}
+          inverted={true}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item }) => (
+            <Msg
+              msg={item.text}
+              own={item.sender === user}
+              time={item.createdAt}
+            />
+          )}
+        />
+      </View>
       <View
         style={{
           marginHorizontal: 20,
           alignSelf: "center",
           justifyContent: "space-around",
           flexDirection: "row",
+          height: "10%",
         }}
       >
         <TextInput
@@ -109,14 +120,16 @@ export function ChatMessage({ route }) {
             width: "80%",
             borderWidth: 0.5,
             padding: 8,
+            height: 50,
           }}
         />
         <TouchableOpacity
           style={{
             backgroundColor: colors.primaryColor,
-            width: " 20%",
+            width: "20%",
             justifyContent: "center",
             alignItems: "center",
+            height: 50,
           }}
           onPress={() => handleSubmit()}
           disabled={newMessage ? false : true}
@@ -127,16 +140,18 @@ export function ChatMessage({ route }) {
     </View>
   );
 }
-function Msg({ msg, own }) {
+function Msg({ msg, own, time }) {
   return (
     <Fragment>
       {own ? (
         <View style={styles.outgoingContainer}>
           <Text style={styles.outgoingText}>{msg}</Text>
+          <Text style={{ color: "gray" }}>{format(time)}</Text>
         </View>
       ) : (
         <View style={styles.incomingContainer}>
           <Text style={styles.incomingText}>{msg}</Text>
+          <Text style={{ color: "#FFD662FF" }}>{format(time)}</Text>
         </View>
       )}
     </Fragment>

@@ -88,7 +88,7 @@ export default function App() {
                   } else if (route.name === "EditShop") {
                     iconName = focused ? "create" : "create-outline";
                   } else if (route.name === "DeleteShop") {
-                    iconName = focused ? "delete" : "delete-outline";
+                    iconName = focused ? "trash" : "trash-outline";
                   }
                   else if (route.name === "VendorChatScreen") {
                     iconName = focused ? "chatbubble-ellipses": "chatbubble-ellipses-outline";
@@ -204,7 +204,7 @@ export default function App() {
               {/* <NotificationApp /> */}
               <CartContextProvider>
                 <StatusBar backgroundColor={colors.primaryColor} />
-                <Stack.Navigator initialRouteName="VendorScreen">
+                <Stack.Navigator initialRouteName="RiderScreen">
                   <Stack.Screen
                     name="Splash"
                     component={Splash}

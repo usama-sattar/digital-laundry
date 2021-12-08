@@ -15,7 +15,7 @@ import { cartContext } from "../../context/cart";
 import { colors } from "../../global/colors";
 function Cart({ navigation, route }) {
   const { cart, increment, decrement, total, remove } = useContext(cartContext);
-  const { name, id } = route.params;
+  const { name, id, email } = route.params;
 
   return (
     <View style={styles.container}>
@@ -51,14 +51,14 @@ function Cart({ navigation, route }) {
                       <Ionicons
                         name="add-circle"
                         size={25}
-                        color="green"
+                        color="orange"
                       ></Ionicons>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => decrement(item, key)}>
                       <Ionicons
                         name="remove-circle"
                         size={25}
-                        color="purple"
+                        color="orange"
                       ></Ionicons>
                     </TouchableOpacity>
                   </View>
@@ -87,8 +87,8 @@ function Cart({ navigation, route }) {
             marginBottom: 10,
           }}
         >
-          <Text style={{ fontSize: 20, color: "white" }}>
-            Total Amount:{total}
+          <Text style={{ fontSize: 20, color: colors.textColor }}>
+            Total Amount: {total}
           </Text>
         </View>
       </View>
@@ -101,7 +101,11 @@ function Cart({ navigation, route }) {
               : [styles.cartButton, { backgroundColor: colors.lightBlue }]
           }
           onPress={() =>
-            navigation.navigate("CheckoutScreen", { name: name, id: id })
+            navigation.navigate("CheckoutScreen", {
+              name: name,
+              id: id,
+              email: email,
+            })
           }
           disabled={total > 0 ? false : true}
         >

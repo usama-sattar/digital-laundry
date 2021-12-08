@@ -9,22 +9,32 @@ function CustomerTabelView({ customer, key }) {
       .then((res) => console.log(res));
   };
   return (
-    <div style={{ padding: "5px", margin: "20px" }}>
-      <div className="row" style={{ marginTop: 15 }}>
-        <div className="col-md-3">{customer._id}</div>
-        <div className="col-md-3">{customer.name}</div>
-        <div className="col-md-3">{customer.phone}</div>
-        <div className="col-md-3">
-          <i
-            className="fas fa-trash"
-            style={{ color: "red", cursor: "pointer" }}
-            onClick={() => {
-              if (window.confirm("Are you sure you wish to delete this item?"))
-                deleteCustomer(customer._id);
-            }}
-          ></i>
-        </div>
-      </div>
+    <div style={{ margin: "20px" }}>
+      <table className="table table-striped">
+        <tbody>
+          <tr>
+            <td className="col-3">{customer._id}</td>
+            <td className="col-3">{customer.name}</td>
+            <td className="col-3">{customer.phone}</td>
+            <td className="col-3">
+              <button type="button" className="btn btn-danger">
+                <i
+                  className="fas fa-trash"
+                  style={{ color: "white", cursor: "pointer" }}
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        "Are you sure you wish to delete this item?"
+                      )
+                    )
+                      deleteCustomer(customer._id);
+                  }}
+                ></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }

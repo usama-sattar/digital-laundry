@@ -8,11 +8,12 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API } from "../../global/constants";
 import { colors } from "../../global/colors";
-import { StackActions, NavigationActions } from "@react-navigation/native";
+import LottieView from "lottie-react-native";
 
 function Login(props, { navigation }) {
   const [userType, setuserType] = useState(null);
@@ -21,6 +22,10 @@ function Login(props, { navigation }) {
   const [message, setMessage] = useState("");
 
   const sendPhone = () => {
+    if (!phone.trim()) {
+      Alert.alert("Error", "Phone no. cannot be empty");
+      return;
+    }
     axios
       .post(`${API}/verify/login/phone`, {
         number: phone,
@@ -33,6 +38,10 @@ function Login(props, { navigation }) {
   };
 
   const sendCode = async () => {
+    if (code.length !== 6) {
+      Alert.alert("Code must contain 6 digits");
+      return;
+    }
     axios
       .post(`${API}/verify/login/code`, {
         number: phone,
@@ -56,30 +65,32 @@ function Login(props, { navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.innerView}>
-        <Image
-          style={styles.image}
-          source={require("../../assets/fashion.png")}
-        />
-        <View style={styles.bar}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => setuserType("customer")}
-          >
-            <Text style={{ color: "white" }}>Customer</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => setuserType("vendor")}
-          >
-            <Text style={{ color: "white" }}>Vendor</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => setuserType("rider")}
-          >
-            <Text style={{ color: "white" }}>Rider</Text>
-          </TouchableOpacity>
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <View style={styles.innerView}>
+          <Image
+            style={styles.image}
+            source={require("../../assets/fashion.png")}
+          />
+          <View style={styles.bar}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setuserType("customer")}
+            >
+              <Text style={{ color: "white" }}>Customer</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setuserType("vendor")}
+            >
+              <Text style={{ color: "white" }}>Vendor</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setuserType("rider")}
+            >
+              <Text style={{ color: "white" }}>Rider</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       {userType !== null ? (
@@ -104,7 +115,7 @@ function Login(props, { navigation }) {
                 padding: 5,
                 backgroundColor: "white",
                 borderRadius: 20,
-                paddingLeft: 10,
+                paddingLeft: 20,
               }}
               placeholder="Mobile number"
               onChangeText={(text) => setPhone(text)}
@@ -112,9 +123,8 @@ function Login(props, { navigation }) {
             />
             <TouchableOpacity
               style={{
-                backgroundColor: colors.secondaryColor,
+                backgroundColor: colors.primaryColor,
                 padding: 5,
-                borderRadius: 5,
               }}
               onPress={() => sendPhone()}
             >
@@ -136,7 +146,9 @@ function Login(props, { navigation }) {
             onPress={() => props.navigation.navigate("SignUp")}
             style={{ paddingTop: 10 }}
           >
-            <Text style={{ color: "white" }}>Do not have account? SignUp</Text>
+            <Text style={{ color: colors.textColor }}>
+              Do not have account? SignUp
+            </Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -154,7 +166,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.tertiaryColor,
-    alignItems: "center",
     justifyContent: "center",
     paddingTop: 10,
   },
@@ -170,13 +181,12 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    backgroundColor: colors.secondaryColor,
+    backgroundColor: colors.primaryColor,
     justifyContent: "center",
     padding: 10,
     width: "25%",
+    margin: 2,
     height: 40,
-    borderRadius: 20,
-    borderWidth: 1,
   },
   innerView: {
     alignItems: "center",
@@ -193,7 +203,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     height: 40,
     borderRadius: 20,
-    paddingLeft: 10,
+    paddingLeft: 20,
   },
   bar: {
     display: "flex",

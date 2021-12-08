@@ -19,8 +19,9 @@ import {
 import { colors } from "../../global/colors";
 import { chatContext } from "../../context/chat";
 import axios from "axios";
-import { API } from "../../global/constants";
+import { API, SocketAPI } from "../../global/constants";
 import io from "socket.io-client/dist/socket.io";
+import { format } from "timeago.js";
 
 export function ChatMessage({ route }) {
   const { vendor } = useContext(chatContext);
@@ -31,7 +32,7 @@ export function ChatMessage({ route }) {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("http://192.168.0.107:8900");
+    socket.current = io(`${SocketAPI}`);
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
@@ -61,6 +62,10 @@ export function ChatMessage({ route }) {
     getMessages();
   }, [currentChat]);
 
+  useEffect(() => {
+    socket.current.emit("addUser", vendor);
+  }, [vendor]);
+
   const handleSubmit = async () => {
     const message = {
       sender: vendor,
@@ -84,12 +89,16 @@ export function ChatMessage({ route }) {
   return (
     <View>
       <FlatList
-        style={{ height: "87%", bottom: "3%" }}
+        style={{ height: "90%", bottom: "3%" }}
         data={messages && messages.reverse()}
         inverted={true}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
-          <Msg msg={item.text} own={item.sender === vendor} />
+          <Msg
+            msg={item.text}
+            own={item.sender === vendor}
+            time={item.createdAt}
+          />
         )}
       />
       <View
@@ -126,17 +135,19 @@ export function ChatMessage({ route }) {
     </View>
   );
 }
-function Msg({ msg, own }) {
+function Msg({ msg, own, time }) {
   console.log(own);
   return (
     <Fragment>
       {own ? (
         <View style={styles.outgoingContainer}>
           <Text style={styles.outgoingText}>{msg}</Text>
+          <Text style={styles.outgoingText}>{format(time)}</Text>
         </View>
       ) : (
         <View style={styles.incomingContainer}>
           <Text style={styles.incomingText}>{msg}</Text>
+          <Text style={styles.incomingText}>{format(time)}</Text>
         </View>
       )}
     </Fragment>

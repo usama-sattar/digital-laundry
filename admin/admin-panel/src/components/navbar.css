@@ -6,9 +6,20 @@
   font-family: "Roboto Condensed", sans-serif;
   overflow-x: hidden;
 }
-h2,
 h1 {
+  background-color: #e5e5e5;
+  color: #03071e;
+  padding: 10px;
+  text-align: center;
+  margin-top: 10px;
+}
+h2 {
   margin-left: 10px;
+  background-color: #ffba08;
+  color: #ffff;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 20px;
 }
 .bar {
   color: white;
@@ -16,7 +27,7 @@ h1 {
   cursor: pointer;
 }
 .nav-bar {
-  background-color: #04013c;
+  background-color: #9d0208;
   border-bottom: 1px solid #fff;
   justify-content: flex-start;
   align-items: center;
@@ -27,7 +38,7 @@ h1 {
   padding-left: 20px;
 }
 .nav-menu {
-  background-color: #04013c;
+  background-color: #9d0208;
   width: 250px;
   height: 100%;
   display: flex;
@@ -74,13 +85,13 @@ h1 {
   margin-left: 20px;
 }
 .nav-text:hover {
-  background-color: #21618c;
+  background-color: #6a040f;
 }
 span {
   padding-left: 20px;
 }
 .row {
-  border-bottom: 1px solid;
+  border: 1px solid;
 }
 @media only screen and (max-width: 626px) {
   .nav-menu {

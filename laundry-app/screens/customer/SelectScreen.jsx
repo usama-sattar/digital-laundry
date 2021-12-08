@@ -40,8 +40,7 @@ export default function SelectScreen({ route, navigation }) {
         <View style={styles.header}>
           <Text style={{ color: "white", fontSize: 25 }}>{data.name}</Text>
         </View>
-        {console.log(data)}
-        <View>
+        <View style={{ backgroundColor: colors.secondaryColor }}>
           {data.services &&
             data.services.map((item, index) => {
               return (
@@ -51,7 +50,7 @@ export default function SelectScreen({ route, navigation }) {
                 >
                   <View style={styles.itemContainer}>
                     <View style={{ width: "40%" }}>
-                      <Text style={{ color: colors.textColor, fontSize: 15 }}>
+                      <Text style={{ color: colors.textColor, fontSize: 18 }}>
                         {item.title}
                       </Text>
                     </View>
@@ -65,8 +64,12 @@ export default function SelectScreen({ route, navigation }) {
                         style={styles.cart}
                         onPress={() => addToCart(item.title, item.price)}
                       >
-                        <Text style={{ color: colors.lightBlue, fontSize: 15 }}>
-                          Push to Cart
+                        <Text>
+                          <Ionicons
+                            name="cart"
+                            size={30}
+                            color={colors.primaryColor}
+                          />
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -76,7 +79,7 @@ export default function SelectScreen({ route, navigation }) {
             })}
         </View>
       </View>
-      <View>
+      {/* <View>
         <AirbnbRating size={20} onFinishRating={(rate) => setRating(rate)} />
         <Button
           title="Submit"
@@ -88,8 +91,15 @@ export default function SelectScreen({ route, navigation }) {
             marginVertical: 10,
           }}
         />
-      </View>
-      <View>
+      </View> */}
+      <View
+        style={{
+          display: "flex",
+          alignItems: "flex-end",
+          marginRight: 20,
+          marginBottom: 20,
+        }}
+      >
         <TouchableOpacity
           onPress={() => navigation.navigate("ChatScreen", { data: data })}
           style={{
@@ -97,9 +107,12 @@ export default function SelectScreen({ route, navigation }) {
             height: 50,
             backgroundColor: colors.primaryColor,
             borderRadius: 25,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <Ionicons name="chatbubble-ellipses" size={24} color="white" />
+          <Ionicons name="chatbubble-ellipses" size={28} color="white" />
         </TouchableOpacity>
       </View>
       <View style={{ marginHorizontal: 20 }}>
@@ -113,6 +126,7 @@ export default function SelectScreen({ route, navigation }) {
             navigation.navigate("CartScreen", {
               name: data.name,
               id: data.vendor,
+              email: data?.email,
             })
           }
           disabled={cart.length > 0 ? false : true}
@@ -120,6 +134,7 @@ export default function SelectScreen({ route, navigation }) {
           <Text style={{ marginHorizontal: 10, fontSize: 20, color: "white" }}>
             Cart
           </Text>
+
           <Badge status="warning" value={cart.length} />
         </Pressable>
       </View>
@@ -146,7 +161,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cart: {
-    backgroundColor: colors.secondaryColor,
+    backgroundColor: colors.tertiaryColor,
     padding: 5,
     justifyContent: "center",
     alignItems: "center",

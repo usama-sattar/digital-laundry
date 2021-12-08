@@ -15,6 +15,9 @@ import { cartContext } from "../../context/cart";
 import { ListItem } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colors } from "../../global/colors";
+import { chatContext } from "../../context/chat";
+import { Avatar, Overlay, AirbnbRating } from "react-native-elements";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function OrdersScreen() {
   const [orders, setOrders] = useState([]);
@@ -35,36 +38,116 @@ export default function OrdersScreen() {
     const result = await axios.get(`${API}/customers/orders/${customerId}`);
     const data = await result.data;
     setOrders(data);
-    console.log(orders);
   };
+
   return (
     <View style={styles.container}>
       <ScrollView>
         {orders &&
           orders.map((item, key) => {
-            return (
-              <ListItem
-                key={key}
-                bottomDivider
-                containerStyle={{ backgroundColor: colors.tertiaryColor }}
-              >
-                <ListItem.Content>
-                  <ListItem.Subtitle
-                    style={{ color: colors.textColor, fontSize: 15 }}
-                  >
-                    Vendor: {item.vendor}
-                  </ListItem.Subtitle>
-                  <ListItem.Subtitle
-                    style={{ color: colors.textColor, fontSize: 15 }}
-                  >
-                    Price: {item.total}
-                  </ListItem.Subtitle>
-                </ListItem.Content>
-              </ListItem>
-            );
+            return <OrderContainer item={item} key={key} />;
           })}
       </ScrollView>
     </View>
+  );
+}
+function OrderContainer({ item, key }) {
+  const { user } = useContext(chatContext);
+  const [visible, setVisible] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [prevRating, setPrevRating] = useState(0);
+
+  useEffect(() => {
+    getRating();
+  });
+  const getRating = async () => {
+    const result = await axios.get(`${API}/shop/order/rating/${item._id}`);
+    const data = result.data;
+    if (data.length > 0) {
+      setPrevRating(data[0].rating);
+      console.log(prevRating);
+    }
+  };
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+  const sendRating = async (vendorId, orderId) => {
+    if (rating > 0) {
+      const result = await axios.post(
+        `${API}/shop/rating/${vendorId}/${orderId}`,
+        {
+          rating,
+        }
+      );
+      const data = await result.data;
+      setVisible(!visible);
+      if (data) {
+        Alert.alert("Success", "Rating done successfully");
+      } else {
+        Alert.alert("Error", "Something went wrong");
+      }
+    }
+  };
+  return (
+    <ListItem
+      key={key}
+      bottomDivider
+      containerStyle={{ backgroundColor: colors.tertiaryColor }}
+    >
+      <ListItem.Content>
+        <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
+          Shop: {item.vendor}
+        </ListItem.Subtitle>
+        <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
+          Price: {item.total}
+        </ListItem.Subtitle>
+      </ListItem.Content>
+      <ListItem.Content>
+        <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
+          Status: {item.status}
+        </ListItem.Subtitle>
+      </ListItem.Content>
+      <ListItem.Content>
+        {prevRating === 0 ? (
+          <ListItem.Subtitle
+            style={{ color: colors.lightBlue, fontSize: 15 }}
+            onPress={toggleOverlay}
+          >
+            Give Rating
+          </ListItem.Subtitle>
+        ) : (
+          <ListItem.Subtitle style={{ color: "blue", fontSize: 15 }}>
+            <Ionicons name="checkmark-done" size={20}></Ionicons>
+            {prevRating}
+          </ListItem.Subtitle>
+        )}
+
+        <Overlay
+          isVisible={visible}
+          onBackdropPress={toggleOverlay}
+          overlayStyle={{
+            width: 250,
+            height: 250,
+            borderRadius: 20,
+            justifyContent: "space-around",
+            alignItems: "center",
+          }}
+        >
+          <Text>Rate Vendor</Text>
+          <AirbnbRating size={20} onFinishRating={(rate) => setRating(rate)} />
+          <Button
+            title="Submit"
+            onPress={() => sendRating(item.vendorId, item._id)}
+            buttonStyle={{
+              backgroundColor: colors.primaryColor,
+              width: 100,
+              alignSelf: "center",
+              marginVertical: 10,
+            }}
+          />
+        </Overlay>
+      </ListItem.Content>
+    </ListItem>
   );
 }
 

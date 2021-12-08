@@ -14,13 +14,15 @@ function Rating() {
             }
           >
             <h1>App Rating</h1>
-            <div style={{ padding: "10px", margin: "20px" }}>
-              <div className="row">
-                <div className="col-4">#</div>
-                <div className="col-4">user#</div>
-                <div className="col-4">Rating</div>
-              </div>
-            </div>
+            <table className="table table-striped" style={{ margin: "20px" }}>
+              <thead>
+                <tr>
+                  <th className="col-4">#</th>
+                  <th className="col-4">user #</th>
+                  <th className="col-4">Rating</th>
+                </tr>
+              </thead>
+            </table>
             {value.ratings !== undefined
               ? value.ratings.map((item, index) => (
                   <RatingTableView key={index} rating={item} />

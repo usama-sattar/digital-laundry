@@ -14,10 +14,10 @@ const width = Dimensions.get("window").width;
 
 function RiderMain({ navigation }) {
   const [rider, setRider] = useState("");
-  const [socket, setSocket] = useState(null);
   const [fullSocket, setFullSocket] = useState(null);
   const [region, setRegion] = useState();
   const [rideData, setRideData] = useState(null);
+  const socket = useRef();
   const LatitudeDelta = 0.0922;
   const AspectRatio = width / height;
   const LongitudeDelta = AspectRatio * LatitudeDelta;

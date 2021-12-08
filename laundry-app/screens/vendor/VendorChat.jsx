@@ -12,9 +12,7 @@ export default function VendorChat({ route, navigation }) {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get(
-          `${API}/conversation/60b62df47cf46e1d64e649fd`
-        );
+        const res = await axios.get(`${API}/conversation/${vendor}`);
         setConversations(res.data);
       } catch (err) {
         console.log(err);

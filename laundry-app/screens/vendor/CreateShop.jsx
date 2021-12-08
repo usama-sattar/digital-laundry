@@ -7,9 +7,8 @@ import { colors } from "../../global/colors";
 import ShopView from "../../components/shopView";
 
 function CreateShop({ route }) {
-  const { name, address, account, location, coordinates, formData } =
+  const { name, address, account, location, coordinates, formData, email } =
     route.params;
-  console.log(coordinates);
   return (
     <ProductConsumer>
       {(value) => {
@@ -62,6 +61,7 @@ function CreateShop({ route }) {
                     account,
                     location,
                     coordinates,
+                    email,
                     formData
                   )
                 }

@@ -18,11 +18,10 @@ function Vendor() {
               <h1>Vendors</h1>
               <div
                 style={{
-                  width: "100%",
-                  margin: "auto",
+                  width: "90%",
                   display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  margin: "auto",
                 }}
               >
                 <SearchField
@@ -35,15 +34,17 @@ function Vendor() {
                   }
                 />
               </div>
-              <div style={{ padding: "10px", margin: "20px" }}>
-                <div className="row">
-                  <div className="col-3">#</div>
-                  <div className="col-2">Name</div>
-                  <div className="col-3">Phone</div>
-                  <div className="col-2">CNIC</div>
-                  <div className="col-2">Delete</div>
-                </div>
-              </div>
+              <table className="table table-striped" style={{ margin: "20px" }}>
+                <thead>
+                  <tr>
+                    <th className="col-2">#</th>
+                    <th className="col-2">Name</th>
+                    <th className="col-3">Phone</th>
+                    <th className="col-3">CNIC</th>
+                    <th className="col-2">Delete</th>
+                  </tr>
+                </thead>
+              </table>
               {value.searchVendor.length > 0 ? (
                 <div>
                   <h2>Searched Vendor</h2>

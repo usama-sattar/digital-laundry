@@ -51,7 +51,7 @@ class ProductProvider extends Component {
     }
   
   };
-  createShop = async (shopname, shopaddress, shopaccount, shoplocation, shopcoordinates, formData) => {
+  createShop = async (shopname, shopaddress, shopaccount, shoplocation, shopcoordinates, email, formData) => {
     await this.getStorage();
     let coordinateObject = {
       type: "Point",
@@ -68,20 +68,21 @@ class ProductProvider extends Component {
         account: shopaccount,
         location: shoplocation,
         coordinates: coordinateObject, 
+        email: email
       },
      )
       .then((res) => {
-        console.log(res.data)
-        axios.post(`${API}/shop/createImage`, {
-          formData: formData
-        },
-        {
-            headers: {
-            Accept: 'application/json',
-           'Content-Type': 'multipart/form-data; ',
-          }
-         })
-      })
+        console.log(res.data)})
+      //   axios.post(`${API}/shop/createImage`, {
+      //     formData: formData
+      //   },
+      //   {
+      //       headers: {
+      //       Accept: 'application/json',
+      //      'Content-Type': 'multipart/form-data; ',
+      //     }
+      //    })
+      // })
       .catch((err) => console.log(err));
   };
   Logout = () => {

@@ -10,6 +10,11 @@ router.get("/total", (req, res) => {
     .then((user) => res.json(user))
     .catch((err) => console.log(err));
 });
+router.get("/orders", (req, res) => {
+  Order.find()
+    .then((result) => res.json(result))
+    .catch((err) => console.log(err));
+});
 router.get("/:id", (req, res) => {
   Customer.find({_id: req.params.id})
     .then((user) => res.json(user))
@@ -38,8 +43,8 @@ router.post("/update/:id", (req, res) => {
 router.post("/create-payment",async (req, res) => {
   const { price } = req.body;
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: price*100,
-    currency:'usd',
+    amount: (price* 100),
+    currency:'inr',
     payment_method_types: ['card'],
   })
     const clientSecret = await paymentIntent.client_secret
@@ -77,7 +82,7 @@ router.get("/rating/:id",async (req, res) => {
 });
 
 router.post("/order",async (req, res) => {
-  const { customerId,name,email,address,contact,cart,total, status,vendor,vendorId} = req.body;
+  const { customerId,name,email,address,contact,cart,total, status,vendor,vendorId,} = req.body;
   const orderRecord = await new Order({
     customerId,name,email,address,contact,cart,total,status,vendor,vendorId
   })
@@ -89,11 +94,7 @@ router.post("/order",async (req, res) => {
      res.send(`error: ${err}`)
   }
 });
-router.get("/allOrders", (req, res) => {
-  Order.find()
-    .then((order) => res.json(order))
-    .catch((err) => console.log(err));
-});
+
 router.get("/orders/:id",async (req, res) => {
   const ordersRecord = await Order.find({customerId: req.params.id})
   try{

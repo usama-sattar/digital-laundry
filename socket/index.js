@@ -22,22 +22,20 @@ const io = require("socket.io")(8900, {
   io.on("connection", (socket) => {
     //when ceonnect
     console.log("a user connected.");
-  
     //take userId and socketId from user
     socket.on("addUser", (userId) => {
+      console.log(userId)
       addUser(userId, socket.id);
       io.emit("getUsers", users);
     });
   
     //send and get message
-    socket.on("sendMessage", async({ senderId, receiverId, text }) => {
-      const user = await getUser(receiverId);
-        if(user){
-            io.to(user.socketId).emit("getMessage", {
-                senderId,
-                text,
-              });    
-        }
+    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+      const user =  getUser(receiverId);
+        io.to(user.socketId).emit("getMessage", {
+            senderId,
+            text,
+          });    
     });
   
     //when disconnect

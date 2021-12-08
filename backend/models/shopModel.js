@@ -25,6 +25,7 @@ const ShopSchema = new Schema({
         min: 1,
         max: 5
     },
+    email: {type:String},
     image: {type: String}
 })
 ShopSchema.index({"coordinate": "2dsphere"})

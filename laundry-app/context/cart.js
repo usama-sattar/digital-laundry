@@ -48,7 +48,7 @@ function CartContextProvider({children}){
         await getTotal()
     }
     return(
-        <cartContext.Provider value={{cart,setCart,addToCart,increment,decrement,total,remove, setOrderState, order}}>
+        <cartContext.Provider value={{cart,setCart,addToCart,increment,decrement,total,remove, setTotal, setOrderState, order}}>
             {children}
         </cartContext.Provider>
     )

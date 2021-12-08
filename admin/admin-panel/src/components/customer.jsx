@@ -17,11 +17,10 @@ function Customer() {
             <h1>Customers</h1>
             <div
               style={{
-                width: "100%",
-                margin: "auto",
+                width: "90%",
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                justifyContent: "flex-end",
+                margin: "auto",
               }}
             >
               <SearchField
@@ -34,15 +33,16 @@ function Customer() {
                 }
               />
             </div>
-            <div style={{ padding: "10px", margin: "20px" }}>
-              <div className="row">
-                <div className="col-3">#</div>
-                <div className="col-3">Name</div>
-                <div className="col-3">Phone</div>
-                <div className="col-3">Delete</div>
-              </div>
-            </div>
-
+            <table className="table table-striped" style={{ margin: "20px" }}>
+              <thead>
+                <tr>
+                  <th className="col-3">#</th>
+                  <th className="col-3">Name</th>
+                  <th className="col-3">Phone</th>
+                  <th className="col-3">Delete</th>
+                </tr>
+              </thead>
+            </table>
             {value.searchCustomer.length > 0 ? (
               <div>
                 <h2>Searched User</h2>

@@ -15,6 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API } from "../../global/constants";
 import { colors } from "../../global/colors";
 import { Alert } from "react-native";
+import { color } from "react-native-elements/dist/helpers";
 
 function SignUp(props) {
   const [userType, setUserType] = useState("customer");
@@ -27,14 +28,28 @@ function SignUp(props) {
   const [message, setMessage] = useState("");
 
   const sendCode = () => {
+    if (userType === "vendor") {
+      if (cnic.length < 14) {
+        setModalVisible(false);
+        Alert.alert("CNIC must contain 13 digits ");
+        return;
+      }
+    }
+    if (userType === "rider") {
+      if (license.length < 8) {
+        setModalVisible(false);
+        Alert.alert("license no. must contain 8 digits ");
+        return;
+      }
+    }
     if (!name.trim()) {
       Alert.alert("Username cannot be empty");
       setModalVisible(false);
       return;
     }
-    if (cnic.length < 14) {
+    if (!phone.trim()) {
+      Alert.alert("Phone no. cannot be empty");
       setModalVisible(false);
-      Alert.alert("CNIC must contain 13 digits ");
       return;
     }
     setMessage("");
@@ -50,6 +65,10 @@ function SignUp(props) {
       .catch((err) => console.log(err));
   };
   const submitData = async () => {
+    if (code.length !== 6) {
+      Alert.alert("Code must contain 6 digits");
+      return;
+    }
     axios
       .post(`${API}/verify/code`, {
         number: phone,
@@ -174,11 +193,11 @@ function SignUp(props) {
             sendCode();
           }}
         >
-          <Text style={styles.textStyle}>Send Code</Text>
+          <Text style={{ color: "white", alignSelf: "center" }}>Send Code</Text>
         </TouchableOpacity>
         <Text
           onPress={() => props.navigation.navigate("Login")}
-          style={{ paddingTop: 10, color: "white" }}
+          style={{ paddingTop: 10, color: colors.textColor }}
         >
           Already a member? Login
         </Text>
@@ -198,7 +217,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 50,
     marginBottom: 10,
-    color: "white",
+    color: colors.textColor,
   },
   input: {
     height: 30,
@@ -207,10 +226,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     padding: 5,
     color: "black",
-    backgroundColor: "white",
     height: 40,
-    borderRadius: 20,
-    paddingLeft: 10,
+    paddingLeft: 20,
   },
   signUpView: {
     flex: 0.7,
@@ -227,11 +244,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-
   modalView: {
     margin: 20,
     width: "80%",
-    backgroundColor: colors.tertiaryColor,
+    backgroundColor: colors.secondaryColor,
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
@@ -247,20 +263,20 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
-    color: "white",
+    color: colors.textColor,
+    fontSize: 15,
   },
   button: {
-    borderRadius: 20,
     padding: 10,
     elevation: 2,
+    margin: 2,
     width: "50%",
-    backgroundColor: colors.secondaryColor,
+    backgroundColor: colors.primaryColor,
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
-    backgroundColor: colors.secondaryColor,
   },
 });
 export default SignUp;

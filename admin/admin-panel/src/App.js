@@ -23,7 +23,6 @@ function App() {
         <Route  path='/shops' component={Shop}/>
         <Route  path='/orders' component={Order}/>
         <Route  path='/ratings' component={Rating}/>
-        <Route  path='/complaints' component={Complaint}/>
         <Route  path='/charts' component={Charts}/>
       </Switch>
     </div>

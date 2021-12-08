@@ -41,7 +41,7 @@ class ProductProvider extends Component{
         .then((res) => this.setState({shops:res.data}))
     }
     getOrders=()=>{
-        axios.get("/customers/allOrders")
+        axios.get("/customers/orders")
         .then((res) => this.setState({orders:res.data}))
     }
     getRatings=()=>{

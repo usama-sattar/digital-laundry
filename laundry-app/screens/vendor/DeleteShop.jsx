@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { API } from "../../global/constants";
 import { colors } from "../../global/colors";
+
 export default function DeleteShop() {
   const [shop, setShop] = useState(null);
   const [name, setName] = useState("");
@@ -61,5 +62,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.secondaryColor,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

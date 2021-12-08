@@ -15,8 +15,9 @@ import { SearchBar } from "react-native-elements";
 import { Image } from "react-native-elements";
 import { colors } from "../../global/colors";
 import { images } from "../../global/images.js";
-import AnimatedLoader from "react-native-animated-loader";
 import * as Location from "expo-location";
+import LottieView from "lottie-react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get("window").width;
 // const windowHeight = Dimensions.get("window").height;
@@ -33,6 +34,11 @@ function MainScreen({ navigation }) {
   const [nearbyShops, setNearbyShops] = useState([]);
 
   useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+  }, []);
+  useEffect(() => {
     setImages();
     getShops();
   }, []);
@@ -40,6 +46,9 @@ function MainScreen({ navigation }) {
   useEffect(() => {
     getLocation();
   }, []);
+  useEffect(() => {
+    getNearby();
+  }, [region]);
 
   const getNearby = async () => {
     if (region) {
@@ -68,7 +77,6 @@ function MainScreen({ navigation }) {
         maximumAge: 1000,
       }
     );
-    getNearby();
   };
 
   const setImages = async () => {
@@ -76,7 +84,6 @@ function MainScreen({ navigation }) {
       const pic = await images[Math.floor(Math.random() * images.length)];
       pics.push(pic);
     }
-    setLoading(false);
   };
   const getShops = () => {
     axios
@@ -133,7 +140,7 @@ function MainScreen({ navigation }) {
             returnKeyType="search"
           />
         </View>
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginTop: 20 }}>
           <Text style={styles.headingText}>Our Categories</Text>
         </View>
         <View style={{ marginTop: 5 }}>
@@ -176,7 +183,7 @@ function MainScreen({ navigation }) {
             }}
           />
         </View>
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginTop: 30 }}>
           <Text style={styles.headingText}>Top Rated</Text>
         </View>
         <View style={{ marginTop: 5 }}>
@@ -230,15 +237,28 @@ function MainScreen({ navigation }) {
                           style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
+                            width: "100%",
+                            flexWrap: "wrap",
                           }}
                         >
                           <Text style={{ color: "black", fontSize: 20 }}>
                             {item.name}
                           </Text>
+                          {item.average && (
+                            <Text
+                              style={{
+                                color: colors.primaryColor,
+                                fontSize: 15,
+                              }}
+                            >
+                              {item.average}
+                              <Ionicons name="star" size={15} color="#FFC000" />
+                            </Text>
+                          )}
                           <Text
                             style={{ color: colors.primaryColor, fontSize: 15 }}
                           >
-                            {item.average}
+                            {item.location}
                           </Text>
                         </View>
                       </View>
@@ -250,7 +270,7 @@ function MainScreen({ navigation }) {
           />
         </View>
         {/*nearby container*/}
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginTop: 30 }}>
           <Text style={styles.headingText}>Nearby </Text>
         </View>
         <View style={{ marginTop: 5 }}>
@@ -304,16 +324,34 @@ function MainScreen({ navigation }) {
                           style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
+                            width: "100%",
+                            flexWrap: "wrap",
                           }}
                         >
                           <Text style={{ color: "black", fontSize: 20 }}>
                             {item.name}
                           </Text>
-                          <Text
-                            style={{ color: colors.primaryColor, fontSize: 15 }}
-                          >
-                            {item.average}
-                          </Text>
+                          {item.average && (
+                            <Text
+                              style={{
+                                color: colors.primaryColor,
+                                fontSize: 15,
+                              }}
+                            >
+                              {item.average}
+                              <Ionicons name="star" size={15} color="#FFC000" />
+                            </Text>
+                          )}
+                          <View>
+                            <Text
+                              style={{
+                                color: colors.primaryColor,
+                                fontSize: 15,
+                              }}
+                            >
+                              {item.location}
+                            </Text>
+                          </View>
                         </View>
                       </View>
                     </View>
@@ -324,7 +362,7 @@ function MainScreen({ navigation }) {
           />
         </View>
 
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginTop: 30 }}>
           <Text style={styles.headingText}>All vendors</Text>
         </View>
         <View style={{ marginTop: 5 }}>
@@ -378,15 +416,29 @@ function MainScreen({ navigation }) {
                           style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
+                            width: "100%",
+                            flexWrap: "wrap",
                           }}
                         >
                           <Text style={{ color: "black", fontSize: 20 }}>
                             {item.name}
                           </Text>
+                          {item.average && (
+                            <Text
+                              style={{
+                                color: colors.primaryColor,
+                                fontSize: 15,
+                              }}
+                            >
+                              {item.average}
+                              <Ionicons name="star" size={15} color="#FFC000" />
+                            </Text>
+                          )}
+
                           <Text
                             style={{ color: colors.primaryColor, fontSize: 15 }}
                           >
-                            {item.average}
+                            {item.location}
                           </Text>
                         </View>
                       </View>
@@ -447,15 +499,15 @@ function MainScreen({ navigation }) {
       </ScrollView>
     </View>
   ) : (
-    <AnimatedLoader
+    <LottieView
       visible={loading}
       overlayColor="rgba(255,255,255,0.75)"
       source={require("../../loader.json")}
       animationStyle={styles.lottie}
       speed={1}
-    >
-      <Text>Doing something...</Text>
-    </AnimatedLoader>
+      autoPlay
+      loop
+    ></LottieView>
   );
 }
 const styles = StyleSheet.create({
@@ -482,7 +534,7 @@ const styles = StyleSheet.create({
   },
   largeCard: {
     width: windowWidth * 0.7,
-    height: 200,
+    height: 250,
     backgroundColor: colors.tertiaryColor,
     borderRadius: 10,
     marginHorizontal: 10,
@@ -505,8 +557,8 @@ const styles = StyleSheet.create({
     color: colors.textColor,
   },
   lottie: {
-    width: 100,
-    height: 100,
+    width: 300,
+    height: 300,
   },
 });
 export default MainScreen;

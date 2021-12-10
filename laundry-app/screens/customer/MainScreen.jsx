@@ -25,7 +25,7 @@ const windowWidth = Dimensions.get("window").width;
 function MainScreen({ navigation }) {
   const [shops, setShops] = useState([]);
   const [search, setSearch] = useState("");
-  const [searchShops, setSearchShops] = useState([{}]);
+  const [searchShops, setSearchShops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [indexCheck, setIndexCheck] = useState("0");
   const [shopIndexCheck, setShopIndexCheck] = useState("0");
@@ -91,15 +91,6 @@ function MainScreen({ navigation }) {
       .then((res) => setShops(res.data))
       .catch((err) => console.log(err));
   };
-  // const goSearch = () => {
-  //   axios
-  //     .get(`${API}/shop/find/${search}`)
-  //     .then((res) => setSearchShops(res.data))
-  //     .catch((err) => console.log(err));
-  //   navigation.navigate("SearchScreen", { Shops: searchShops, word: search });
-  //   setSearchShops([]);
-  //   setSearch("");
-  // };
   const goSearch = async () => {
     shops.map((shop) => {
       if (shop.name === search) {
@@ -109,6 +100,7 @@ function MainScreen({ navigation }) {
     await navigation.navigate("SearchScreen", {
       Shops: searchShops,
       word: search,
+      pics: pics,
     });
     setSearchShops([]);
     setSearch("");
@@ -449,53 +441,6 @@ function MainScreen({ navigation }) {
             }}
           />
         </View>
-        {/*all large container*/}
-        {/* <View>
-          <FlatList
-            data={shops}
-            keyExtractor={(_, index) => {
-              index.toString();
-            }}
-            extraData={shopIndexCheck}
-            renderItem={({ item, index }) => {
-              return (
-                <View
-                  key={index}
-                  style={styles.verticallargeCard}
-                  onPress={() => setShopIndexCheck(item._id)}
-                >
-                  <Pressable
-                    style={{ flexDirection: "row", width: "100%" }}
-                    onPress={() => {
-                      navigation.navigate("SelectedVendorScreen", {
-                        data: item,
-                      });
-                    }}
-                  >
-                    <View style={{ marginTop: 25 }}>
-                      <View
-                        style={{
-                          justifyContent: "space-around",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <View>
-                          <Image
-                            source={pics !== undefined ? pics[index] : null}
-                            style={{
-                              width: "100%",
-                              height: 200,
-                            }}
-                          />
-                        </View>
-                      </View>
-                    </View>
-                  </Pressable>
-                </View>
-              );
-            }}
-          />
-        </View> */}
       </ScrollView>
     </View>
   ) : (

@@ -1,5 +1,5 @@
-export const API = "http://192.168.0.104:5000"
-export const SocketAPI = "http://192.168.0.104:8900"
+export const API = "http://192.168.0.103:5000"
+export const SocketAPI = "http://192.168.0.103:8900"
 
 export const categoryData = [
   {

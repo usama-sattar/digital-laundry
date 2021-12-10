@@ -18,6 +18,7 @@ import { colors } from "../../global/colors";
 import { chatContext } from "../../context/chat";
 import { Avatar, Overlay, AirbnbRating } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
+import LottieView from "lottie-react-native";
 
 export default function OrdersScreen() {
   const [orders, setOrders] = useState([]);
@@ -39,15 +40,30 @@ export default function OrdersScreen() {
     const data = await result.data;
     setOrders(data);
   };
-
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {orders &&
-          orders.map((item, key) => {
-            return <OrderContainer item={item} key={key} />;
-          })}
-      </ScrollView>
+      {orders.length > 0 ? (
+        <ScrollView>
+          {orders &&
+            orders.map((item, key) => {
+              return <OrderContainer item={item} key={key} />;
+            })}
+        </ScrollView>
+      ) : (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <LottieView
+            visible={true}
+            overlayColor="rgba(255,255,255,0.75)"
+            source={require("../../no_orders.json")}
+            animationStyle={{ width: 200, height: 200 }}
+            speed={1}
+            autoPlay
+            loop
+          ></LottieView>
+        </View>
+      )}
     </View>
   );
 }
@@ -89,65 +105,70 @@ function OrderContainer({ item, key }) {
     }
   };
   return (
-    <ListItem
-      key={key}
-      bottomDivider
-      containerStyle={{ backgroundColor: colors.tertiaryColor }}
-    >
-      <ListItem.Content>
-        <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
-          Shop: {item.vendor}
-        </ListItem.Subtitle>
-        <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
-          Price: {item.total}
-        </ListItem.Subtitle>
-      </ListItem.Content>
-      <ListItem.Content>
-        <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
-          Status: {item.status}
-        </ListItem.Subtitle>
-      </ListItem.Content>
-      <ListItem.Content>
-        {prevRating === 0 ? (
-          <ListItem.Subtitle
-            style={{ color: colors.lightBlue, fontSize: 15 }}
-            onPress={toggleOverlay}
-          >
-            Give Rating
+    <ScrollView style={styles.container}>
+      <ListItem
+        key={key}
+        bottomDivider
+        containerStyle={{ backgroundColor: colors.tertiaryColor }}
+      >
+        <ListItem.Content>
+          <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
+            Shop: {item.vendor}
           </ListItem.Subtitle>
-        ) : (
-          <ListItem.Subtitle style={{ color: "blue", fontSize: 15 }}>
-            <Ionicons name="checkmark-done" size={20}></Ionicons>
-            {prevRating}
+          <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
+            Price: {item.total}
           </ListItem.Subtitle>
-        )}
+        </ListItem.Content>
+        <ListItem.Content>
+          <ListItem.Subtitle style={{ color: colors.textColor, fontSize: 15 }}>
+            Status: {item.status}
+          </ListItem.Subtitle>
+        </ListItem.Content>
+        <ListItem.Content>
+          {prevRating === 0 ? (
+            <ListItem.Subtitle
+              style={{ color: colors.lightBlue, fontSize: 15 }}
+              onPress={toggleOverlay}
+            >
+              Give Rating
+            </ListItem.Subtitle>
+          ) : (
+            <ListItem.Subtitle style={{ color: "blue", fontSize: 15 }}>
+              <Ionicons name="checkmark-done" size={20}></Ionicons>
+              {prevRating}
+            </ListItem.Subtitle>
+          )}
 
-        <Overlay
-          isVisible={visible}
-          onBackdropPress={toggleOverlay}
-          overlayStyle={{
-            width: 250,
-            height: 250,
-            borderRadius: 20,
-            justifyContent: "space-around",
-            alignItems: "center",
-          }}
-        >
-          <Text>Rate Vendor</Text>
-          <AirbnbRating size={20} onFinishRating={(rate) => setRating(rate)} />
-          <Button
-            title="Submit"
-            onPress={() => sendRating(item.vendorId, item._id)}
-            buttonStyle={{
-              backgroundColor: colors.primaryColor,
-              width: 100,
-              alignSelf: "center",
-              marginVertical: 10,
+          <Overlay
+            isVisible={visible}
+            onBackdropPress={toggleOverlay}
+            overlayStyle={{
+              width: 250,
+              height: 250,
+              borderRadius: 20,
+              justifyContent: "space-around",
+              alignItems: "center",
             }}
-          />
-        </Overlay>
-      </ListItem.Content>
-    </ListItem>
+          >
+            <Text>Rate Vendor</Text>
+            <AirbnbRating
+              size={20}
+              onFinishRating={(rate) => setRating(rate)}
+            />
+            <Button
+              title="Submit"
+              onPress={() => sendRating(item.vendorId, item._id)}
+              buttonStyle={{
+                backgroundColor: colors.primaryColor,
+                width: 100,
+                alignSelf: "center",
+                marginVertical: 10,
+              }}
+            />
+          </Overlay>
+        </ListItem.Content>
+      </ListItem>
+    </ScrollView>
   );
 }
 

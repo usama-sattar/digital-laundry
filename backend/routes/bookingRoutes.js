@@ -4,6 +4,10 @@ const router = express.Router();
 const Booking = require("../models/bookModel");
 const RiderLocation = require("../models/riderLocationModel");
 
+io.on("connection", (socket)=>{
+  console.log("user connected")
+})
+
 router.get("/", (req, res) => {
   Booking.find()
     .then((bookings) => res.json(bookings))
@@ -22,13 +26,10 @@ router.post("/post", (req, res) => {
   booking
     .save()
     .then((data) => {
-      if(socketId){
-        io.on("connection", (socket)=>{
-          io.emit(socketId + "riderRequest", data)
-        })
-      }
-    })
-    .catch((err) => console.log(err));
+    res.send(data)
+   io.emit(socketId + "riderRequest", data)
+  })
+  .catch((err) => console.log(err));
 });
 router.post("/update/location", async (req, res) => {
   const { riderId, coordinate, socketId } = await req.body;

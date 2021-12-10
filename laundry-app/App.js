@@ -204,7 +204,7 @@ export default function App() {
               {/* <NotificationApp /> */}
               <CartContextProvider>
                 <StatusBar backgroundColor={colors.primaryColor} />
-                <Stack.Navigator initialRouteName="RiderScreen">
+                <Stack.Navigator initialRouteName="VendorScreen">
                   <Stack.Screen
                     name="Splash"
                     component={Splash}

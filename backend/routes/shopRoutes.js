@@ -90,22 +90,20 @@ router.get("/nearby/:longitude/:latitude", async (req, res) => {
     .then((result) => res.send(result))
     .catch((err) => console.log(err));
 });
-// router.get("/find/:name", async(req, res) => {
-//   const data = await Shop.find({
-//     name: { $regex: req.params.name, $options: "i" },
-//   });
-//   try {
-//     if(data.length > 0) {res.send(true);}
-//     else {res.send(false)}
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// });
+router.get("/search/:name", async(req, res) => {
+    const data = await Shop.find({
+      name: { $regex: req.params.name, $options: "i" },
+    });  
+  try {
+    res.send(data);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
 router.get("/find/:name", async(req, res) => {
   const data = await Shop.find({
     name: req.params.name ,
   });
-  console.log(data)
   try {
     if(data.length > 0) {res.send(true);}
     else {res.send(false)}

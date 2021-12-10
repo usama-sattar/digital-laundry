@@ -7,95 +7,139 @@ import {
   FlatList,
   Pressable,
   ScrollView,
+  Dimensions,
 } from "react-native";
-import { Rating, AirbnbRating, Avatar } from "react-native-elements";
 import { images } from "../../global/images.js";
 import { colors } from "../../global/colors";
+import { Ionicons } from "@expo/vector-icons";
+import LottieView from "lottie-react-native";
+
+const windowWidth = Dimensions.get("window").width;
 
 function Searched({ route, navigation }, props) {
-  const { Shops } = route.params;
+  const { Shops, pics } = route.params;
   const [shopIndexCheck, setShopIndexCheck] = useState("0");
-  const [pics, setPics] = useState([]);
   const [loading, setLoading] = useState(false);
 
   return loading === false ? (
     <View style={styles.container}>
+      {console.log(Shops)}
       {Shops.length > 0 ? (
         <View>
-          <Text style={{ color: "white", textAlign: "center", fontSize: 25 }}>
+          <Text
+            style={{
+              color: colors.textColor,
+              textAlign: "center",
+              fontSize: 25,
+            }}
+          >
             Searched: {route.params.word}
           </Text>
-          <FlatList
-            horizontal={false}
-            data={Shops}
-            keyExtractor={(_, index) => {
-              index.toString();
-            }}
-            extraData={shopIndexCheck}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) => {
-              return (
-                <ScrollView
-                  contentContainerStyle={{ marginTop: 20 }}
-                  key={index}
-                  onPress={() => setShopIndexCheck(item._id)}
-                >
-                  <Pressable
-                    style={styles.verticallargeCard}
-                    onPress={() => {
-                      navigation.navigate("SelectedVendorScreen", {
-                        data: item,
-                      });
-                    }}
+          <View style={{ marginTop: 5 }}>
+            <FlatList
+              horizontal={false}
+              showsHorizontalScrollIndicator={false}
+              data={Shops}
+              keyExtractor={(_, index) => {
+                index.toString();
+              }}
+              extraData={shopIndexCheck}
+              renderItem={({ item, index }) => {
+                return (
+                  <View
+                    key={index}
+                    style={styles.largeCard}
+                    onPress={() => setShopIndexCheck(item._id)}
                   >
-                    <View
-                      style={{
-                        marginTop: 25,
-                        justifyContent: "space-around",
-                        flexDirection: "column",
+                    <Pressable
+                      onPress={() => {
+                        navigation.navigate("SelectedVendorScreen", {
+                          data: item,
+                        });
                       }}
                     >
-                      <View>
-                        <View
-                          style={{ marginHorizontal: 10, marginVertical: 5 }}
-                        >
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-around",
+                        }}
+                      >
+                        <View>
                           <Image
-                            source={
-                              images[Math.floor(Math.random() * images.length)]
-                            }
+                            source={pics[index]}
                             style={{
                               width: "100%",
-                              height: undefined,
-                              aspectRatio: 1,
-                              borderRadius: 10,
+                              height: 175,
                             }}
                           />
                         </View>
                         <View
                           style={{
-                            width: "90%",
-                            alignSelf: "center",
+                            width: "100%",
                             borderRadius: 0,
-                            padding: 10,
-                            backgroundColor: colors.secondaryColor,
-                            justifyContent: "center",
+                            padding: 5,
+                            backgroundColor: colors.tertiaryColor,
                           }}
                         >
-                          <Text style={{ color: "white" }}>
-                            Name: {item.name}
-                          </Text>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              width: "100%",
+                              flexWrap: "wrap",
+                            }}
+                          >
+                            <Text style={{ color: "black", fontSize: 20 }}>
+                              {item.name}
+                            </Text>
+                            {item.average && (
+                              <Text
+                                style={{
+                                  color: colors.primaryColor,
+                                  fontSize: 15,
+                                }}
+                              >
+                                {item.average}
+                                <Ionicons
+                                  name="star"
+                                  size={15}
+                                  color="#FFC000"
+                                />
+                              </Text>
+                            )}
+
+                            <Text
+                              style={{
+                                color: colors.primaryColor,
+                                fontSize: 15,
+                              }}
+                            >
+                              {item.location}
+                            </Text>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  </Pressable>
-                </ScrollView>
-              );
-            }}
-          />
+                    </Pressable>
+                  </View>
+                );
+              }}
+            />
+          </View>
         </View>
       ) : (
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Text style={{ fontSize: 20, color: "white" }}>Nothing to Show</Text>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <LottieView
+            visible={true}
+            overlayColor="rgba(255,255,255,0.75)"
+            source={require("../../no_result.json")}
+            animationStyle={{ width: 200, height: 200 }}
+            speed={1}
+            autoPlay
+            loop
+          ></LottieView>
         </View>
       )}
     </View>
@@ -105,15 +149,7 @@ function Searched({ route, navigation }, props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.tertiaryColor,
-  },
-  innercontainer: {
-    flex: 1,
-    marginTop: 20,
-    margin: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    flexBasis: "33%",
+    backgroundColor: colors.secondaryColor,
   },
   wrapper: {
     flexDirection: "row",
@@ -124,33 +160,39 @@ const styles = StyleSheet.create({
   smallCard: {
     width: 100,
     height: 100,
-    backgroundColor: "#3397e8",
+    backgroundColor: colors.tertiaryColor,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 30,
+    borderRadius: 10,
     marginHorizontal: 5,
+    borderWidth: 1,
+    borderColor: colors.lightBlue,
   },
   largeCard: {
-    width: "70%",
-    height: 200,
-    backgroundColor: "#3397e8",
-    borderRadius: 10,
-    marginHorizontal: 10,
-    justifyContent: "flex-start",
-  },
-  verticallargeCard: {
-    width: "90%",
-    height: 200,
+    width: windowWidth * 0.8,
+    height: 250,
     backgroundColor: colors.tertiaryColor,
     borderRadius: 10,
     marginHorizontal: 10,
     justifyContent: "flex-start",
+    borderRadius: 10,
+    marginTop: 15,
     alignSelf: "center",
-    flex: 1,
+  },
+  verticallargeCard: {
+    width: "90%",
+    height: 200,
+    marginLeft: "5%",
+    marginRight: "5%",
+    alignSelf: "flex-start",
+    backgroundColor: colors.tertiaryColor,
+    borderRadius: 10,
+    marginTop: 25,
   },
   headingText: {
     marginHorizontal: 10,
     fontSize: 20,
+    color: colors.textColor,
   },
 });
 export default Searched;

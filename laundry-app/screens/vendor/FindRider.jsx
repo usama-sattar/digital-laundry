@@ -1,15 +1,70 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, StyleSheet, Text, Dimensions } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import { Button } from "react-native-elements";
 import { API } from "../../global/constants";
 import axios from "axios";
+import LottieView from "lottie-react-native";
+import {
+  BottomSheet,
+  ListItem,
+} from "react-native-elements/dist/bottomSheet/BottomSheet";
 
-export default function FindRider({ navigation }) {
+export default function FindRider({ navigation, route }) {
+  const [details, setDetails] = useState("null");
+  const [isVisible, setIsVisible] = useState(true);
+  const list = [
+    { title: "List Item 1" },
+    { title: "List Item 2" },
+    {
+      title: "Cancel",
+      containerStyle: { backgroundColor: "red" },
+      titleStyle: { color: "white" },
+      onPress: () => setIsVisible(false),
+    },
+  ];
+  const { socket } = route.params;
+  useEffect(() => {
+    if (socket === null) {
+      return;
+    }
+    socket.current.on("ride-details", (data) => {
+      setDetails(data);
+    });
+  }, []);
   return (
     <View style={styles.container}>
-      <View>
-        <Button title="cancel" onPress={() => navigation.goBack()} />
-      </View>
+      {details === null ? (
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <LottieView
+            visible={true}
+            overlayColor="rgba(255,255,255,0.75)"
+            source={require("../../finding-rider.json")}
+            animationStyle={{ width: 200, height: 200 }}
+            speed={1}
+            autoPlay
+            loop
+          ></LottieView>
+        </View>
+      ) : (
+        <View>
+          <BottomSheet isVisible={isVisible}>
+            {list.map((l, i) => (
+              <View key={i}>
+                <TouchableOpacity onPress={l.onPress} style={l.containerStyle}>
+                  <Text style={l.titleStyle}>{l.title}</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </BottomSheet>
+        </View>
+      )}
     </View>
   );
 }
@@ -17,8 +72,5 @@ export default function FindRider({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "red",
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

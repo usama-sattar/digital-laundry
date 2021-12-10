@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ScrollView, View, Text, TouchableOpacity } from "react-native";
 import { TextInput, StyleSheet, Dimensions } from "react-native";
 import { ProductConsumer } from "../../context";
+window.navigator.userAgent = "react-native";
 import { colors } from "../../global/colors";
 import { Button } from "react-native-elements";
 import axios from "axios";
@@ -10,6 +11,7 @@ import MapView from "react-native-maps";
 import * as Location from "expo-location";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import fareComponent from "../../components/fare";
+import io from "socket.io-client/dist/socket.io";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -23,7 +25,11 @@ export default function RideBooking({ navigation }) {
   const LatitudeDelta = 0.0922;
   const AspectRatio = width / height;
   const LongitudeDelta = AspectRatio * LatitudeDelta;
+  const socket = useRef();
 
+  useEffect(() => {
+    socket.current = io(`${API}`);
+  }, []);
   useEffect(() => {
     getLocation();
   }, []);
@@ -72,7 +78,7 @@ export default function RideBooking({ navigation }) {
     });
     const result = await response.data;
     console.log(result);
-    navigation.navigate("FindRiderScreen");
+    navigation.navigate("FindRiderScreen", { socket: socket });
   };
   const calculateFare = () => {
     const fareNumbers = {
@@ -139,7 +145,6 @@ export default function RideBooking({ navigation }) {
           renderDescription={(row) => row.description}
           returnKeyType={"search"}
           onPress={(data, details = null) => {
-            console.log(data, details);
             setPickUp({
               lat: details.geometry.location.lat,
               lng: details.geometry.location.lng,

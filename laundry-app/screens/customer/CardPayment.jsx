@@ -21,18 +21,19 @@ import { colors } from "../../global/colors";
 import { Button } from "react-native-elements";
 import LottieView from "lottie-react-native";
 
-function CardPayment({ route }) {
+function CardPayment({ route, navigation }) {
   return (
     <StripeProvider publishableKey="pk_test_51J56lVJIiMKnmPN2rwY9qFt8R5FTtdITJoIRU3wEASsmx31gCGK7yBuGThKyPJuZH3e2ASFwFgxWewU28AUDqpZa00BjkrySxV">
       <StripeHandler
         vendorName={route.params.name}
         vendorId={route.params.id}
         vendorEmail={route.params.email}
+        navigation={navigation}
       />
     </StripeProvider>
   );
 }
-function StripeHandler({ vendorName, vendorId, vendorEmail }) {
+function StripeHandler({ vendorName, vendorId, vendorEmail, navigation }) {
   const [animation, setAnimation] = useState(false);
   const [user, setUser] = useState("");
   const [cardDetails, setCardDetails] = useState("");
@@ -40,8 +41,7 @@ function StripeHandler({ vendorName, vendorId, vendorEmail }) {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [contact, setContact] = useState("");
-  const { cart, total, setCart, setOrderState, setTotal } =
-    useContext(cartContext);
+  const { cart, total, setCart, setTotal } = useContext(cartContext);
   const { confirmPayment, loading } = useConfirmPayment();
 
   useEffect(() => {
@@ -115,9 +115,13 @@ function StripeHandler({ vendorName, vendorId, vendorEmail }) {
       try {
         if (result) {
           setCart([]);
-          setOrderState();
           setTotal(0);
           setAnimation(true);
+          setTimeout(() => {
+            navigation.navigate("MainScreenContainer");
+          }, 4000);
+        } else {
+          Alert.alert("Error", "Unable to make Payment");
         }
       } catch (err) {
         console.log(err);

@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { View, Image, StyleSheet, Text, Dimensions } from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import "./socket";
-import { Button } from "react-native-elements";
+import { Button, colors } from "react-native-elements";
 import io from "socket.io-client/dist/socket.io";
 import { API } from "../../global/constants";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import LottieView from "lottie-react-native";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -17,7 +25,7 @@ function RiderMain({ navigation }) {
   const [fullSocket, setFullSocket] = useState(null);
   const [region, setRegion] = useState();
   const [rideData, setRideData] = useState(null);
-  const socket = useRef();
+  const [socket, setSocket] = useState(null);
   const LatitudeDelta = 0.0922;
   const AspectRatio = width / height;
   const LongitudeDelta = AspectRatio * LatitudeDelta;
@@ -65,10 +73,10 @@ function RiderMain({ navigation }) {
       const riderId = await JSON.parse(rider);
       setRider(riderId);
     }
-    console.log(rider);
   };
   const setLocation = async () => {
     if (socket === null || rider === null || region === null) {
+      console.log("in");
       return;
     }
     const response = await axios.post(`${API}/booking/update/location`, {
@@ -89,9 +97,6 @@ function RiderMain({ navigation }) {
   };
   return (
     <View style={styles.container}>
-      <Text>Rider</Text>
-      <Button title="Go" onPress={setLocation} />
-
       {region && (
         <MapView
           loadingEnabled={true}
@@ -102,6 +107,24 @@ function RiderMain({ navigation }) {
           <MapView.Marker secondaryColor="red" coordinate={region} />
         </MapView>
       )}
+      <TouchableOpacity
+        style={{
+          height: "30%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onPress={setLocation}
+      >
+        <LottieView
+          visible={true}
+          overlayColor="rgba(255,255,255,0.75)"
+          source={require("../../go_rider.json")}
+          animationStyle={{ width: 200, height: 200 }}
+          speed={1}
+          autoPlay
+          loop
+        ></LottieView>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -109,10 +132,10 @@ function RiderMain({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors.secondaryColor,
   },
   map: {
-    height,
+    height: "70%",
   },
 });
 export default RiderMain;

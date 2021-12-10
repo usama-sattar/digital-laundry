@@ -15,6 +15,7 @@ function RideDetails({ route }) {
       coordinate: rideData.coordinate,
       status: "assigned",
     });
+    fullSocket.emit("accept-ride", "ride-accepted");
   };
   useEffect(() => {
     if (fullSocket === null) {
@@ -22,7 +23,6 @@ function RideDetails({ route }) {
     }
     const riderRequest = socket + "riderRequest";
     fullSocket.on(riderRequest, (rideData) => {
-      console.log(rideData);
       setRideData(rideData);
     });
   }, [fullSocket]);
@@ -34,7 +34,10 @@ function RideDetails({ route }) {
         {rideData === null ? (
           <Text>{JSON.stringify(rideData)}</Text>
         ) : (
-          <Button title="confirm" onPress={() => updateBooking()} />
+          <View>
+            <Button title="confirm" onPress={() => updateBooking()} />
+            <Text>{JSON.stringify(rideData)}</Text>
+          </View>
         )}
       </View>
     </View>

@@ -12,6 +12,7 @@ import * as Location from "expo-location";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import fareComponent from "../../components/fare";
 import io from "socket.io-client/dist/socket.io";
+import { Overlay, Image } from "react-native-elements";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -22,6 +23,7 @@ export default function RideBooking({ navigation }) {
   const [dropOff, setDropOff] = useState({});
   const [fare, setFare] = useState();
   const [nearby, setNearby] = useState([]);
+  const [visible, setVisible] = useState(false);
   const LatitudeDelta = 0.0922;
   const AspectRatio = width / height;
   const LongitudeDelta = AspectRatio * LatitudeDelta;
@@ -36,6 +38,14 @@ export default function RideBooking({ navigation }) {
   useEffect(() => {
     getNearby();
   }, [region]);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+  const combineFunction = () => {
+    toggleOverlay();
+    calculateFare();
+  };
 
   const getNearby = async () => {
     if (region) {
@@ -82,9 +92,9 @@ export default function RideBooking({ navigation }) {
   };
   const calculateFare = () => {
     const fareNumbers = {
-      baseFare: 6.0,
+      baseFare: 10.0,
       timeRate: 1.8,
-      distanceRate: 2.0,
+      distanceRate: 4.0,
       surge: 1,
     };
     axios
@@ -185,22 +195,41 @@ export default function RideBooking({ navigation }) {
           }}
         />
       </View>
-      <View style={styles.btn}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.primaryColor,
-            borderRadius: 50,
-            padding: 15,
-          }}
-          onPress={bookRide}
-        >
-          <Text style={{ color: "white", fontWeight: "bold" }}>Go !</Text>
-        </TouchableOpacity>
-      </View>
+
       <View style={styles.fareBtn}>
-        {fare && <Text style={{ textAlign: "center" }}>{fare}</Text>}
-        <Button title="calculate fare" onPress={calculateFare} />
+        {console.log(pickUp)}
+        {Object.keys(pickUp).length === 0 ||
+        Object.keys(dropOff).length === 0 ? null : (
+          <Button title="Calculate Fare" onPress={combineFunction} />
+        )}
       </View>
+      <Overlay
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}
+        overlayStyle={{
+          width: 250,
+          height: 250,
+          borderRadius: 20,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontSize: 25, fontWeight: "bold" }}>Ride Fare</Text>
+        <Text style={{ fontSize: 20, marginTop: 20 }}>Rs. {fare}</Text>
+        <View style={styles.btn}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: colors.primaryColor,
+              borderRadius: 100,
+
+              padding: 15,
+            }}
+            onPress={bookRide}
+          >
+            <Text style={{ color: "white", fontWeight: "bold" }}>Go!</Text>
+          </TouchableOpacity>
+        </View>
+      </Overlay>
       {region && (
         <MapView
           loadingEnabled={true}
@@ -208,12 +237,12 @@ export default function RideBooking({ navigation }) {
           style={styles.map}
           region={region}
         >
-          <MapView.Marker pinColor="red" coordinate={region} />
           {nearby.length > 0
             ? nearby.map((marker, index) => (
                 <MapView.Marker
                   key={index}
-                  pinColor="green"
+                  image={require("../../assets/bike.png")}
+                  style={{ width: 25, height: 25 }}
                   coordinate={{
                     latitude: marker.coordinate.coordinates[1],
                     longitude: marker.coordinate.coordinates[0],

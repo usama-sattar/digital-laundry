@@ -17,18 +17,9 @@ import {
 } from "react-native-elements/dist/bottomSheet/BottomSheet";
 
 export default function FindRider({ navigation, route }) {
-  const [details, setDetails] = useState("null");
+  const [details, setDetails] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
-  const list = [
-    { title: "List Item 1" },
-    { title: "List Item 2" },
-    {
-      title: "Cancel",
-      containerStyle: { backgroundColor: "red" },
-      titleStyle: { color: "white" },
-      onPress: () => setIsVisible(false),
-    },
-  ];
+
   const { socket } = route.params;
   useEffect(() => {
     if (socket === null) {
@@ -53,17 +44,7 @@ export default function FindRider({ navigation, route }) {
           ></LottieView>
         </View>
       ) : (
-        <View>
-          <BottomSheet isVisible={isVisible}>
-            {list.map((l, i) => (
-              <View key={i}>
-                <TouchableOpacity onPress={l.onPress} style={l.containerStyle}>
-                  <Text style={l.titleStyle}>{l.title}</Text>
-                </TouchableOpacity>
-              </View>
-            ))}
-          </BottomSheet>
-        </View>
+        <View></View>
       )}
     </View>
   );

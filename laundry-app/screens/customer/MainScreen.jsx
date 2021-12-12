@@ -9,6 +9,7 @@ import {
   FlatList,
   Pressable,
   Dimensions,
+  ActivityIndicator
 } from "react-native";
 import { categoryData, API } from "../../global/constants";
 import { SearchBar } from "react-native-elements";
@@ -18,10 +19,11 @@ import { images } from "../../global/images.js";
 import * as Location from "expo-location";
 import LottieView from "lottie-react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useFonts, Bangers_400Regular } from '@expo-google-fonts/bangers';
+import Swiper from "react-native-swiper";
 
 const windowWidth = Dimensions.get("window").width;
 // const windowHeight = Dimensions.get("window").height;
-
 function MainScreen({ navigation }) {
   const [shops, setShops] = useState([]);
   const [search, setSearch] = useState("");
@@ -32,7 +34,42 @@ function MainScreen({ navigation }) {
   const [pics, setPics] = useState([]);
   const [region, setRegion] = useState();
   const [nearbyShops, setNearbyShops] = useState([]);
-
+  const [visibleSwiper, setVisibleSwiper] = useState(true);
+  let swiper = null;
+  if (visibleSwiper) {
+    swiper = (
+      <View
+        style={{
+          height: 150,
+          backgroundColor:'#0f9df126'
+        }}
+      >
+        <Swiper
+          horizontal={true}
+          loop={true}
+          autoplay={true}
+          bounces={true}
+          removeClippedSubviews={false}
+        >
+          {
+            categoryData.map((item,index)=>{
+              return(
+                <View style={styles.slideContainer}>
+                <Image
+                  source={item.image}
+                  style={{ width: 120, height: 120 }}
+                  PlaceholderContent={<ActivityIndicator />}
+                />
+              </View>
+              )
+            })
+          }
+          </Swiper>
+      </View>
+    );
+  } else {
+    swiper = <View></View>;
+  }
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -105,6 +142,7 @@ function MainScreen({ navigation }) {
     setSearchShops([]);
     setSearch("");
   };
+  
   return loading === false ? (
     <View style={styles.conatiner}>
       <ScrollView showsVerticalScrollIndicator={true} stickyHeaderIndices={[0]}>
@@ -132,57 +170,16 @@ function MainScreen({ navigation }) {
             returnKeyType="search"
           />
         </View>
-        <View style={{ marginTop: 20 }}>
-          <Text style={styles.headingText}>Our Categories</Text>
-        </View>
-        <View style={{ marginTop: 5 }}>
-          <FlatList
-            horizontal={true}
-            data={categoryData}
-            keyExtractor={(_, index) => {
-              index.toString();
-            }}
-            extraData={indexCheck}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) => {
-              return (
-                <Pressable
-                  key={index}
-                  onPress={() => {
-                    setIndexCheck(item._id);
-                  }}
-                >
-                  <View style={styles.smallCard}>
-                    <View
-                      style={{ justifyContent: "center", alignItems: "center" }}
-                    >
-                      <Image
-                        source={item.image}
-                        style={{
-                          width: 60,
-                          height: 60,
-                        }}
-                      />
-                    </View>
-                    <View>
-                      <Text style={{ color: colors.textColor }}>
-                        {item.name}
-                      </Text>
-                    </View>
-                  </View>
-                </Pressable>
-              );
-            }}
-          />
-        </View>
-        <View style={{ marginTop: 30 }}>
-          <Text style={styles.headingText}>Top Rated</Text>
+         {swiper}
+   
+        <View style={styles.heading}>
+          <Text style={styles.headingText}>TOP RATED</Text>
         </View>
         <View style={{ marginTop: 5 }}>
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={shops.filter((value) => value.average > 2)}
+            data={shops.filter((value) => value.average > 3)}
             keyExtractor={(_, index) => {
               index.toString();
             }}
@@ -214,13 +211,15 @@ function MainScreen({ navigation }) {
                           style={{
                             width: "100%",
                             height: 175,
+                            borderTopLeftRadius: 10, 
+                            borderTopRightRadius: 10,
                           }}
                         />
                       </View>
                       <View
                         style={{
                           width: "100%",
-                          borderRadius: 0,
+                          borderRadius: 10,
                           padding: 5,
                           backgroundColor: colors.tertiaryColor,
                         }}
@@ -234,7 +233,7 @@ function MainScreen({ navigation }) {
                           }}
                         >
                           <Text style={{ color: "black", fontSize: 20 }}>
-                            {item.name}
+                            {(item.name).toUpperCase()}
                           </Text>
                           {item.average && (
                             <Text
@@ -262,8 +261,8 @@ function MainScreen({ navigation }) {
           />
         </View>
         {/*nearby container*/}
-        <View style={{ marginTop: 30 }}>
-          <Text style={styles.headingText}>Nearby </Text>
+        <View style={styles.heading}>
+          <Text style={[styles.headingText]}>TRENDING NEARBY</Text>
         </View>
         <View style={{ marginTop: 5 }}>
           <FlatList
@@ -301,13 +300,15 @@ function MainScreen({ navigation }) {
                           style={{
                             width: "100%",
                             height: 175,
+                            borderTopLeftRadius: 10, 
+                            borderTopRightRadius: 10,
                           }}
                         />
                       </View>
                       <View
                         style={{
                           width: "100%",
-                          borderRadius: 0,
+                          borderRadius: 10,
                           padding: 5,
                           backgroundColor: colors.tertiaryColor,
                         }}
@@ -321,7 +322,7 @@ function MainScreen({ navigation }) {
                           }}
                         >
                           <Text style={{ color: "black", fontSize: 20 }}>
-                            {item.name}
+                            {(item.name).toUpperCase()}
                           </Text>
                           {item.average && (
                             <Text
@@ -353,9 +354,8 @@ function MainScreen({ navigation }) {
             }}
           />
         </View>
-
-        <View style={{ marginTop: 30 }}>
-          <Text style={styles.headingText}>All vendors</Text>
+       <View style={styles.heading}>
+          <Text style={styles.headingText}>ALL VENDORS</Text>
         </View>
         <View style={{ marginTop: 5 }}>
           <FlatList
@@ -393,13 +393,16 @@ function MainScreen({ navigation }) {
                           style={{
                             width: "100%",
                             height: 175,
+                            borderTopLeftRadius: 10, 
+                            borderTopRightRadius: 10,
+
                           }}
                         />
                       </View>
                       <View
                         style={{
                           width: "100%",
-                          borderRadius: 0,
+                          borderRadius: 10,
                           padding: 5,
                           backgroundColor: colors.tertiaryColor,
                         }}
@@ -413,7 +416,7 @@ function MainScreen({ navigation }) {
                           }}
                         >
                           <Text style={{ color: "black", fontSize: 20 }}>
-                            {item.name}
+                            {(item.name).toUpperCase()}
                           </Text>
                           {item.average && (
                             <Text
@@ -496,6 +499,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 25,
   },
+  heading:{
+    marginTop:30,
+  },
   headingText: {
     marginHorizontal: 10,
     fontSize: 20,
@@ -504,6 +510,12 @@ const styles = StyleSheet.create({
   lottie: {
     width: 300,
     height: 300,
+  },
+  slideContainer: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 export default MainScreen;

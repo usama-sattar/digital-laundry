@@ -13,6 +13,7 @@ export default function ChatScreen({ route, navigation }) {
   useEffect(() => {
     newConversation();
   }, []);
+  
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);

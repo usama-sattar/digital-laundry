@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, FlatList, Alert } from "react-native";
-import { Avatar, Button, Overlay, AirbnbRating } from "react-native-elements";
+import React, { useState, useEffect,useContext } from "react";
+import { View, Text, StyleSheet, FlatList, Alert,ActivityIndicator,TouchableOpacity } from "react-native";
+import { Avatar, Button, Overlay, AirbnbRating,Image } from "react-native-elements";
 import { colors } from "../../global/colors";
 import axios from "axios";
 import { API } from "../../global/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { chatContext } from "../../context/chat";
+import {Ionicons} from "@expo/vector-icons";
 
 export default function AboutScreen({ navigation }) {
+  const { user } = useContext(chatContext);
   const [visible, setVisible] = useState(false);
-  const [user, setUser] = useState("");
+  const [name, setName] = useState("")
+  const [phone, setPhone] = useState("")
   const [rating, setRating] = useState(0);
-
-  useEffect(() => {
-    getData();
-  }, []);
-  const getData = async () => {
-    const customer = await AsyncStorage.getItem("customerId");
-    const c = JSON.parse(customer);
-    if (c) {
-      setUser(c);
-    }
+  
+  const Logout = () => {
+    AsyncStorage.clear();
   };
+  
+  useEffect(()=>{
+    getUserData();
+  },[])
   const sendRating = async () => {
     if (rating > 0) {
       const result = await axios.post(`${API}/customers/rating/${user}`, {
@@ -29,23 +30,62 @@ export default function AboutScreen({ navigation }) {
       Alert.alert("Rating Done");
     }
   };
+
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
+  const getUserData = async () => {
+    const res = await axios.get(`${API}/customers/current/${user}`)
+    const result = await res.data
+      setName(result.name)
+      setPhone(result.phone)
+      
+    };
   return (
     <View style={{ flex: 1, backgroundColor: colors.secondaryColor }}>
       <View style={{ flex: 0.8 }}>
-        <Button
-          title="Rate Us"
-          onPress={toggleOverlay}
-          buttonStyle={{
-            backgroundColor: colors.primaryColor,
-            width: 100,
-            alignSelf: "center",
-            marginVertical: 10,
-          }}
-        />
+        <View style={{alignSelf:'center', flex:1, justifyContent:'center'}}>
+        <View style={{justifyContent:'center', alignItems:'center', marginTop:10}}>
+          <Image
+            source={require("../../assets/profile.png")}
+            style={{ width: 120, height: 120 }}
+            PlaceholderContent={<ActivityIndicator />}
+          />
+          </View>
+          <View style={{justifyContent:'center', alignItems:'center', marginTop:10}}>
+            <Text style={{fontSize:20}}>{ name.toUpperCase()}</Text>
+            <Text style={{fontSize:15, color:'gray'}}>{phone}</Text>
+          </View>
+          <View style={{marginTop: 20, width:300}}>
+            <TouchableOpacity onPress={toggleOverlay} style={{display:'flex', flexDirection:'row', 
+              justifyContent:'space-around',
+              backgroundColor:colors.tertiaryColor,
+              padding:20
+            }}>
+                <Ionicons name="star-outline" size={20} style={{width: "20%"}}/>
+                <Text style={{width: "60%"}}>Rate Us</Text>
+                <Ionicons name="chevron-forward-outline" size={20}  style={{width: "20%"}}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={{display:'flex', flexDirection:'row', 
+              justifyContent:'space-around',
+              backgroundColor:colors.tertiaryColor,
+              padding:20,
+              marginTop:5
+              }}
+              onPress={() => {
+                Logout();
+                navigation.navigate("Login");
+              }}
+            >
+                <Ionicons name="log-out-outline" size={20}   style={{width: "20%"}}/>
+                <Text  style={{width: "60%"}}>Logout</Text>
+                <Ionicons name="chevron-forward-outline" size={20}  style={{width: "20%"}}/>
+            </TouchableOpacity>
+         
+          </View>
 
+        </View>
         <Overlay
           isVisible={visible}
           onBackdropPress={toggleOverlay}

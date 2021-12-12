@@ -3,6 +3,8 @@ import { View, Image, StyleSheet, Text } from "react-native";
 import { Button } from "react-native-elements";
 import axios from "axios";
 import { API } from "../../global/constants";
+import { colors } from "../../global/colors";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 function RideDetails({ route }) {
   const { fullSocket, socket, rider } = route.params;
@@ -30,13 +32,48 @@ function RideDetails({ route }) {
   return (
     <View style={styles.container}>
       <View>
-        <Text>Ride Detail</Text>
-        {rideData === null ? (
-          <Text>{JSON.stringify(rideData)}</Text>
-        ) : (
-          <View>
-            <Button title="confirm" onPress={() => updateBooking()} />
-            <Text>{JSON.stringify(rideData)}</Text>
+        {rideData === null ? null : (
+          <View
+            style={{
+              height: "100%",
+              justifyContent: "center",
+            }}
+          >
+            <View style={styles.card}>
+              <Text style={styles.heading}>Source</Text>
+              <Text style={styles.subHeading}>
+                {rideData.pickUpData.address}
+              </Text>
+            </View>
+            <View style={styles.card}>
+              <Text style={styles.heading}>Destination</Text>
+              <Text style={styles.subHeading}>
+                {rideData.dropOffData.address}
+              </Text>
+            </View>
+            <View style={styles.card}>
+              <Text style={styles.heading}>Estimaed Fare</Text>
+              <Text style={[styles.subHeading, { fontSize: 25 }]}>
+                Rs. {rideData.fare}
+              </Text>
+            </View>
+            <View
+              style={[
+                styles.card,
+                { flexDirection: "row", justifyContent: "space-around" },
+              ]}
+            >
+              <TouchableOpacity
+                style={{ width: 100, height: 50, backgroundColor: "green" }}
+              >
+                <Text>Accept</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ width: 100, height: 50, backgroundColor: "red" }}
+              >
+                <Text>Reject</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       </View>
@@ -46,8 +83,29 @@ function RideDetails({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.secondaryColor,
+    justifyContent: "center",
+  },
+  card: {
+    height: "20%",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white",
+    width: "80%",
+    alignSelf: "center",
+    marginTop: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 3,
+  },
+  heading: {
+    fontSize: 30,
+  },
+  subHeading: {
+    marginTop: 10,
+    fontSize: 15,
   },
 });
 export default RideDetails;

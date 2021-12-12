@@ -30,64 +30,76 @@ function VendorMain({ navigation }) {
       {(value) => {
         return (
           <View style={styles.container}>
-            <View style={{ backgroundColor: "#FEF9EF" }}>
-              <Text
+            <View style={styles.cardHolder}>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 25,
+                    color: colors.textColor,
+                    fontWeight: "bold",
+                    marginBottom: 20,
+                  }}
+                >
+                  DASHBOARD
+                </Text>
+              </View>
+              <View
                 style={{
-                  fontSize: 20,
-                  color: colors.textColor,
-                  marginVertical: 15,
-                  textAlign: "center",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "space-around",
+                  width: "90%",
                 }}
               >
-                Vendor Dashboard
-              </Text>
-            </View>
-            <View style={styles.cardHolder}>
-              <View style={[styles.card, { backgroundColor: "#34BE82" }]}>
-                <TouchableOpacity
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                  onPress={() => navigation.navigate("PendingScreen")}
-                >
-                  <Text style={[styles.textStyle, { color: "white" }]}>
-                    Pending Orders
-                  </Text>
-                  <Ionicons name="checkmark" size={25} color="white" />
-                  <Text style={[styles.textStyle, { color: "white" }]}>
-                    {pending && pending}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={[styles.card, { backgroundColor: "#FFA400" }]}>
-                <TouchableOpacity
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                  onPress={() => {
-                    navigation.navigate("FullfilledScreen");
-                  }}
-                >
-                  <Text style={[styles.textStyle, { color: "white" }]}>
-                    Fullfilled Orders
-                  </Text>
-                  <Ionicons name="checkmark-done" size={25} color="white" />
-                  <Text style={[styles.textStyle, { color: "white" }]}>
-                    {fullfilled && fullfilled}
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                <View style={[styles.rowCard, { backgroundColor: "#5732FB" }]}>
+                  <TouchableOpacity
+                    style={{
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                    onPress={() => navigation.navigate("PendingScreen")}
+                  >
+                    <Text style={[styles.textStyle, { color: "white" }]}>
+                      Pending Orders
+                    </Text>
+                    <Ionicons name="checkmark" size={25} color="white" />
+                    <Text style={[styles.textStyle, { color: "white" }]}>
+                      {pending && pending}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
 
-              <View style={[styles.card, { backgroundColor: "#2F86A6" }]}>
+                <View style={[styles.rowCard, { backgroundColor: "#FC6B21" }]}>
+                  <TouchableOpacity
+                    style={{
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                    onPress={() => {
+                      navigation.navigate("FullfilledScreen");
+                    }}
+                  >
+                    <Text style={[styles.textStyle, { color: "white" }]}>
+                      Fullfilled Orders
+                    </Text>
+                    <Ionicons name="checkmark-done" size={25} color="white" />
+                    <Text style={[styles.textStyle, { color: "white" }]}>
+                      {fullfilled && fullfilled}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={[styles.card, { backgroundColor: "#1EBAFC" }]}>
                 <TouchableOpacity
                   onPress={() => {
                     value.Logout();
                     navigation.navigate("Login");
                   }}
                 >
-                  <Text style={styles.textStyle}>Logout</Text>
+                  <Text style={[styles.textStyle, { color: "white" }]}>
+                    Logout
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -101,7 +113,8 @@ function VendorMain({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#B5DEFF",
+    backgroundColor: colors.secondaryColor,
+    justifyContent: "center",
   },
   cardHolder: {
     display: "flex",
@@ -112,12 +125,20 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: "yellow",
-    fontSize: 20,
+    fontSize: 22,
   },
   card: {
-    width: "80%",
+    width: "85%",
     alignSelf: "center",
     height: 120,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  rowCard: {
+    width: "45%",
+    height: 150,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,

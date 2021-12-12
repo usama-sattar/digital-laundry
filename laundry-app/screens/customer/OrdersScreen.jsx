@@ -134,8 +134,8 @@ function OrderContainer({ item, key }) {
             </ListItem.Subtitle>
           ) : (
             <ListItem.Subtitle style={{ color: "blue", fontSize: 15 }}>
-              <Ionicons name="checkmark-done" size={20}></Ionicons>
               {prevRating}
+              <Ionicons name="star" size={15} color="#FFC000" />
             </ListItem.Subtitle>
           )}
 

@@ -14,7 +14,6 @@ import SignUp from "./screens/auth/signup";
 import ShopName from "./screens/vendor/ShopName";
 import MainScreen from "./screens/customer/MainScreen";
 import VendorMain from "./screens/vendor/VendorMain";
-import EditCustomer from "./screens/customer/EditScreen";
 import EditShop from "./screens/vendor/EditShop";
 import Searched from "./screens/customer/SearchScreen";
 import SelectScreen from "./screens/customer/SelectScreen";
@@ -98,7 +97,8 @@ export default function App() {
                 headerShown: false,
               })}
               tabBarOptions={{
-                ...tabBar
+                ...tabBar,
+                keyboardHidesTabBar: true
               }}
             >
               <Tab.Screen name="VendorMain" component={VendorMain} />
@@ -142,14 +142,11 @@ export default function App() {
                   if (route.name === "MainScreen") {
                     iconName = focused ? "home" : "home-outline";
                   }
-                  if (route.name === "EditCustomer") {
-                    iconName = focused ? "create" : "create-outline";
-                  }
                   if (route.name === "OrdersScreen") {
                     iconName = focused ? "card" : "card-outline";
                   }
                   if (route.name === "RatingScreen") {
-                    iconName = focused ? "star" : "star-outline";
+                    iconName = focused ? "person" : "person-outline";
                   }
                  if (route.name === "ChatScreen") {
                     iconName = focused ? "chatbubble-ellipses": "chatbubble-ellipses-outline";
@@ -159,18 +156,14 @@ export default function App() {
                 headerShown: false,
               })}
               tabBarOptions={{
-                ...tabBar
+                ...tabBar,
+                keyboardHidesTabBar: true
               }}
             >
               <Tab.Screen
                 name="MainScreen"
                 component={MainScreen}
                 options={{ title: "home" }}
-              />
-              <Tab.Screen
-                name="EditCustomer"
-                component={EditCustomer}
-                options={{ title: "Edit" }}
               />
               <Tab.Screen
                 name="OrdersScreen"
@@ -250,6 +243,9 @@ export default function App() {
                     component={CreateShop}
                     options={{
                       title: "Create Shop",
+                      headerBackTitleStyle: {
+                        color:'white'
+                      },
                       ...header
                   
                     }}
@@ -290,7 +286,6 @@ export default function App() {
                     options={{
                       title: "Place Order",
                       ...header
-                  
                     }}
                   />
                   <Stack.Screen

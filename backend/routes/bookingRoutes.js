@@ -101,8 +101,10 @@ router.post("/update/booking", async (req, res) => {
         if (error){
           res.send(error);
       }
+      io.on("accept-ride", data =>{
+        io.emit("ride-details", confirmedBooking)
+      });  
       res.send(confirmedBooking);
-      io.emit("action", confirmedBooking);  
       })
     }  
   })

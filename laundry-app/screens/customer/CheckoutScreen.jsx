@@ -35,11 +35,12 @@ export default function Checkout({ navigation, route }) {
           removeClippedSubviews={false}
         >
           <View style={styles.slideContainer}>
-            <Image
-              source={require("../../assets/credit-card.png")}
-              style={{ width: 200, height: 200 }}
-              PlaceholderContent={<ActivityIndicator />}
-            />
+              <Image
+
+                source={require("../../assets/credit-card.png")}
+                style={{ width: 200, height: 200 }}
+                PlaceholderContent={<ActivityIndicator />}
+              />
           </View>
           <View style={styles.slideContainer}>
             <Image

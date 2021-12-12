@@ -57,10 +57,10 @@ export default function PendingOrders({ navigation }) {
             </ListItem.Content>
             <Button
               title="View"
-              buttonStyle={{ width: 60, height: 30 }}
+              buttonStyle={{ width: 60, height: 40 }}
               titleStyle={{
                 color: "white",
-                fontSize: 12,
+                fontSize: 15,
               }}
               onPress={() => {
                 navigation.navigate("PendingScreenContainer", {

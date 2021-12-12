@@ -33,9 +33,6 @@ export default function UpdateView({ detail }, props) {
           <Picker.Item label="120" value="120" />
           <Picker.Item label="140" value="140" />
         </Picker>
-        <TouchableOpacity onPress={() => saveService(detail)}>
-          <Image style={styles.plus} source={require("../assets/plus.png")} />
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => removeService(detail)}>
           <Ionicons name="remove-circle" size={35} color="#B80F0A" />
         </TouchableOpacity>
@@ -48,7 +45,8 @@ export function UpdateNew() {
   const [remaining, setRemaining] = useState([]);
   useEffect(() => {
     getFilter();
-  }, []);
+  }, [services]);
+  
   const getFilter = async () => {
     console.log(services);
     const data = await shopDetails.filter(
@@ -87,9 +85,6 @@ function ItemView({ detail }) {
         <TouchableOpacity onPress={() => saveService(detail)}>
           <Image style={styles.plus} source={require("../assets/plus.png")} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => removeService(detail)}>
-          <Ionicons name="remove-circle" size={35} color="#B80F0A" />
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -97,7 +92,7 @@ function ItemView({ detail }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.tertiaryColor,
+    backgroundColor: colors.secondaryColor,
   },
   images: {
     width: 50,
@@ -111,13 +106,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#d4ebf2",
-    width: "80%",
+    width: "90%",
     borderRadius: 10,
     paddingBottom: 5,
     paddingTop: 5,
-    marginTop: 5,
+    marginTop: 10,
+    marginBottom:10,
     alignSelf: "center",
     justifyContent: "space-around",
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,  
+    elevation: 5
   },
   plus: {
     width: 30,

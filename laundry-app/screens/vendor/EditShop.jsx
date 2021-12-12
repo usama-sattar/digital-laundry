@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
   ScrollView,
 } from "react-native";
 import { ProductConsumer } from "../../context";
@@ -20,6 +21,7 @@ import { color } from "react-native-elements/dist/helpers";
 
 export default function EditShop({ navigation }) {
   const [vendor, setVendor] = useState("");
+  const [loading,setLoading] = useState(false)
   const { shop, services, setShop, setServices } = useContext(updateContext);
 
   useEffect(() => {
@@ -39,6 +41,7 @@ export default function EditShop({ navigation }) {
     const data = await result.data;
     setShop(data);
     setServices(data.services);
+    setLoading(true)
   };
   const updateShop = async () => {
     const shop_id = await shop._id;
@@ -49,7 +52,7 @@ export default function EditShop({ navigation }) {
     console.log(data);
   };
 
-  return (
+  return ( loading ?
     <View style={styles.container}>
       <ProductConsumer>
         {(value) => {
@@ -58,9 +61,9 @@ export default function EditShop({ navigation }) {
               style={{
                 flex: 1,
                 paddingTop: 5,
-                backgroundColor: colors.secondaryColor,
               }}
             >
+            <Text style={{textAlign:'center', fontSize:15}}>{shop.name}</Text>
               {shop !== {} ? (
                 <ScrollView
                   contentContainerStyle={{ flexGrow: 1 }}
@@ -72,7 +75,7 @@ export default function EditShop({ navigation }) {
                     <Text
                       style={{
                         fontSize: 20,
-                        fontWeight: "500",
+                        textAlign:'center',
                         color: colors.textColor,
                       }}
                     >
@@ -91,8 +94,8 @@ export default function EditShop({ navigation }) {
                     <Text
                       style={{
                         fontSize: 20,
-                        fontWeight: "500",
                         color: colors.textColor,
+                        textAlign:'center'
                       }}
                     >
                       Add New Services
@@ -144,12 +147,16 @@ export default function EditShop({ navigation }) {
           );
         }}
       </ProductConsumer>
+    </View>:
+    <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+      <ActivityIndicator />
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:colors.secondaryColor
   },
   input: {
     height: 30,

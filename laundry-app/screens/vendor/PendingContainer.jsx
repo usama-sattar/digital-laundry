@@ -40,69 +40,194 @@ export default function PendingScreenContainer({ route, navigation }) {
         flex: 1,
       }}
     >
-      <ListItem
-        bottomDivider
-        containerStyle={{
-          backgroundColor: colors.secondaryColor,
-        }}
-      >
-        <ListItem.Content>
-          <ListItem.Subtitle style={styles.textView}>
-            Name: {data.name}
-          </ListItem.Subtitle>
-          <ListItem.Subtitle style={styles.textView}>
-            address: {data.address}
-          </ListItem.Subtitle>
-          <ListItem.Subtitle style={styles.textView}>
-            contact: {data.contact}
-          </ListItem.Subtitle>
-          <ListItem.Subtitle style={styles.textView}>
-            Price: {data.total}
-          </ListItem.Subtitle>
-          <Text style={{ fontStyle: "italic", color: colors.textColor }}>
-            Cart
-          </Text>
-          {data.cart.map((p, i) => (
-            <View
-              key={i}
+      <View style={{ flex: 0.9 }}>
+        <View
+          style={{
+            width: "80%",
+            height: 150,
+            alignSelf: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ fontSize: 35 }}>New Order</Text>
+          <Text style={{ fontSize: 25 }}> Rs {data.total} </Text>
+        </View>
+        <View style={{ width: "80%", alignSelf: "center" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: 10,
+            }}
+          >
+            <Text
               style={{
-                borderBottomWidth: 1,
-                borderBottomColor: "lightgray",
-                width: "100%",
+                fontSize: 15,
+                width: "40%",
+                textAlign: "left",
+                fontWeight: "bold",
               }}
             >
-              <Text style={{ color: colors.textColor, fontSize: 15 }}>
-                name: {p.name}
-              </Text>
-              <Text style={{ color: colors.textColor, fontSize: 15 }}>
-                quantity: {p.quantity}
-              </Text>
-              <Text style={{ color: colors.textColor, fontSize: 15 }}>
-                price: {p.price}
-              </Text>
-            </View>
-          ))}
-        </ListItem.Content>
-      </ListItem>
-      <View style={styles.btnContainer}>
-        <Button
-          title="Completed ?"
-          buttonStyle={{ width: 120, height: 40 }}
-          titleStyle={{
-            color: "white",
-            fontSize: 15,
+              Name
+            </Text>
+            <Text style={{ fontSize: 15, width: "60%", textAlign: "right" }}>
+              {data.name}
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 15,
+                width: "40%",
+                textAlign: "left",
+                fontWeight: "bold",
+              }}
+            >
+              Contact
+            </Text>
+            <Text style={{ fontSize: 15, width: "60%", textAlign: "right" }}>
+              {data.contact}
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 15,
+                width: "40%",
+                textAlign: "left",
+                fontWeight: "bold",
+              }}
+            >
+              Address
+            </Text>
+            <Text style={{ fontSize: 15, width: "60%", textAlign: "right" }}>
+              {data.address}
+            </Text>
+          </View>
+        </View>
+        <ScrollView
+          contentContainerStyle={{
+            width: "80%",
+            alignSelf: "center",
+            marginTop: 20,
           }}
+        >
+          <Text style={{ fontSize: 35, color: colors.textColor }}>Cart</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 15,
+                width: "40%",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              TItle
+            </Text>
+            <Text
+              style={{
+                fontSize: 15,
+                width: "40%",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              Qunatity
+            </Text>
+            <Text
+              style={{
+                fontSize: 15,
+                width: "40%",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              Price
+            </Text>
+          </View>
+          <View>
+            {data.cart.map((p, i) => {
+              return (
+                <View
+                  key={i}
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    marginTop: 10,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 15, width: "40%", textAlign: "center" }}
+                  >
+                    {p.name}
+                  </Text>
+                  <Text
+                    style={{ fontSize: 15, width: "40%", textAlign: "center" }}
+                  >
+                    {p.quantity}
+                  </Text>
+                  <Text
+                    style={{ fontSize: 15, width: "40%", textAlign: "center" }}
+                  >
+                    {p.price}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        </ScrollView>
+      </View>
+      <View style={styles.btnContainer}>
+        <TouchableOpacity
           onPress={changeStatus}
-        />
-        <Button
-          title="Book Ride"
-          buttonStyle={{ width: 120, height: 40 }}
-          titleStyle={{
-            color: "white",
-            fontSize: 15,
+          style={{
+            marginHorizontal: 20,
+            marginTop: 20,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "lightgray",
+            height: 50,
+            alignSelf: "center",
+            padding: 5,
+            borderRadius: 5,
+          }}
+        >
+          <Text style={{ color: "black" }}>Mark as completed ?</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "black",
+            width: 100,
+            height: 100,
+            alignSelf: "flex-end",
+            marginHorizontal: 20,
+            marginTop: 20,
+            borderRadius: 100,
+            justifyContent: "center",
+            alignItems: "center",
           }}
           onPress={() => navigation.navigate("RideBookingScreen")}
-        />
+        >
+          <Text style={{ color: "white" }}>Book Ride</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

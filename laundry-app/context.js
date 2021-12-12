@@ -87,9 +87,6 @@ class ProductProvider extends Component {
   };
   Logout = () => {
     AsyncStorage.clear();
-    this.setState({
-      isLogged: false,
-    });
   };
   setPrice =(e)=>{
     console.log(e)

@@ -20,6 +20,7 @@ import LottieView from "lottie-react-native";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
+AsyncStorage.setItem("riderId", JSON.stringify("617efb920b89a12e0f074587"));
 function RiderMain({ navigation }) {
   const [rider, setRider] = useState("");
   const [fullSocket, setFullSocket] = useState(null);
